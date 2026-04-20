@@ -104,7 +104,7 @@ const projects = [
     result: "Built a Python app that converts scattered public company data into strategic insight.",
     desc: "Automated scraping, cleaning, comparison, and visualization for competitive analysis and market intelligence workflows.",
     tags: ["Python", "Competitive Strategy", "Market Intelligence", "Data Analysis"],
-    image: "/assets/dashboard.jpg"
+    image: "/assets/dashboard.jpg",
   },
   {
     title: "AI-Powered Warehouse Location Optimization",
@@ -147,20 +147,12 @@ const projects = [
     image: "/assets/solar-dryer.png",
   },
   {
-    title: "Meal Packing Kanban Analysis",
-    meta: "Operations · Inventory planning",
-    result: "Calculated a 29% safety stock requirement using Kanban analysis.",
-    desc: "Applied lean planning methods to improve inventory control and operational readiness in meal packing operations.",
-    tags: ["Kanban", "Lean Systems", "Inventory Planning", "Operations"],
-    image: "/assets/analytics-table.png",
-  },
-  {
     title: "42-Year Economic Data Analysis",
     meta: "Analytics · Business insight",
     result: "Analyzed 42 years of economic data to support decision-making.",
     desc: "Worked with long-term data patterns to connect technical analysis with business and strategic interpretation.",
     tags: ["Data Analysis", "Economic Trends", "Business Analysis", "Visualization"],
-    image: "/assets/image.jpg"
+    image: "/assets/image.jpg",
   },
 ];
 
