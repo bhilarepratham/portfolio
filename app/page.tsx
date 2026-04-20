@@ -104,7 +104,7 @@ const projects = [
     result: "Built a Python app that converts scattered public company data into strategic insight.",
     desc: "Automated scraping, cleaning, comparison, and visualization for competitive analysis and market intelligence workflows.",
     tags: ["Python", "Competitive Strategy", "Market Intelligence", "Data Analysis"],
-    image: "/assets/dashboard.jpg",
+    image: "/assets/Dashboard.jpg",
   },
   {
     title: "AI-Powered Warehouse Location Optimization",
@@ -152,7 +152,7 @@ const projects = [
     result: "Analyzed 42 years of economic data to support decision-making.",
     desc: "Worked with long-term data patterns to connect technical analysis with business and strategic interpretation.",
     tags: ["Data Analysis", "Economic Trends", "Business Analysis", "Visualization"],
-    image: "/assets/image.jpg",
+    image: "/assets/image.png",
   },
 ];
 
