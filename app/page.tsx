@@ -149,7 +149,7 @@ const projects = [
     result: "Analyzed 42 years of economic data to support decision-making.",
     desc: "Worked with long-term data patterns to connect technical analysis with business and strategic interpretation.",
     tags: ["Data Analysis", "Economic Trends", "Business Analysis", "Visualization"],
-    image: "/assets/dashboard.jpg",
+    image: "/assets/image.png",
   },
 ];
 const skills = [
