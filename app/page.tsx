@@ -2,6 +2,17 @@
 
 import { useEffect, useState } from "react";
 
+const tickerWords = [
+  "Project management",
+  "Operations management",
+  "Process optimization",
+  "Data analysis",
+  "Lean systems",
+  "Business analysis",
+  "Product thinking",
+  "Six Sigma",
+];
+
 const highlights = [
   {
     stat: "15%",
@@ -149,9 +160,10 @@ const projects = [
     result: "Analyzed 42 years of economic data to support decision-making.",
     desc: "Worked with long-term data patterns to connect technical analysis with business and strategic interpretation.",
     tags: ["Data Analysis", "Economic Trends", "Business Analysis", "Visualization"],
-    image: "/assets/image.png",
+    image: "/assets/dashboard.jpg",
   },
 ];
+
 const skills = [
   {
     title: "Operations",
@@ -177,17 +189,6 @@ const certifications = [
   "SOLIDWORKS Associate",
   "Siemens Mobility - Commercial Project Manager Job Simulation",
   "Advanced Tableau Desktop",
-];
-
-const tickerWords = [
-  "Project management",
-  "Operations management",
-  "Process optimization",
-  "Data analysis",
-  "Lean systems",
-  "Business analysis",
-  "Product thinking",
-  "Six Sigma",
 ];
 
 export default function Home() {
@@ -315,12 +316,20 @@ export default function Home() {
 
             <div className="hero-strip" aria-hidden="true">
               <div className="hero-strip-track">
-                {tickerWords.map((word, index) => (
-                  <span key={`${word}-${index}`}>{word}</span>
-                ))}
-                {tickerWords.map((word, index) => (
-                  <span key={`${word}-dup-${index}`}>{word}</span>
-                ))}
+                {Array.from({ length: 2 }).flatMap((_, dupIndex) =>
+                  [
+                    "Project management",
+                    "Operations management",
+                    "Process optimization",
+                    "Data analysis",
+                    "Lean systems",
+                    "Business analysis",
+                    "Product thinking",
+                    "Six Sigma",
+                  ].map((word, index) => (
+                    <span key={`${dupIndex}-${index}-${word}`}>{word}</span>
+                  ))
+                )}
               </div>
             </div>
           </div>
@@ -469,7 +478,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="fade-in">
+        <section id="contact" className="fade-in">
           <div className="eyebrow-number">07 — Certifications</div>
           <div className="section-title">
             <div>
@@ -486,14 +495,9 @@ export default function Home() {
               </article>
             ))}
           </div>
-        </section>
 
-        <section id="contact" className="fade-in">
-          <div className="eyebrow-number">08 — Contact</div>
-          <div className="section-title">
-            <div>
-              <h2>Contact</h2>
-            </div>
+          <div className="eyebrow-number" style={{ marginTop: 28 }}>
+            08 — Contact
           </div>
 
           <div className="panel contact-card reveal">
