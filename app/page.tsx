@@ -232,7 +232,7 @@ const EDUCATION = [
 ];
 
 const NUMBERS = [
-  { val: "3.85",   label: "GPA at ASU",               detail: "Ira A. Fulton Schools of Engineering" },
+  { val: "3.83",   label: "GPA at ASU",               detail: "Ira A. Fulton Schools of Engineering" },
   { val: "$250K",  label: "Project Budget Managed",    detail: "End-to-end from WBS to delivery" },
   { val: "10+",    label: "Projects Delivered",        detail: "PM · Product · Data · Engineering" },
   { val: "15–18%", label: "Cost Reduction Achieved",   detail: "AI vs baseline logistics optimisation" },
