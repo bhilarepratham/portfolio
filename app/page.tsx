@@ -359,7 +359,7 @@ export default function Home() {
       <section ref={secHero} className="hero">
         <div className="hero-photo-layer"
           style={{ transform:`translateY(${scrollY*0.2}px)` }}>
-          <img src="/assets/portrait.jpg" alt="Pratham Bhilare" className="hero-img" />
+          <img src="/assets/portrait.jpeg" alt="Pratham Bhilare" className="hero-img" />
           <div className="hero-fade" />
         </div>
 
@@ -373,6 +373,7 @@ export default function Home() {
           </p>
           <div className="hero-actions">
             <button className="btn-solid" onClick={() => go(secProj)}>View Projects</button>
+            <a href="/assets/pratham_Bhilare_Resume.pdf" target="_blank" rel="noreferrer" className="btn-solid btn-resume">Download Resume ↓</a>
             <button className="btn-link" onClick={() => go(secContact)}>Get in touch ›</button>
           </div>
           <p className="hero-avail"><span className="avail-dot"/>Open to Summer 2026 roles</p>
@@ -623,6 +624,7 @@ export default function Home() {
 
           <div className="contact-actions">
             <a href="mailto:pratham.bhilare1010@gmail.com" className="btn-solid">Email Pratham</a>
+            <a href="/assets/pratham_Bhilare_Resume.pdf" target="_blank" rel="noreferrer" className="btn-solid btn-resume">Download Resume ↓</a>
             <a href="https://www.linkedin.com/in/prathambhilare" target="_blank" rel="noreferrer" className="btn-link">LinkedIn Profile ›</a>
           </div>
         </div>
