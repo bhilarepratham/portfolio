@@ -1,566 +1,550 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
+
+// ─── DATA ────────────────────────────────────────────────────
 
 const highlights = [
-  {
-    stat: "15%",
-    title: "Logistics cost reduction",
-    text: "AI-driven warehouse location optimization across 537 Amazon distribution centers outperformed Excel Solver by ~15–18% in weighted transport cost.",
-  },
-  {
-    stat: "3.85",
-    title: "GPA at ASU",
-    text: "MS Management of Technology at Arizona State University's Ira A. Fulton Schools of Engineering, graduating May 2026.",
-  },
-  {
-    stat: "$250K",
-    title: "Project budget managed",
-    text: "Led end-to-end planning for a $250,000 customer portal implementation with a 9-phase WBS and 210-day critical path.",
-  },
-  {
-    stat: "20.34%",
-    title: "Solar panel efficiency",
-    text: "Improved PV panel efficiency from 18.22% to 20.34% through forced-air convection heat recovery — published as an engineering paper.",
-  },
-  {
-    stat: "$100M",
-    title: "Projected revenue model",
-    text: "Designed operations and financial model for FlazzMart, a 15-minute grocery delivery startup projecting $100M revenue by Year 5.",
-  },
-  {
-    stat: "42 yrs",
-    title: "Econometric study",
-    text: "Conducted a 42-year longitudinal OLS regression study (1980–2021) analyzing immigration's impact on GDP, unemployment, and personal income.",
-  },
+  { stat: "15%",    title: "Logistics cost reduction",   text: "AI-driven warehouse optimization across 537 Amazon distribution centers outperformed Excel Solver by 15–18%." },
+  { stat: "3.85",   title: "GPA at ASU",                 text: "MS Management of Technology at Arizona State University's Ira A. Fulton Schools of Engineering." },
+  { stat: "$250K",  title: "Project budget managed",     text: "End-to-end planning for a customer portal implementation with a 9-phase WBS and 210-day critical path." },
+  { stat: "20.34%", title: "Solar panel efficiency",     text: "Improved PV panel efficiency from 18.22% through forced-air convection heat recovery — published paper." },
+  { stat: "$100M",  title: "Projected revenue model",    text: "Operations and financial model for FlazzMart, a 15-minute grocery delivery startup." },
+  { stat: "42 yrs", title: "Econometric study",          text: "42-year longitudinal OLS regression (1980–2021) on immigration's impact on GDP and personal income." },
 ];
 
 const education = [
-  {
-    year: "Aug 2024 — May 2026",
-    school: "Ira A. Fulton Schools of Engineering, Arizona State University",
-    degree: "Master of Science, Management of Technology. GPA: 3.85.",
-  },
-  {
-    year: "2021 — 2024",
-    school: "Pillai College of Engineering",
-    degree: "Bachelor of Technology, Mechanical Engineering.",
-  },
-  {
-    year: "2018 — 2021",
-    school: "Father Agnel Technical Education Complex",
-    degree: "Diploma of Education, Mechanical Engineering.",
-  },
-  {
-    year: "2018",
-    school: "Ryan International School, Navi Mumbai",
-    degree: "10th standard foundation.",
-  },
+  { year: "Aug 2024 — May 2026", school: "Arizona State University",           degree: "MS, Management of Technology · GPA 3.85" },
+  { year: "2021 — 2024",         school: "Pillai College of Engineering",      degree: "BTech, Mechanical Engineering" },
+  { year: "2018 — 2021",         school: "Father Agnel Technical Complex",     degree: "Diploma, Mechanical Engineering" },
+  { year: "2018",                school: "Ryan International School",          degree: "10th Standard · Navi Mumbai" },
 ];
 
 const experience = [
   {
     year: "May 2025 — Present",
-    company: "Arizona State University · Graduate Teaching Assistant",
-    desc: "Supporting graduate and undergraduate coursework in Industrial and Systems Engineering.",
-    points: [
-      "Evaluating assignments and providing feedback to maintain consistent grading standards across 50+ students.",
-      "Coordinating Canvas workflows, communication, and confidential student data handling.",
-      "Collaborating with faculty on rubrics and assessment criteria across enterprise modeling, quality management, and systems engineering.",
-    ],
+    company: "Arizona State University",
+    role: "Graduate Teaching Assistant",
+    points: ["Grading and feedback for 50+ students in Industrial & Systems Engineering.", "Canvas workflow coordination and faculty collaboration on rubrics.", "Supporting enterprise modeling, quality management, and systems engineering courses."],
   },
   {
     year: "Jan 2024 — Apr 2024",
-    company: "Tata Power · Mechanical Maintenance Intern",
-    desc: "Supervised mechanical outage activities at Trombay Thermal Power Station (Unit 5: 500 MW & Unit 8: 250 MW) across a 14-week period.",
-    points: [
-      "Conducted routine inspections of boiler components — pulverisers, burners, air heaters, economizers — improving combustion efficiency.",
-      "Implemented LOTO and Permit-to-Work procedures during equipment isolation, achieving zero safety incidents.",
-      "Performed Job Safety Analysis (JSA) for confined space entry tasks and documented coal transportation workflows.",
-    ],
+    company: "Tata Power",
+    role: "Mechanical Maintenance Intern",
+    points: ["Supervised outage activities at Trombay Thermal Power Station (500 MW + 250 MW units).", "Inspected boilers — pulverisers, burners, air heaters — improving combustion efficiency.", "Implemented LOTO and PTW procedures; achieved zero safety incidents across 14 weeks."],
   },
   {
     year: "Dec 2022 — Jan 2023",
-    company: "Matharu Sons · Process Optimization Trainee",
-    desc: "Participated in end-to-end fabrication of fuel tankers (500–25,000L capacity) using Mild Steel.",
-    points: [
-      "Operated 3-roller bending machines and performed MIG/CO₂ welding for structural joining of tanker shells and baffle plates.",
-      "Performed hydrostatic pressure testing at 2,000 PSI to ensure structural integrity before dispatch.",
-      "Assisted in a 5-stage surface finishing process: sandblasting → soldering → primer → basecoat → clearcoat.",
-    ],
-  },
-  {
-    year: "Jun 2020 — Jul 2020",
-    company: "CIPET: Centre for Skilling & Technical Support · In-Plant Training",
-    desc: "Completed foundational technical training in conventional tooling and manufacturing processes.",
-    points: [
-      "Studied lathe and milling operations, tool selection, and machining fundamentals.",
-      "Learned safety protocols, maintenance principles, and precision measurement basics.",
-    ],
+    company: "Matharu Sons",
+    role: "Process Optimization Trainee",
+    points: ["End-to-end fabrication of fuel tankers (500–25,000L) in Mild Steel.", "MIG/CO₂ welding, hydrostatic pressure testing at 2,000 PSI.", "5-stage surface finishing: sandblasting → soldering → primer → basecoat → clearcoat."],
   },
 ];
 
 const projects = [
-  {
-    title: "Journey Air – Autonomous Airline Disruption Recovery",
-    meta: "Product Development · B2B SaaS",
-    result: "Honeywell Aerospace-sponsored platform targeting $4M–$10M annual revenue for a mid-size carrier.",
-    desc: "Designed a white-label SDK using Google Flutter to automate flight rebooking, baggage rerouting, and lounge provisioning via a single-tap mobile interface. Built a 5-year financial model showing positive NPV and $54.75M in projected annual savings from a 2-minute boarding time reduction.",
-    tags: ["Product Management", "Systems Engineering", "Financial Modeling", "B2B SaaS"],
-  },
-  {
-    title: "Strategic Market Intelligence Dashboard",
-    meta: "Python · Data Engineering",
-    result: "Scraped and aggregated real-time strategic data for 50+ publicly traded companies across 6 industries.",
-    desc: "Built a Streamlit financial intelligence app with an SQLite relational database, dual data sourcing via Yahoo Finance API + BeautifulSoup web scraping, and interactive Plotly visualizations — all with a modular 5-file architecture and built-in rate limiting.",
-    tags: ["Python", "Streamlit", "SQLite", "Market Intelligence", "Data Analysis"],
-  },
-  {
-    title: "AI-Powered Warehouse Location Optimization",
-    meta: "Operations · Optimization",
-    result: "Identified ~15–18% better cost efficiency over traditional solver approaches across 537 warehouses.",
-    desc: "Benchmarked Gen AI grid search vs. Excel Solver (GRG Nonlinear) to minimize weighted transport cost across the Amazon distribution network. Identified southeast Missouri as the optimal placement node, validated via Python/Matplotlib geospatial visualization.",
-    tags: ["AI", "Logistics", "Python", "Operations Research", "Process Optimization"],
-  },
-  {
-    title: "ERP Industry Strategic Analysis",
-    meta: "Strategy · Market Research",
-    result: "Delivered a 40-page analysis of a $64.83B market covering SAP, Oracle, and Workday.",
-    desc: "Applied Porter's Five Forces, VRIO Framework, and Core Competence Theory across 10+ resources per company. Analyzed cloud ERP growth from $34.8B (2023) to a projected $123.42B by 2030 at 18% CAGR, with actionable recommendations on AI and cloud adoption strategy.",
-    tags: ["Strategic Analysis", "VRIO", "Porter's Five Forces", "Market Research"],
-  },
-  {
-    title: "FlazzMart – 15-Minute Grocery Delivery Platform",
-    meta: "Entrepreneurship · Business Model",
-    result: "Modeled a path from $5M Year 1 revenue to $100M by Year 5 on a $3M seed ask.",
-    desc: "Designed full-stack business plan including TAM/SAM/SOM sizing ($68.6B market by 2032), competitive benchmarking against Instacart (63% share), a $730 annual LTV model, and an AI-driven logistics architecture with MFCs and EV fleets for sub-15-minute delivery.",
-    tags: ["Business Modeling", "Market Research", "Financial Forecasting", "Go-to-Market"],
-  },
-  {
-    title: "BYD Disruptive Innovation Strategy",
-    meta: "Strategy · Competitive Analysis",
-    result: "Analyzed BYD's rise to #1 EV seller globally, surpassing Tesla in Q4 2023.",
-    desc: "Evaluated BYD's vertical integration, 20,000+ patent portfolio, $2.1B in Chinese government subsidies, and 880% UK sales growth. Scored innovation model across viability, feasibility, and financial opportunity dimensions; recommended global expansion as the highest-value next step.",
-    tags: ["Disruptive Innovation", "Competitive Analysis", "IP Strategy", "EV Market"],
-  },
-  {
-    title: "Customer Portal Implementation – Medical Products LLC",
-    meta: "Project Management · Operations",
-    result: "Led end-to-end planning for a $250,000 portal across a 12-month, 210-day critical path.",
-    desc: "Built a 9-phase WBS in Microsoft Project with PERT estimation across 48 tasks. Identified 8 key risks (2 high-risk: Employee Turnover Rf=0.86, Learning Curve Rf=0.72) and designed a RAM mapping 9 deliverables across 7 roles with zero overlap.",
-    tags: ["MS Project", "Risk Management", "WBS", "Stakeholder Management"],
-  },
-  {
-    title: "VR Usability Testing – Water Purification Simulation",
-    meta: "UX · Usability Research",
-    result: "Identified 5 critical interaction issues; delivered 7 actionable UX recommendations.",
-    desc: "Conducted task-based think-aloud usability testing on Meta Quest 2 (6DoF) across 6 structured scenarios. Evaluated all purification stages, confirmed 100% conceptual retention despite interface friction, and authored a full APA usability report with hardware comparison (Quest 2 vs. HTC Vive Pro).",
-    tags: ["UX Research", "VR", "Usability Testing", "Think-Aloud Protocol"],
-  },
-  {
-    title: "Heat Recovery from Solar Photovoltaic Panels",
-    meta: "Research · Engineering",
-    result: "Improved solar efficiency from 18.22% to 20.34% — published as a peer-reviewed paper.",
-    desc: "Designed and fabricated a forced-air convection dryer powered by PV waste heat, reducing panel operating temperature by 3.82°C. Instrumented with 6 K-type thermocouples, a pyranometer, and NI DAQ hardware. Managed end-to-end execution including SolidWorks modelling within ₹7,020 budget.",
-    tags: ["Research", "SolidWorks", "LabVIEW", "Data Analysis", "Thermodynamics"],
-  },
-  {
-    title: "42-Year Immigration & U.S. Economy Study",
-    meta: "Analytics · Econometrics",
-    result: "R² = 0.998 income prediction model; identified GDP as dominant predictor (p = 1.02E-47).",
-    desc: "Built a master dataset from 4 federal sources (DHS, BEA, FRED, Kaggle) with 42 observations. Applied OLS regression with train/test split and IQR outlier detection. Found immigration statistically insignificant (p > 0.05) across GDP, unemployment, and personal income outcomes.",
-    tags: ["Python", "OLS Regression", "Excel", "Statistical Analysis", "Policy Research"],
-  },
+  { title: "Journey Air",                        meta: "Product · B2B SaaS",          result: "$54.75M projected annual savings · Honeywell Aerospace sponsored",     tags: ["Product Management", "Systems Engineering", "Financial Modeling"] },
+  { title: "Market Intelligence Dashboard",      meta: "Python · Data Engineering",   result: "50+ companies · 6 industries · real-time scraping",                    tags: ["Python", "Streamlit", "SQLite", "BeautifulSoup"] },
+  { title: "Warehouse Location Optimization",    meta: "Operations · AI",             result: "15–18% cost reduction · 537 Amazon distribution centers",              tags: ["AI", "Logistics", "Python", "Operations Research"] },
+  { title: "ERP Industry Strategic Analysis",    meta: "Strategy · Market Research",  result: "40-page analysis · $64.83B market · SAP, Oracle, Workday",             tags: ["VRIO", "Porter's Five Forces", "Market Research"] },
+  { title: "FlazzMart Delivery Platform",        meta: "Entrepreneurship · Ops",      result: "$5M → $100M revenue model · $3M seed ask · 15-min delivery",          tags: ["Business Modeling", "Financial Forecasting", "Go-to-Market"] },
+  { title: "BYD Disruptive Innovation",          meta: "Strategy · Competitive",      result: "#1 EV seller globally · 20,000+ patents · 880% UK growth",             tags: ["Disruptive Innovation", "IP Strategy", "EV Market"] },
+  { title: "Customer Portal — Medical LLC",      meta: "Project Management",          result: "$250K budget · 210-day critical path · 48 tracked tasks",             tags: ["MS Project", "Risk Management", "WBS"] },
+  { title: "VR Usability Testing",               meta: "UX · Research",               result: "5 critical issues · 7 recommendations · Meta Quest 2",                tags: ["UX Research", "VR", "Think-Aloud Protocol"] },
+  { title: "Solar PV Heat Recovery",             meta: "Research · Engineering",      result: "18.22% → 20.34% efficiency · peer-reviewed publication",              tags: ["SolidWorks", "LabVIEW", "Thermodynamics"] },
+  { title: "42-Year Economic Study",             meta: "Analytics · Econometrics",    result: "R²=0.998 · GDP dominant predictor p=1.02E-47 · 4 federal sources",    tags: ["OLS Regression", "Python", "Policy Research"] },
 ];
 
 const skills = [
-  {
-    title: "Project & Operations Management",
-    text: "WBS, critical path, risk matrices, Kanban, Lean, Six Sigma, PERT estimation, process optimization.",
-  },
-  {
-    title: "Data & Analytics",
-    text: "OLS regression, time-series forecasting, Excel modeling, Tableau, Python (Pandas, NumPy, Matplotlib).",
-  },
-  {
-    title: "Product & Strategy",
-    text: "Business Model Canvas, Porter's Five Forces, VRIO, TAM/SAM/SOM, competitive benchmarking, go-to-market.",
-  },
-  {
-    title: "Engineering Tools",
-    text: "SolidWorks, Ansys, AnyLogic, LabVIEW, systems modeling, manufacturing fundamentals.",
-  },
-  {
-    title: "Software & Platforms",
-    text: "Microsoft Project, Streamlit, SQLite, yFinance, BeautifulSoup, Plotly, Google Flutter, VS Code.",
-  },
-  {
-    title: "Soft Skills",
-    text: "Cross-functional collaboration, technical documentation, stakeholder communication, academic instruction.",
-  },
+  { title: "Project & Operations",  text: "WBS · Critical Path · Risk Matrices · Kanban · Lean · Six Sigma · PERT" },
+  { title: "Data & Analytics",      text: "OLS Regression · Time-Series · Excel · Tableau · Python · Pandas" },
+  { title: "Product & Strategy",    text: "BMC · Porter's Five Forces · VRIO · TAM/SAM/SOM · Go-to-Market" },
+  { title: "Engineering Tools",     text: "SolidWorks · Ansys · AnyLogic · LabVIEW · Systems Modeling" },
+  { title: "Software & Platforms",  text: "MS Project · Streamlit · SQLite · Plotly · Flutter · VS Code" },
+  { title: "Communication",         text: "Technical Documentation · Stakeholder Management · Academic Instruction" },
 ];
 
 const certifications = [
-  {
-    name: "Six Sigma: Green Belt",
-    body: "Professional Certification",
-    desc: "Quality management and process improvement methodology.",
-  },
-  {
-    name: "Project Management: International Projects",
-    body: "Professional Certification",
-    desc: "Global project coordination, compliance, and cross-cultural execution.",
-  },
-  {
-    name: "SOLIDWORKS Associate (CSWA)",
-    body: "Dassault Systèmes",
-    desc: "Certified proficiency in 3D CAD design and modeling.",
-  },
-  {
-    name: "Advanced Tableau Desktop",
-    body: "Data Visualization",
-    desc: "Advanced dashboard design and visual analytics workflows.",
-  },
-  {
-    name: "Siemens Mobility – Commercial PM Job Simulation",
-    body: "Forage / Siemens",
-    desc: "Commercial project management in a mobility industry context.",
-  },
+  { name: "Six Sigma: Green Belt",                          body: "Professional Certification" },
+  { name: "Project Management: International Projects",     body: "Professional Certification" },
+  { name: "SOLIDWORKS Associate (CSWA)",                    body: "Dassault Systèmes" },
+  { name: "Advanced Tableau Desktop",                       body: "Data Visualization" },
+  { name: "Siemens Mobility – Commercial PM Simulation",    body: "Forage / Siemens" },
 ];
 
-const research = [
-  {
-    type: "Peer-reviewed publication",
-    title: "Heat Recovery from Solar Photovoltaic Panels",
-    desc: "Experimental study on improving PV efficiency through forced-air convection heat recovery. Panel efficiency improved from 18.22% to 20.34% through DC fan-driven air circulation. Designed and fabricated a compact agricultural dryer powered by PV waste heat.",
-    tags: ["Solar Energy", "Thermodynamics", "SolidWorks", "LabVIEW", "NI DAQ"],
-  },
-  {
-    type: "Academic / applied work",
-    title: "ASEM vs. INCOSE Competency Framework Analysis",
-    desc: "Comparative literature review of two major engineering professional societies across 4 peer-reviewed sources. Mapped 4 core competency domains across EMBoK and SECF, benchmarked 5 certification levels, and identified 3 strategic collaboration opportunities to address workforce gaps in socio-technical systems engineering.",
-    tags: ["Systems Engineering", "INCOSE", "ASEM", "Competency Frameworks"],
-  },
+// ─── SECTIONS CONFIG ─────────────────────────────────────────
+
+const SECTIONS = [
+  { id: "intro",           label: "Intro",           roman: "" },
+  { id: "highlights",      label: "Highlights",      roman: "I" },
+  { id: "education",       label: "Education",       roman: "II" },
+  { id: "experience",      label: "Experience",      roman: "III" },
+  { id: "projects",        label: "Projects",        roman: "IV" },
+  { id: "skills",          label: "Skills",          roman: "V" },
+  { id: "certifications",  label: "Certifications",  roman: "VI" },
+  { id: "contact",         label: "Contact",         roman: "VII" },
+  { id: "reel",            label: "The Reel",        roman: "∞" },
 ];
 
-function SceneMarker({ num, label }: { num: string; label: string }) {
-  return (
-    <div className="scene-marker">
-      <span className="scene-marker-text">
-        <span className="scene-num">{num}</span>
-        {label}
-      </span>
-    </div>
-  );
-}
+// ─── COMPONENT ───────────────────────────────────────────────
 
 export default function Home() {
-  const [navOpen, setNavOpen] = useState(false);
+  const [current, setCurrent]       = useState(0);
+  const [transitioning, setTrans]   = useState(false);
+  const [transDir, setTransDir]     = useState<"up"|"down">("down");
+  const [visible, setVisible]       = useState(false);
+  const [menuOpen, setMenuOpen]     = useState(false);
+  const [reelReady, setReelReady]   = useState(false);
+  const touchStartY                 = useRef(0);
+  const lastWheelTime               = useRef(0);
+  const transitRef                  = useRef(false);
 
+  const goTo = useCallback((idx: number) => {
+    if (transitRef.current || idx === current) return;
+    const dir = idx > current ? "down" : "up";
+    setTransDir(dir);
+    setTrans(true);
+    transitRef.current = true;
+    setVisible(false);
+    setTimeout(() => {
+      setCurrent(idx);
+      setTrans(false);
+      transitRef.current = false;
+      setTimeout(() => setVisible(true), 60);
+    }, 650);
+  }, [current]);
+
+  // Initial entrance
   useEffect(() => {
-    const sections = document.querySelectorAll("main section, #home");
-    const links = document.querySelectorAll(".nav a");
-
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const id = entry.target.id || "home";
-            links.forEach((link) =>
-              link.classList.toggle(
-                "active",
-                link.getAttribute("href") === `#${id}`
-              )
-            );
-          }
-        });
-      },
-      { rootMargin: "-40% 0px -50% 0px", threshold: 0.01 }
-    );
-
-    sections.forEach((section) => io.observe(section));
-
-    const fades = document.querySelectorAll(".fade-in, .reveal");
-    const fadeIO = new IntersectionObserver(
-      (entries, obs) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-            obs.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.12 }
-    );
-
-    fades.forEach((el) => fadeIO.observe(el));
-
-    return () => {
-      io.disconnect();
-      fadeIO.disconnect();
-    };
+    setTimeout(() => setVisible(true), 200);
   }, []);
 
+  // Trigger reel animation when entering reel section
+  useEffect(() => {
+    if (current === SECTIONS.length - 1) {
+      setReelReady(false);
+      setTimeout(() => setReelReady(true), 400);
+    }
+  }, [current]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowDown" || e.key === "ArrowRight") goTo(Math.min(current + 1, SECTIONS.length - 1));
+      if (e.key === "ArrowUp"   || e.key === "ArrowLeft")  goTo(Math.max(current - 1, 0));
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [current, goTo]);
+
+  // Wheel navigation
+  useEffect(() => {
+    const onWheel = (e: WheelEvent) => {
+      const now = Date.now();
+      if (now - lastWheelTime.current < 900) return;
+      lastWheelTime.current = now;
+      if (e.deltaY > 30)       goTo(Math.min(current + 1, SECTIONS.length - 1));
+      else if (e.deltaY < -30) goTo(Math.max(current - 1, 0));
+    };
+    window.addEventListener("wheel", onWheel, { passive: true });
+    return () => window.removeEventListener("wheel", onWheel);
+  }, [current, goTo]);
+
+  // Touch navigation
+  useEffect(() => {
+    const onTouchStart = (e: TouchEvent) => { touchStartY.current = e.touches[0].clientY; };
+    const onTouchEnd   = (e: TouchEvent) => {
+      const delta = touchStartY.current - e.changedTouches[0].clientY;
+      if (Math.abs(delta) < 50) return;
+      if (delta > 0) goTo(Math.min(current + 1, SECTIONS.length - 1));
+      else           goTo(Math.max(current - 1, 0));
+    };
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchend",   onTouchEnd,   { passive: true });
+    return () => {
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchend",   onTouchEnd);
+    };
+  }, [current, goTo]);
+
+  const sec = SECTIONS[current];
+
   return (
-    <>
-      <header className="topbar">
-        <div className="wrap topbar-inner">
-          <a className="brand" href="#home" aria-label="Pratham Bhilare home">
-            <div className="brand-mark">PB</div>
-            <div className="brand-copy">
-              <strong>Pratham Bhilare</strong>
-              <span>Operations · Product · Analytics</span>
-            </div>
-          </a>
+    <div className="cinema-root">
 
+      {/* ── FILM TRANSITION OVERLAY ── */}
+      <div className={`film-cut ${transitioning ? "cutting" : ""} dir-${transDir}`} />
+
+      {/* ── AMBIENT PARTICLES ── */}
+      <div className="particles" aria-hidden="true">
+        {Array.from({ length: 28 }).map((_, i) => (
+          <span key={i} className="particle" style={{
+            left: `${(i * 37 + 11) % 100}%`,
+            animationDelay: `${(i * 0.7) % 8}s`,
+            animationDuration: `${12 + (i * 1.3) % 10}s`,
+            width: `${1 + (i % 3)}px`,
+            height: `${1 + (i % 3)}px`,
+            opacity: 0.12 + (i % 5) * 0.04,
+          }} />
+        ))}
+      </div>
+
+      {/* ── SIDE NAVIGATION DOTS ── */}
+      <nav className="side-nav" aria-label="Section navigation">
+        {SECTIONS.map((s, i) => (
           <button
-            className="nav-toggle"
-            onClick={() => setNavOpen((v) => !v)}
-            aria-expanded={navOpen}
-            aria-controls="siteNav"
+            key={s.id}
+            className={`side-dot ${i === current ? "active" : ""}`}
+            onClick={() => { goTo(i); setMenuOpen(false); }}
+            aria-label={s.label}
+            title={s.label}
           >
-            {navOpen ? "Close" : "Menu"}
+            <span className="side-dot-label">{s.label}</span>
           </button>
+        ))}
+      </nav>
 
-          <nav className={`nav ${navOpen ? "open" : ""}`} id="siteNav">
-            <a href="#home" onClick={() => setNavOpen(false)}>Home</a>
-            <a href="#highlights" onClick={() => setNavOpen(false)}>Highlights</a>
-            <a href="#experience" onClick={() => setNavOpen(false)}>Experience</a>
-            <a href="#projects" onClick={() => setNavOpen(false)}>Projects</a>
-            <a href="#research" onClick={() => setNavOpen(false)}>Research</a>
-            <a href="#skills" onClick={() => setNavOpen(false)}>Skills</a>
-            <a href="#certifications" onClick={() => setNavOpen(false)}>Certifications</a>
-            <a href="#contact" onClick={() => setNavOpen(false)}>Contact</a>
-          </nav>
-        </div>
+      {/* ── TOP BAR ── */}
+      <header className="c-topbar">
+        <a className="c-brand" onClick={() => goTo(0)}>
+          <div className="c-brand-mark">PB</div>
+          <span>Pratham Bhilare</span>
+        </a>
+
+        {sec.roman && (
+          <div className="c-chapter">
+            <span className="c-roman">{sec.roman}</span>
+            <span className="c-chapter-label">{sec.label}</span>
+          </div>
+        )}
+
+        <button className="c-menu-btn" onClick={() => setMenuOpen(v => !v)}>
+          <span /><span /><span />
+        </button>
       </header>
 
-      <main id="home" className="wrap">
+      {/* ── FULLSCREEN MENU ── */}
+      <div className={`fullscreen-menu ${menuOpen ? "open" : ""}`}>
+        <button className="menu-close" onClick={() => setMenuOpen(false)}>✕</button>
+        <nav className="menu-nav">
+          {SECTIONS.map((s, i) => (
+            <button key={s.id} className={`menu-item ${i === current ? "active" : ""}`}
+              onClick={() => { goTo(i); setMenuOpen(false); }}>
+              {s.roman && <span className="menu-roman">{s.roman}</span>}
+              <span className="menu-label">{s.label}</span>
+            </button>
+          ))}
+        </nav>
+      </div>
 
-        {/* HERO */}
-        <section className="hero fade-in">
-          <div className="hero-eyebrow">
-            Graduate Teaching Assistant @ ASU &nbsp;·&nbsp; MS Management of Technology &apos;26
-          </div>
+      {/* ── PROGRESS BAR ── */}
+      <div className="progress-bar">
+        <div className="progress-fill" style={{ width: `${(current / (SECTIONS.length - 1)) * 100}%` }} />
+      </div>
 
-          <div className="hero-grid">
-            <div className="hero-left">
-              <h1>Pratham<br /><em>Bhilare</em></h1>
-              <div className="hero-rule" />
-              <p className="subhead">
-                Industrial engineer and project-minded problem solver focused on
-                process optimization, product thinking, and business analysis.
-                Turning technical work into measurable outcomes through modeling,
-                data analysis, and structured execution.
-              </p>
-              <div className="hero-actions">
-                <a className="btn primary" href="#projects">View selected work</a>
-                <a className="btn" href="#experience">Experience</a>
-                <a className="btn" href="mailto:pratham.bhilare1010@gmail.com">Get in touch</a>
-              </div>
-              <p className="hero-note">
-                MS Management of Technology at Arizona State University (GPA 3.85),
-                Bachelor&apos;s in Mechanical Engineering, and hands-on experience across
-                power plant operations, fabrication, supply-chain optimization, and
-                academic instruction. Open to Summer 2026 roles in Project Management,
-                Product Management, Industrial Engineering, and Business Analysis.
-              </p>
-            </div>
+      {/* ─────────────────────────────────────────────────────
+          SECTIONS
+      ───────────────────────────────────────────────────── */}
+      <main className={`c-stage ${visible ? "in" : "out"} dir-${transDir}`}>
 
-            <div className="portrait-shell reveal">
-              <div className="portrait-card">
-                <div className="portrait-bar-top" />
-                <div className="portrait">
-                  <img src="/assets/portrait.jpg" alt="Portrait of Pratham Bhilare" />
+        {/* ── INTRO ── */}
+        {current === 0 && (
+          <section className="scene scene-intro">
+            <div className="intro-grid">
+              <div className="intro-text">
+                <p className="intro-eyebrow">Graduate Teaching Assistant · ASU · MS Management of Technology &apos;26</p>
+                <h1 className="intro-name">
+                  <span className="line-reveal">Pratham</span>
+                  <em className="line-reveal delay-1">Bhilare</em>
+                </h1>
+                <div className="intro-rule" />
+                <p className="intro-sub line-reveal delay-2">
+                  Industrial engineer and project-minded problem solver focused on
+                  process optimization, product thinking, and business analysis.
+                </p>
+                <div className="intro-actions line-reveal delay-3">
+                  <button className="c-btn primary" onClick={() => goTo(1)}>Begin the story</button>
+                  <button className="c-btn" onClick={() => goTo(SECTIONS.length - 1)}>Skip to reel</button>
                 </div>
-                <div className="portrait-bar-bottom" />
               </div>
-            </div>
-          </div>
-
-          <div className="hero-strip" aria-hidden="true">
-            <div className="hero-strip-track">
-              {Array.from({ length: 2 }).flatMap((_, dupIndex) =>
-                [
-                  "Project management",
-                  "Operations management",
-                  "Process optimization",
-                  "Data analysis",
-                  "Lean systems",
-                  "Business analysis",
-                  "Product thinking",
-                  "Six Sigma",
-                  "Systems engineering",
-                  "Financial modeling",
-                ].map((word, index) => (
-                  <span key={`${dupIndex}-${index}`}>{word}</span>
-                ))
-              )}
-            </div>
-          </div>
-        </section>
-
-        {/* HIGHLIGHTS */}
-        <section id="highlights" className="fade-in">
-          <SceneMarker num="I" label="Highlights" />
-          <h2>By the <em>numbers</em></h2>
-          <div className="highlights-grid">
-            {highlights.map((item) => (
-              <div className="highlight-card reveal" key={item.title}>
-                <div className="highlight-stat">{item.stat}</div>
-                <h3>{item.title}</h3>
-                <p>{item.text}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* EDUCATION */}
-        <section id="education" className="fade-in">
-          <SceneMarker num="II" label="Education" />
-          <h2><em>Academic</em> background</h2>
-          <div className="edu-list">
-            {education.map((item) => (
-              <article className="edu-card reveal" key={item.school}>
-                <span className="year">{item.year}</span>
-                <h3>{item.school}</h3>
-                <p>{item.degree}</p>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        {/* EXPERIENCE */}
-        <section id="experience" className="fade-in">
-          <SceneMarker num="III" label="Experience" />
-          <h2>Where I&apos;ve <em>worked</em></h2>
-          <div className="exp-list">
-            {experience.map((job) => (
-              <article className="exp-card reveal" key={job.company + job.year}>
-                <span className="year">{job.year}</span>
-                <div className="exp-right">
-                  <h3>{job.company}</h3>
-                  <p>{job.desc}</p>
-                  <ul>
-                    {job.points.map((point) => (
-                      <li key={point}>{point}</li>
-                    ))}
-                  </ul>
+              <div className="intro-portrait line-reveal delay-2">
+                <div className="portrait-frame">
+                  <div className="portrait-bar-top" />
+                  <img src="/assets/portrait.jpg" alt="Pratham Bhilare" />
+                  <div className="portrait-bar-bottom" />
+                  <div className="portrait-caption">Pratham Ankush Bhilare · Phoenix, AZ</div>
                 </div>
-              </article>
-            ))}
-          </div>
-        </section>
+              </div>
+            </div>
+            <div className="intro-scroll-hint line-reveal delay-4">
+              <span>Scroll or use arrow keys to navigate</span>
+              <div className="scroll-arrow">↓</div>
+            </div>
+            <div className="intro-ticker">
+              <div className="ticker-track">
+                {Array.from({length:3}).flatMap((_,d) =>
+                  ["Project Management","Operations","Process Optimization","Data Analysis","Lean Systems","Business Analysis","Product Thinking","Six Sigma","Systems Engineering","Financial Modeling"]
+                  .map((w,i) => <span key={`${d}-${i}`}>{w}</span>)
+                )}
+              </div>
+            </div>
+          </section>
+        )}
 
-        {/* PROJECTS */}
-        <section id="projects" className="fade-in">
-          <SceneMarker num="IV" label="Projects" />
-          <h2>Selected <em>work</em></h2>
-          <div className="project-grid">
-            {projects.map((project) => (
-              <article className="project-card reveal" key={project.title}>
-                <div className="project-body">
-                  <div className="project-meta">{project.meta}</div>
-                  <h3>{project.title}</h3>
-                  <p className="project-result">{project.result}</p>
-                  <p>{project.desc}</p>
-                  <div className="tag-row">
-                    {project.tags.map((tag) => (
-                      <span className="tag" key={tag}>{tag}</span>
-                    ))}
+        {/* ── HIGHLIGHTS ── */}
+        {current === 1 && (
+          <section className="scene scene-content">
+            <div className="scene-header">
+              <div className="scene-eyebrow">Chapter I</div>
+              <h2>By the <em>numbers</em></h2>
+            </div>
+            <div className="highlights-grid">
+              {highlights.map((h, i) => (
+                <div className="h-card" key={h.title} style={{ animationDelay: `${i * 0.1}s` }}>
+                  <div className="h-stat">{h.stat}</div>
+                  <div className="h-title">{h.title}</div>
+                  <p>{h.text}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* ── EDUCATION ── */}
+        {current === 2 && (
+          <section className="scene scene-content">
+            <div className="scene-header">
+              <div className="scene-eyebrow">Chapter II</div>
+              <h2><em>Academic</em> background</h2>
+            </div>
+            <div className="edu-list">
+              {education.map((e, i) => (
+                <div className="edu-row" key={e.school} style={{ animationDelay: `${i * 0.12}s` }}>
+                  <div className="edu-year">{e.year}</div>
+                  <div className="edu-body">
+                    <h3>{e.school}</h3>
+                    <p>{e.degree}</p>
                   </div>
                 </div>
-              </article>
-            ))}
-          </div>
-        </section>
+              ))}
+            </div>
+          </section>
+        )}
 
-        {/* RESEARCH */}
-        <section id="research" className="fade-in">
-          <SceneMarker num="V" label="Research & Publications" />
-          <h2>Research &amp; <em>publications</em></h2>
-          <div className="research-list">
-            {research.map((item) => (
-              <article className="research-card reveal" key={item.title}>
-                <span className="year">{item.type}</span>
-                <h3>{item.title}</h3>
-                <p>{item.desc}</p>
-                <div className="tag-row" style={{ marginTop: 16 }}>
-                  {item.tags.map((tag) => (
-                    <span className="tag" key={tag}>{tag}</span>
-                  ))}
+        {/* ── EXPERIENCE ── */}
+        {current === 3 && (
+          <section className="scene scene-content">
+            <div className="scene-header">
+              <div className="scene-eyebrow">Chapter III</div>
+              <h2>Where I&apos;ve <em>worked</em></h2>
+            </div>
+            <div className="exp-list">
+              {experience.map((e, i) => (
+                <div className="exp-row" key={e.company} style={{ animationDelay: `${i * 0.12}s` }}>
+                  <div className="exp-left">
+                    <div className="exp-year">{e.year}</div>
+                    <div className="exp-company">{e.company}</div>
+                    <div className="exp-role">{e.role}</div>
+                  </div>
+                  <ul className="exp-points">
+                    {e.points.map(p => <li key={p}>{p}</li>)}
+                  </ul>
                 </div>
-              </article>
-            ))}
-          </div>
-        </section>
+              ))}
+            </div>
+          </section>
+        )}
 
-        {/* SKILLS */}
-        <section id="skills" className="fade-in">
-          <SceneMarker num="VI" label="Skills" />
-          <h2>Areas of <em>expertise</em></h2>
-          <div className="skills-grid">
-            {skills.map((skill) => (
-              <div className="skill-card reveal" key={skill.title}>
-                <h3>{skill.title}</h3>
-                <p>{skill.text}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* CERTIFICATIONS */}
-        <section id="certifications" className="fade-in">
-          <SceneMarker num="VII" label="Certifications" />
-          <h2><em>Credentials</em> &amp; certifications</h2>
-          <div className="cert-grid">
-            {certifications.map((cert) => (
-              <article className="cert-card reveal" key={cert.name}>
-                <div className="cert-badge">&#10003;</div>
-                <div className="cert-body">
-                  <span className="year">{cert.body}</span>
-                  <h3>{cert.name}</h3>
-                  <p>{cert.desc}</p>
+        {/* ── PROJECTS ── */}
+        {current === 4 && (
+          <section className="scene scene-content scene-projects">
+            <div className="scene-header">
+              <div className="scene-eyebrow">Chapter IV</div>
+              <h2>Selected <em>work</em></h2>
+            </div>
+            <div className="proj-grid">
+              {projects.map((p, i) => (
+                <div className="proj-card" key={p.title} style={{ animationDelay: `${i * 0.07}s` }}>
+                  <div className="proj-num">0{i + 1}</div>
+                  <div className="proj-body">
+                    <div className="proj-meta">{p.meta}</div>
+                    <h3>{p.title}</h3>
+                    <p className="proj-result">{p.result}</p>
+                    <div className="proj-tags">
+                      {p.tags.map(t => <span key={t}>{t}</span>)}
+                    </div>
+                  </div>
                 </div>
-              </article>
-            ))}
-          </div>
-        </section>
+              ))}
+            </div>
+          </section>
+        )}
 
-        {/* CONTACT */}
-        <section id="contact" className="fade-in">
-          <SceneMarker num="VIII" label="Contact" />
-          <h2>Get in <em>touch</em></h2>
-          <div className="contact-card reveal">
-            <div className="contact-left">
-              <p>
-                Currently seeking roles for Summer 2026 in Project Management,
-                Product Management, Industrial Engineering, Manufacturing Engineering,
-                and Business Analysis. Open to relocation and collaboration across
-                technical and operations-focused teams.
+        {/* ── SKILLS ── */}
+        {current === 5 && (
+          <section className="scene scene-content">
+            <div className="scene-header">
+              <div className="scene-eyebrow">Chapter V</div>
+              <h2>Areas of <em>expertise</em></h2>
+            </div>
+            <div className="skills-grid">
+              {skills.map((s, i) => (
+                <div className="skill-card" key={s.title} style={{ animationDelay: `${i * 0.1}s` }}>
+                  <h3>{s.title}</h3>
+                  <p>{s.text}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* ── CERTIFICATIONS ── */}
+        {current === 6 && (
+          <section className="scene scene-content">
+            <div className="scene-header">
+              <div className="scene-eyebrow">Chapter VI</div>
+              <h2><em>Credentials</em> &amp; certifications</h2>
+            </div>
+            <div className="cert-list">
+              {certifications.map((c, i) => (
+                <div className="cert-row" key={c.name} style={{ animationDelay: `${i * 0.1}s` }}>
+                  <div className="cert-check">✓</div>
+                  <div>
+                    <div className="cert-body-text">{c.body}</div>
+                    <h3>{c.name}</h3>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* ── CONTACT ── */}
+        {current === 7 && (
+          <section className="scene scene-content scene-contact">
+            <div className="scene-header">
+              <div className="scene-eyebrow">Chapter VII</div>
+              <h2>Get in <em>touch</em></h2>
+            </div>
+            <div className="contact-body">
+              <p className="contact-note">
+                Seeking Summer 2026 roles in Project Management, Product Management,
+                Industrial Engineering, and Business Analysis. Open to relocation.
               </p>
-              <div className="hero-actions">
-                <a className="btn primary" href="mailto:pratham.bhilare1010@gmail.com">Email Pratham</a>
-                <a className="btn" href="https://www.linkedin.com/in/prathambhilare" target="_blank" rel="noreferrer noopener">LinkedIn</a>
-                <a className="btn" href="#home">Back to top</a>
+              <div className="contact-links-grid">
+                <a href="mailto:pratham.bhilare1010@gmail.com" className="contact-link-card">
+                  <span className="cl-label">Email</span>
+                  <span className="cl-value">pratham.bhilare1010@gmail.com</span>
+                </a>
+                <a href="tel:+14807425812" className="contact-link-card">
+                  <span className="cl-label">Phone</span>
+                  <span className="cl-value">+1 (480) 742-5812</span>
+                </a>
+                <a href="https://www.linkedin.com/in/prathambhilare" target="_blank" rel="noreferrer" className="contact-link-card">
+                  <span className="cl-label">LinkedIn</span>
+                  <span className="cl-value">linkedin.com/in/prathambhilare</span>
+                </a>
+                <a href="https://github.com/bhilarepratham" target="_blank" rel="noreferrer" className="contact-link-card">
+                  <span className="cl-label">GitHub</span>
+                  <span className="cl-value">github.com/bhilarepratham</span>
+                </a>
+              </div>
+              <div className="contact-actions">
+                <a href="mailto:pratham.bhilare1010@gmail.com" className="c-btn primary">Email Pratham</a>
+                <button className="c-btn" onClick={() => goTo(SECTIONS.length - 1)}>Watch the reel →</button>
               </div>
             </div>
-            <div className="contact-right">
-              <strong>Contact details</strong>
-              <div className="contact-links">
-                <a href="tel:+14807425812">+1 (480) 742-5812</a>
-                <a href="mailto:pratham.bhilare1010@gmail.com">pratham.bhilare1010@gmail.com</a>
-                <a href="https://www.linkedin.com/in/prathambhilare" target="_blank" rel="noreferrer noopener">linkedin.com/in/prathambhilare</a>
-                <a href="https://github.com/bhilarepratham" target="_blank" rel="noreferrer noopener">github.com/bhilarepratham</a>
-              </div>
-            </div>
-          </div>
-        </section>
+          </section>
+        )}
 
-        <div className="footer">
-          <span className="footer-text">&#169; Pratham Ankush Bhilare &nbsp;&middot;&nbsp; Phoenix, AZ &nbsp;&middot;&nbsp; Open to Summer 2026 roles</span>
-        </div>
+        {/* ── THE REEL ── */}
+        {current === 8 && (
+          <section className="scene scene-reel">
+            <div className="reel-header">
+              <div className="scene-eyebrow">∞</div>
+              <h2>The <em>Reel</em></h2>
+              <p>Everything, at once.</p>
+            </div>
+            <div className={`reel-body ${reelReady ? "ready" : ""}`}>
+
+              <div className="reel-col">
+                <div className="reel-section-title">Highlights</div>
+                {highlights.map((h, i) => (
+                  <div className="reel-item" key={h.title} style={{ animationDelay: `${i * 0.06}s` }}>
+                    <span className="reel-stat">{h.stat}</span>
+                    <span className="reel-text">{h.title}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="reel-col">
+                <div className="reel-section-title">Education</div>
+                {education.map((e, i) => (
+                  <div className="reel-item" key={e.school} style={{ animationDelay: `${0.4 + i * 0.06}s` }}>
+                    <span className="reel-stat">{e.year.split("—")[0].trim()}</span>
+                    <span className="reel-text">{e.school}</span>
+                  </div>
+                ))}
+                <div className="reel-section-title" style={{ marginTop: 24 }}>Certifications</div>
+                {certifications.map((c, i) => (
+                  <div className="reel-item" key={c.name} style={{ animationDelay: `${0.7 + i * 0.06}s` }}>
+                    <span className="reel-check">✓</span>
+                    <span className="reel-text">{c.name}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="reel-col">
+                <div className="reel-section-title">Projects</div>
+                {projects.map((p, i) => (
+                  <div className="reel-item" key={p.title} style={{ animationDelay: `${0.3 + i * 0.06}s` }}>
+                    <span className="reel-num">0{i+1}</span>
+                    <span className="reel-text">{p.title}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="reel-col">
+                <div className="reel-section-title">Experience</div>
+                {experience.map((e, i) => (
+                  <div className="reel-item" key={e.company} style={{ animationDelay: `${0.5 + i * 0.1}s` }}>
+                    <span className="reel-stat">{e.year.split("—")[0].trim()}</span>
+                    <span className="reel-text">{e.company} · {e.role}</span>
+                  </div>
+                ))}
+                <div className="reel-section-title" style={{ marginTop: 24 }}>Skills</div>
+                {skills.map((s, i) => (
+                  <div className="reel-item" key={s.title} style={{ animationDelay: `${0.8 + i * 0.06}s` }}>
+                    <span className="reel-check">—</span>
+                    <span className="reel-text">{s.title}</span>
+                  </div>
+                ))}
+              </div>
+
+            </div>
+
+            <div className="reel-footer">
+              <div className="reel-name">Pratham Ankush Bhilare</div>
+              <div className="reel-contact">
+                <a href="mailto:pratham.bhilare1010@gmail.com">pratham.bhilare1010@gmail.com</a>
+                <span>·</span>
+                <a href="https://www.linkedin.com/in/prathambhilare" target="_blank" rel="noreferrer">LinkedIn</a>
+                <span>·</span>
+                <span>Phoenix, AZ · Open to Summer 2026</span>
+              </div>
+              <button className="c-btn" style={{ marginTop: 20 }} onClick={() => goTo(0)}>↑ Back to start</button>
+            </div>
+          </section>
+        )}
+
       </main>
-    </>
+
+      {/* ── BOTTOM NAV ARROWS ── */}
+      <div className="bottom-nav">
+        <button className="arrow-btn" onClick={() => goTo(Math.max(current - 1, 0))} disabled={current === 0} aria-label="Previous">↑</button>
+        <span className="bottom-counter">{current + 1} / {SECTIONS.length}</span>
+        <button className="arrow-btn" onClick={() => goTo(Math.min(current + 1, SECTIONS.length - 1))} disabled={current === SECTIONS.length - 1} aria-label="Next">↓</button>
+      </div>
+
+    </div>
   );
 }
