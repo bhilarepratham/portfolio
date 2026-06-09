@@ -444,7 +444,7 @@ export default function Home() {
           NUMBERS
       ════════════════════════════════ */}
       <section ref={secNumbers} className="section numbers-section">
-        <div className="s-wrap">
+        <div className={`s-wrap ${numbersOn?"in":""}`}>
           <div className="s-chip">By the Numbers</div>
           <h2 className="s-h2">Work that moves<br/>the needle.</h2>
           <div className="numbers-grid">
@@ -464,7 +464,7 @@ export default function Home() {
           PROJECTS
       ════════════════════════════════ */}
       <section ref={secProj} className="section">
-        <div className="s-wrap">
+        <div className={`s-wrap ${projOn?"in":""}`}>
           <div className="s-chip">Selected Work</div>
           <h2 className="s-h2">8 projects.<br/>Real outcomes.</h2>
           <p className="s-sub">Tap any project to expand full scope, deliverables, and tools used.</p>
@@ -522,7 +522,7 @@ export default function Home() {
           SKILLS
       ════════════════════════════════ */}
       <section ref={secSkills} className="section numbers-section">
-        <div className="s-wrap">
+        <div className={`s-wrap ${skillsOn?"in":""}`}>
           <div className="s-chip">PM Toolkit</div>
           <h2 className="s-h2">Built for delivery.<br/>Proven in the field.</h2>
 
@@ -562,7 +562,7 @@ export default function Home() {
           RESEARCH
       ════════════════════════════════ */}
       <section ref={secResearch} className="section">
-        <div className="s-wrap">
+        <div className={`s-wrap ${researchOn?"in":""}`}>
           <div className="s-chip">Research & Publications</div>
           <h2 className="s-h2">Academic work.<br/>Real application.</h2>
 
