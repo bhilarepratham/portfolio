@@ -136,7 +136,7 @@ strong { font-weight: 600; color: var(--t1); }
   line-height: 1.65; letter-spacing: -0.01em;
   margin-bottom: 32px; max-width: 52ch; margin-left: auto; margin-right: auto;
 }
-.hero-actions { display:flex; align-items:center; justify-content:center; gap:24px; margin-bottom:24px; }
+.hero-actions { display:flex; align-items:center; justify-content:center; gap:16px; margin-bottom:24px; flex-wrap:wrap; }
 
 /* ── BUTTONS ──────────────────────────────────────────── */
 .btn-solid {
@@ -149,6 +149,18 @@ strong { font-weight: 600; color: var(--t1); }
   text-decoration: none;
 }
 .btn-solid:hover { background: var(--t2); transform: scale(0.97); }
+.btn-resume {
+  background: transparent !important;
+  color: var(--t1) !important;
+  border: 1px solid var(--div) !important;
+  transition: border-color 0.2s, color 0.2s, transform 0.15s !important;
+}
+.btn-resume:hover {
+  border-color: var(--t4) !important;
+  color: var(--t1) !important;
+  background: rgba(255,255,255,0.05) !important;
+  transform: scale(0.97) !important;
+}
 .btn-link {
   font-size: 15px; color: var(--blue); letter-spacing: -0.01em;
   background: none; border: none; cursor: pointer; padding: 0;
