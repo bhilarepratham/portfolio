@@ -1,826 +1,1039 @@
 "use client";
 import { useEffect, useRef, useState, useCallback } from "react";
 
-/* ══════════════════════════════════════════════════════════════
-   STORY DATA
-══════════════════════════════════════════════════════════════ */
+/* ════════════════════════════════════════════════════════════
+   SCENES — the story of Pratham Bhilare
+════════════════════════════════════════════════════════════ */
 const SCENES = [
   {
-    id: "origin",
+    id: "prologue",
     chapter: "Prologue",
-    title: "A Story Begins",
+    title: "Born to Build",
     subtitle: "Navi Mumbai, India",
-    dialogue: [
-      "Every great story begins somewhere.",
-      "Mine began in Navi Mumbai, India.",
-      "A mechanical engineer with a dream.",
+    lines: [
+      "Some stories start with a spark.",
+      "Mine started in Navi Mumbai — surrounded by machines, blueprints, and ambition.",
+      "I knew early on: I wasn't here just to understand how things work.",
+      "I was here to make things work better.",
     ],
     bg: "city",
     mood: "wave",
-    ambient: "stars",
   },
   {
-    id: "asu",
+    id: "scholar",
     chapter: "Chapter I",
     title: "The Scholar",
     subtitle: "Arizona State University · GPA 3.85",
-    dialogue: [
-      "Arizona State University. Fall 2024.",
-      "MS Management of Technology.",
-      "GPA 3.85. Fulton Engineering. My second home.",
+    lines: [
+      "Ira A. Fulton Schools of Engineering. Arizona State University.",
+      "MS Management of Technology. 3.85 GPA.",
+      "Every late night in the library, every model built, every proof submitted —",
+      "was one step closer to becoming someone who changes industries.",
     ],
     bg: "campus",
     mood: "study",
-    ambient: "particles",
   },
   {
-    id: "tata",
+    id: "engineer",
     chapter: "Chapter II",
     title: "The Engineer",
-    subtitle: "Tata Power · 500MW · 750 MW",
-    dialogue: [
-      "Trombay Thermal Power Station.",
-      "500 MW boilers. Real steel. Real heat.",
-      "14 weeks. Zero safety incidents.",
+    subtitle: "Tata Power · Trombay Thermal Station",
+    lines: [
+      "Trombay Thermal Power Station. Unit 5: 500 MW. Unit 8: 250 MW.",
+      "I was 21 years old standing inside a boiler the size of a building.",
+      "14 weeks. LOTO procedures. Permit-to-Work systems. Zero safety incidents.",
+      "Theory became steel. Equations became steam. I became an engineer.",
     ],
     bg: "plant",
     mood: "work",
-    ambient: "sparks",
   },
   {
     id: "builder",
     chapter: "Chapter III",
     title: "The Builder",
-    subtitle: "10 Projects · Real Impact",
-    dialogue: [
-      "Journey Air. FlazzMart. Warehouse AI.",
-      "$54.75M in projected savings.",
-      "I don't just study problems. I solve them.",
+    subtitle: "10 Projects · $54.75M Impact",
+    lines: [
+      "Journey Air — a platform that could save airlines $54.75M a year.",
+      "FlazzMart — 15-minute grocery delivery modeled to $100M in 5 years.",
+      "Warehouse AI — 537 distribution centers. 15% cost reduction. One algorithm.",
+      "I don't wait for problems to be handed to me. I find them, frame them, solve them.",
     ],
     bg: "lab",
     mood: "code",
-    ambient: "code",
   },
   {
     id: "analyst",
     chapter: "Chapter IV",
     title: "The Analyst",
-    subtitle: "42 Years of Data · R² = 0.998",
-    dialogue: [
-      "42 years. 4 federal data sources.",
-      "OLS regression. R² = 0.998.",
-      "Numbers never lie — if you know how to ask.",
+    subtitle: "42 Years · R² = 0.998",
+    lines: [
+      "The question: does immigration affect the U.S. economy?",
+      "The data: 42 years. DHS. BEA. FRED. Kaggle. Four federal sources merged.",
+      "The answer: R² = 0.998. GDP is the dominant predictor. p = 1.02E-47.",
+      "Numbers don't have opinions. But they do have answers — if you know how to ask.",
     ],
     bg: "data",
     mood: "analyze",
-    ambient: "matrix",
   },
   {
-    id: "skills",
+    id: "toolkit",
     chapter: "Chapter V",
     title: "The Toolkit",
     subtitle: "Six Sigma · SolidWorks · Python · Lean",
-    dialogue: [
-      "Six Sigma Green Belt. CSWA certified.",
-      "SolidWorks. Tableau. Python. MS Project.",
-      "Always learning. Never stopping.",
+    lines: [
+      "A Six Sigma Green Belt. A SOLIDWORKS Associate certification.",
+      "Python. Pandas. Tableau. MS Project. Streamlit. AnyLogic. LabVIEW.",
+      "Every tool in this belt was earned in the field — not just the classroom.",
+      "I build with purpose. I measure what matters. I improve what I touch.",
     ],
     bg: "workshop",
     mood: "think",
-    ambient: "gears",
   },
   {
-    id: "finale",
+    id: "horizon",
     chapter: "Finale",
-    title: "What's Next",
-    subtitle: "Open to Summer 2026 · Phoenix, AZ",
-    dialogue: [
-      "The next chapter is unwritten.",
-      "Seeking Summer 2026 — Project Management,",
-      "Product, Engineering, Business Analysis.",
+    title: "What Comes Next",
+    subtitle: "Phoenix, AZ · Open to Summer 2026",
+    lines: [
+      "The story isn't finished. Not even close.",
+      "I'm looking for Summer 2026 — Project Management, Product, Industrial Engineering.",
+      "A team that builds things that matter. A problem worth solving.",
+      "If that sounds like you — let's write the next chapter together.",
     ],
     bg: "horizon",
     mood: "wave",
-    ambient: "birds",
   },
 ];
 
-/* ══════════════════════════════════════════════════════════════
-   INFO PANEL DATA
-══════════════════════════════════════════════════════════════ */
-const INFO: Record<number, { title: string; rows: [string, string][] }> = {
-  0: {
-    title: "Pratham Bhilare",
-    rows: [
-      ["Origin",    "Navi Mumbai, India"],
-      ["Now",       "Phoenix, Arizona"],
-      ["Degree",    "MS Management of Technology"],
-      ["School",    "Arizona State University"],
-      ["GPA",       "3.85 / 4.0"],
-      ["Seeking",   "Summer 2026 roles"],
-    ],
-  },
-  1: {
-    title: "Education",
-    rows: [
-      ["2024–26",  "ASU · MS Management of Technology · GPA 3.85"],
-      ["2021–24",  "Pillai College · BTech Mechanical Engineering"],
-      ["2018–21",  "Father Agnel · Diploma Mechanical Engineering"],
-      ["2018",     "Ryan International School · 10th Standard"],
-    ],
-  },
-  2: {
-    title: "Experience",
-    rows: [
-      ["2025–Now", "ASU · Graduate Teaching Assistant · 50+ students"],
-      ["2024",     "Tata Power · Mechanical Maintenance Intern · 14 wks"],
-      ["2022–23",  "Matharu Sons · Process Optimization Trainee"],
-      ["2020",     "CIPET · Industrial In-Plant Training"],
-    ],
-  },
-  3: {
-    title: "Projects",
-    rows: [
-      ["01", "Journey Air · $54.75M savings · Honeywell sponsored"],
-      ["02", "Market Intelligence Dashboard · 50+ companies"],
-      ["03", "Warehouse Optimization · 15–18% cost reduction"],
-      ["04", "ERP Analysis · $64.83B market · SAP / Oracle / Workday"],
-      ["05", "FlazzMart · $5M→$100M · 15-min delivery model"],
-      ["06", "BYD Strategy · #1 EV seller · 20,000+ patents"],
-      ["07", "Customer Portal · $250K budget · 210-day path"],
-      ["08", "VR Usability Testing · 5 issues · 7 fixes"],
-      ["09", "Solar PV · 18.22%→20.34% efficiency · published"],
-      ["10", "42-Year Economic Study · R²=0.998 · OLS regression"],
-    ],
-  },
-  4: {
-    title: "Key Numbers",
-    rows: [
-      ["15%",    "Logistics cost reduction via AI optimization"],
-      ["3.85",   "GPA at ASU Fulton Schools of Engineering"],
-      ["$250K",  "Project budget managed end-to-end"],
-      ["20.34%", "Solar panel efficiency (up from 18.22%)"],
-      ["$100M",  "Projected revenue model (FlazzMart Year 5)"],
-      ["42 yrs", "Longitudinal OLS regression study period"],
-    ],
-  },
-  5: {
-    title: "Skills & Certs",
-    rows: [
-      ["Ops",      "WBS · Lean · Six Sigma · Kanban · PERT · Risk"],
-      ["Data",     "OLS Regression · Python · Pandas · Tableau · Excel"],
-      ["Strategy", "Porter's Five Forces · VRIO · TAM/SAM/SOM · BMC"],
-      ["Tools",    "SolidWorks · Ansys · AnyLogic · LabVIEW · MS Project"],
-      ["Cert ✓",   "Six Sigma Green Belt · CSWA · Tableau · PM Intl"],
-      ["Soft",     "Stakeholder Mgmt · Technical Docs · Instruction"],
-    ],
-  },
-  6: {
-    title: "Get in Touch",
-    rows: [
-      ["Email",    "pratham.bhilare1010@gmail.com"],
-      ["Phone",    "+1 (480) 742-5812"],
-      ["LinkedIn", "linkedin.com/in/prathambhilare"],
-      ["GitHub",   "github.com/bhilarepratham"],
-      ["Location", "Phoenix, AZ — open to relocation"],
-      ["Status",   "Seeking Summer 2026 opportunities"],
-    ],
-  },
+const INFO: Record<number,{title:string;rows:[string,string][]}> = {
+  0:{title:"Pratham Bhilare",rows:[["Origin","Navi Mumbai, India"],["Now","Phoenix, Arizona"],["Degree","MS Management of Technology"],["University","Arizona State University — Ira A. Fulton Schools"],["GPA","3.85 / 4.0"],["Open to","Summer 2026 roles"]]},
+  1:{title:"Education",rows:[["2024–26","ASU · MS Management of Technology · GPA 3.85"],["2021–24","Pillai College of Engineering · BTech Mechanical"],["2018–21","Father Agnel Technical Complex · Diploma Mechanical"],["2018","Ryan International School · Navi Mumbai · 10th Std"]]},
+  2:{title:"Experience",rows:[["2025–Now","ASU · Graduate Teaching Assistant · 50+ students"],["2024","Tata Power · Mechanical Maintenance Intern · 14 wks · 0 incidents"],["2022–23","Matharu Sons · Process Optimization Trainee · Fuel tankers"],["2020","CIPET · In-Plant Training · Lathe, milling, machining"]]},
+  3:{title:"Projects",rows:[["01","Journey Air · $54.75M savings · Honeywell Aerospace sponsored"],["02","Market Intelligence Dashboard · 50+ companies · 6 industries"],["03","Warehouse Optimization · 537 centers · 15–18% cost cut"],["04","ERP Analysis · $64.83B market · SAP / Oracle / Workday"],["05","FlazzMart · $5M→$100M model · $3M seed ask · 15-min delivery"],["06","BYD Strategy · #1 EV seller · 20,000+ patents analysis"],["07","Customer Portal · $250K budget · 210-day critical path"],["08","VR Usability Testing · Meta Quest 2 · 5 issues · 7 fixes"],["09","Solar PV Heat Recovery · 18.22%→20.34% · published paper"],["10","42-Year Economic Study · R²=0.998 · 4 federal sources"]]},
+  4:{title:"Key Numbers",rows:[["15%","Logistics cost reduction via AI grid search vs Excel Solver"],["3.85","GPA at ASU Fulton Schools of Engineering"],["$250K","Project budget managed end-to-end with 9-phase WBS"],["20.34%","Solar PV efficiency improvement from 18.22% — published"],["$100M","Projected revenue model for FlazzMart by Year 5"],["R²=0.998","Income prediction model accuracy — GDP dominant predictor"]]},
+  5:{title:"Skills & Certs",rows:[["Ops","WBS · Lean · Six Sigma · Kanban · PERT · Critical Path · Risk"],["Data","OLS Regression · Python · Pandas · Tableau · Excel · Time-Series"],["Strategy","Porter's Five Forces · VRIO · TAM/SAM/SOM · BMC · RBV"],["Tools","SolidWorks (CSWA) · Ansys · AnyLogic · LabVIEW · MS Project"],["Code","Python · Streamlit · SQLite · Plotly · Flutter · BeautifulSoup"],["Certs ✓","Six Sigma GB · CSWA · Tableau Desktop · PM Intl · Siemens PM"]]},
+  6:{title:"Get in Touch",rows:[["Email","pratham.bhilare1010@gmail.com"],["Phone","+1 (480) 742-5812"],["LinkedIn","linkedin.com/in/prathambhilare"],["GitHub","github.com/bhilarepratham"],["Location","Phoenix, AZ — open to relocation"],["Seeking","PM · Product · Industrial Eng · Business Analysis — Summer 2026"]]},
 };
 
-/* ══════════════════════════════════════════════════════════════
-   CHARACTER SVG
-══════════════════════════════════════════════════════════════ */
+/* ════════════════════════════════════════════════════════════
+   CHARACTER  —  large, expressive, cinematic
+   viewBox 0 0 160 320  rendered at 160×320 or bigger
+════════════════════════════════════════════════════════════ */
 function Character({ mood, walking }: { mood: string; walking: boolean }) {
   return (
-    <svg viewBox="0 0 90 160" width="90" height="160" className={`char ${walking ? "walking" : ""}`} style={{ overflow: "visible" }}>
-      {/* Drop shadow */}
-      <ellipse cx="45" cy="157" rx="22" ry="5" fill="rgba(0,0,0,0.5)" />
+    <svg
+      viewBox="0 0 160 320"
+      className={`char-svg ${walking ? "char-walk" : `char-${mood}`}`}
+      style={{ overflow: "visible" }}
+      aria-hidden="true"
+    >
+      {/* ── SHADOW ── */}
+      <ellipse cx="80" cy="315" rx="44" ry="9" fill="rgba(0,0,0,0.55)" />
 
-      {/* Legs */}
-      <rect x="28" y="112" width="13" height="38" rx="4" fill="#0e0e20" className="leg-l" />
-      <rect x="49" y="112" width="13" height="38" rx="4" fill="#0e0e20" className="leg-r" />
+      {/* ── LEGS ── */}
+      <rect x="52" y="218" width="24" height="82" rx="8" fill="#0d0d1e" className="leg-l" />
+      <rect x="84" y="218" width="24" height="82" rx="8" fill="#0d0d1e" className="leg-r" />
 
-      {/* Shoes */}
-      <ellipse cx="34" cy="151" rx="11" ry="5" fill="#C8A96E" />
-      <ellipse cx="55" cy="151" rx="11" ry="5" fill="#C8A96E" />
+      {/* ── SHOES ── */}
+      <ellipse cx="64"  cy="302" rx="20" ry="9" fill="#1a1410" />
+      <ellipse cx="96"  cy="302" rx="20" ry="9" fill="#1a1410" />
+      <ellipse cx="64"  cy="300" rx="18" ry="7" fill="#C8A96E" />
+      <ellipse cx="96"  cy="300" rx="18" ry="7" fill="#C8A96E" />
+      {/* shoe shine */}
+      <ellipse cx="60" cy="298" rx="8" ry="3" fill="white" opacity="0.12" />
+      <ellipse cx="92" cy="298" rx="8" ry="3" fill="white" opacity="0.12" />
 
-      {/* Body — suit */}
-      <rect x="22" y="65" width="46" height="52" rx="5" fill="#111128" />
-      {/* Suit collar stripe */}
-      <rect x="22" y="65" width="46" height="10" rx="3" fill="#1a1a38" />
-      {/* Gold tie */}
-      <polygon points="45,68 42,80 45,85 48,80" fill="#C8A96E" opacity="0.9" />
-      {/* Lapels */}
-      <polygon points="22,65 36,65 33,82" fill="#0e0e20" />
-      <polygon points="68,65 54,65 57,82" fill="#0e0e20" />
-      {/* Pocket square */}
-      <polygon points="26,73 32,73 30,68" fill="#C8A96E" opacity="0.5" />
+      {/* ── TROUSERS ── */}
+      <rect x="50" y="200" width="60" height="26" rx="6" fill="#0f0f20" />
+      {/* trouser crease */}
+      <line x1="64" y1="200" x2="64" y2="226" stroke="#1a1a30" strokeWidth="1.5" opacity="0.5" />
+      <line x1="96" y1="200" x2="96" y2="226" stroke="#1a1a30" strokeWidth="1.5" opacity="0.5" />
 
-      {/* Neck */}
-      <rect x="39" y="55" width="12" height="14" rx="3" fill="#c8956c" />
+      {/* ── SUIT BODY ── */}
+      <rect x="36" y="120" width="88" height="90" rx="10" fill="#111128" />
+      {/* suit texture */}
+      {Array.from({length:6}).map((_,i)=>(
+        <line key={i} x1={38} y1={130+i*12} x2={122} y2={130+i*12}
+          stroke="#1a1a35" strokeWidth="0.8" opacity="0.4" />
+      ))}
+      {/* lapels */}
+      <polygon points="36,120 60,120 52,155" fill="#0c0c1e" />
+      <polygon points="124,120 100,120 108,155" fill="#0c0c1e" />
+      {/* collar */}
+      <rect x="36" y="120" width="88" height="16" rx="6" fill="#181832" />
+      {/* gold tie */}
+      <polygon points="80,122 74,140 80,152 86,140" fill="#C8A96E" opacity="0.95" />
+      <polygon points="78,150 80,162 82,150" fill="#9a7a48" />
+      {/* pocket square */}
+      <polygon points="42,132 52,132 50,122" fill="#C8A96E" opacity="0.55" />
+      {/* shirt cuff hints */}
+      <rect x="36" y="190" width="10" height="4" rx="2" fill="#e8e0cc" opacity="0.2" />
+      <rect x="114" y="190" width="10" height="4" rx="2" fill="#e8e0cc" opacity="0.2" />
+      {/* suit button */}
+      <circle cx="80" cy="168" r="3" fill="#1e1e36" stroke="#C8A96E" strokeWidth="0.7" opacity="0.6" />
 
-      {/* Head */}
-      <circle cx="45" cy="38" r="26" fill="#c8956c" />
+      {/* ── NECK ── */}
+      <rect x="70" y="105" width="20" height="20" rx="5" fill="#c8956c" />
 
-      {/* Hair */}
-      <ellipse cx="45" cy="16" rx="25" ry="14" fill="#120800" />
-      <path d="M20 26 Q22 10 45 12 Q68 10 70 26" fill="#120800" />
-      {/* Hair highlight */}
-      <path d="M30 16 Q40 12 55 15" stroke="#2a1200" strokeWidth="3" fill="none" />
+      {/* ── HEAD ── */}
+      <circle cx="80" cy="76" r="46" fill="#c8956c" />
+      {/* jaw highlight */}
+      <ellipse cx="80" cy="112" rx="28" ry="10" fill="#b87c52" opacity="0.5" />
 
-      {/* Ears */}
-      <ellipse cx="19" cy="40" rx="5" ry="7" fill="#b87c52" />
-      <ellipse cx="71" cy="40" rx="5" ry="7" fill="#b87c52" />
+      {/* ── EARS ── */}
+      <ellipse cx="34" cy="78" rx="8" ry="12" fill="#b87c52" />
+      <ellipse cx="37" cy="78" rx="5" ry="8" fill="#c8956c" />
+      <ellipse cx="126" cy="78" rx="8" ry="12" fill="#b87c52" />
+      <ellipse cx="123" cy="78" rx="5" ry="8" fill="#c8956c" />
 
-      {/* Eyes */}
+      {/* ── HAIR ── */}
+      <ellipse cx="80" cy="36" rx="45" ry="26" fill="#120800" />
+      <path d="M35 55 Q38 24 80 28 Q122 24 125 55" fill="#120800" />
+      {/* hair part & highlight */}
+      <path d="M60 32 Q72 26 90 30" stroke="#2e1400" strokeWidth="5" fill="none" strokeLinecap="round" />
+      <path d="M63 30 Q74 25 88 28" stroke="#3a1800" strokeWidth="2.5" fill="none" opacity="0.6" />
+      {/* sideburns */}
+      <rect x="35" y="55" width="8" height="20" rx="3" fill="#120800" opacity="0.7" />
+      <rect x="117" y="55" width="8" height="20" rx="3" fill="#120800" opacity="0.7" />
+
+      {/* ── EYES ── */}
       {mood === "analyze" ? (
         <>
-          <ellipse cx="35" cy="39" rx="6" ry="4" fill="white" />
-          <circle cx="36" cy="39" r="3" fill="#0a0a1a" />
-          <ellipse cx="55" cy="39" rx="6" ry="4" fill="white" />
-          <circle cx="54" cy="39" r="3" fill="#0a0a1a" />
-          {/* Focused pupils */}
-          <circle cx="36" cy="39" r="1.5" fill="#C8A96E" opacity="0.6" />
-          <circle cx="54" cy="39" r="1.5" fill="#C8A96E" opacity="0.6" />
-        </>
-      ) : (
-        <>
-          <ellipse cx="35" cy="39" rx="5" ry="5" fill="white" />
-          <circle cx="35" cy="39" r="3" fill="#0a0a1a" />
-          <ellipse cx="55" cy="39" rx="5" ry="5" fill="white" />
-          <circle cx="55" cy="39" r="3" fill="#0a0a1a" />
-        </>
-      )}
-      {/* Eye shine */}
-      <circle cx="36" cy="37" r="1.2" fill="white" opacity="0.85" />
-      <circle cx="56" cy="37" r="1.2" fill="white" opacity="0.85" />
-
-      {/* Eyebrows */}
-      {mood === "work"    && <><path d="M29 31 Q35 28 40 31" stroke="#120800" strokeWidth="2.5" fill="none" strokeLinecap="round" /><path d="M49 31 Q55 28 61 31" stroke="#120800" strokeWidth="2.5" fill="none" strokeLinecap="round" /></>}
-      {mood === "analyze" && <><path d="M29 30 Q35 27 41 30" stroke="#120800" strokeWidth="2.5" fill="none" strokeLinecap="round" /><path d="M49 30 Q55 27 61 30" stroke="#120800" strokeWidth="2.5" fill="none" strokeLinecap="round" /></>}
-      {mood === "study"   && <><path d="M30 32 Q35 30 40 32" stroke="#120800" strokeWidth="2" fill="none" strokeLinecap="round" /><path d="M50 32 Q55 30 60 32" stroke="#120800" strokeWidth="2" fill="none" strokeLinecap="round" /></>}
-      {(mood === "wave" || mood === "code" || mood === "think") && <><path d="M30 33 Q35 31 40 33" stroke="#120800" strokeWidth="2" fill="none" strokeLinecap="round" /><path d="M50 33 Q55 31 60 33" stroke="#120800" strokeWidth="2" fill="none" strokeLinecap="round" /></>}
-
-      {/* Mouth expressions */}
-      {mood === "wave"    && <path d="M36 52 Q45 59 54 52" stroke="#7a3a1a" strokeWidth="2.5" fill="none" strokeLinecap="round" />}
-      {mood === "study"   && <path d="M38 52 Q45 56 52 52" stroke="#7a3a1a" strokeWidth="2" fill="none" strokeLinecap="round" />}
-      {mood === "work"    && <line x1="37" y1="53" x2="53" y2="53" stroke="#7a3a1a" strokeWidth="2" strokeLinecap="round" />}
-      {mood === "code"    && <path d="M37 52 Q45 57 53 52" stroke="#7a3a1a" strokeWidth="2.5" fill="none" strokeLinecap="round" />}
-      {mood === "analyze" && <path d="M37 54 Q45 49 53 54" stroke="#7a3a1a" strokeWidth="2" fill="none" strokeLinecap="round" />}
-      {mood === "think"   && <path d="M38 53 Q45 56 52 53" stroke="#7a3a1a" strokeWidth="2" fill="none" strokeLinecap="round" />}
-
-      {/* Arms */}
-      {mood === "wave" ? (
-        <>
-          <line x1="22" y1="78" x2="2" y2="52" stroke="#c8956c" strokeWidth="9" strokeLinecap="round" className="arm-wave" />
-          <line x1="68" y1="78" x2="80" y2="100" stroke="#c8956c" strokeWidth="9" strokeLinecap="round" />
-        </>
-      ) : mood === "study" ? (
-        <>
-          <line x1="22" y1="78" x2="8" y2="102" stroke="#c8956c" strokeWidth="9" strokeLinecap="round" />
-          <line x1="68" y1="78" x2="78" y2="72" stroke="#c8956c" strokeWidth="9" strokeLinecap="round" />
-          {/* Book */}
-          <rect x="73" y="60" width="22" height="18" rx="2" fill="#C8A96E" opacity="0.85" />
-          <line x1="84" y1="61" x2="84" y2="77" stroke="#8a7040" strokeWidth="1.2" />
-          <line x1="76" y1="65" x2="82" y2="65" stroke="#8a7040" strokeWidth="0.8" opacity="0.6" />
-          <line x1="76" y1="69" x2="82" y2="69" stroke="#8a7040" strokeWidth="0.8" opacity="0.6" />
+          {/* wide alert eyes */}
+          <ellipse cx="62" cy="78" rx="11" ry="8" fill="white" />
+          <circle cx="64" cy="78" r="6" fill="#0a0a1a" />
+          <circle cx="64" cy="78" r="3" fill="#C8A96E" opacity="0.7" />
+          <ellipse cx="98" cy="78" rx="11" ry="8" fill="white" />
+          <circle cx="96" cy="78" r="6" fill="#0a0a1a" />
+          <circle cx="96" cy="78" r="3" fill="#C8A96E" opacity="0.7" />
         </>
       ) : mood === "work" ? (
         <>
-          <line x1="22" y1="78" x2="4" y2="94" stroke="#c8956c" strokeWidth="9" strokeLinecap="round" />
-          <line x1="68" y1="78" x2="84" y2="74" stroke="#c8956c" strokeWidth="9" strokeLinecap="round" />
-          {/* Wrench */}
-          <rect x="80" y="66" width="14" height="6" rx="3" fill="#888" />
-          <rect x="78" y="65" width="5" height="8" rx="2" fill="#aaa" />
-        </>
-      ) : mood === "code" ? (
-        <>
-          <line x1="22" y1="78" x2="5" y2="90" stroke="#c8956c" strokeWidth="9" strokeLinecap="round" />
-          <line x1="68" y1="78" x2="82" y2="90" stroke="#c8956c" strokeWidth="9" strokeLinecap="round" />
-          {/* Laptop */}
-          <rect x="7" y="95" width="26" height="18" rx="2" fill="#0a1020" stroke="#C8A96E" strokeWidth="0.8" opacity="0.8" />
-          <rect x="9" y="97" width="22" height="14" rx="1" fill="#0d1428" />
-          {[0,1,2].map(r=><rect key={r} x={11} y={99+r*4} width={8+(r*4)%10} height="2" fill="#C8A96E" opacity="0.3" rx="1" />)}
-        </>
-      ) : mood === "analyze" ? (
-        <>
-          <line x1="22" y1="78" x2="8" y2="74" stroke="#c8956c" strokeWidth="9" strokeLinecap="round" />
-          <line x1="68" y1="78" x2="82" y2="72" stroke="#c8956c" strokeWidth="9" strokeLinecap="round" />
-          {/* Clipboard with chart */}
-          <rect x="78" y="58" width="22" height="28" rx="2" fill="#080c14" stroke="#C8A96E" strokeWidth="0.8" opacity="0.9" />
-          <polyline points="81,82 84,74 88,78 92,68 96,72" stroke="#C8A96E" strokeWidth="1.5" fill="none" />
-          <line x1="80" y1="84" x2="98" y2="84" stroke="#C8A96E" strokeWidth="0.6" opacity="0.4" />
-          <text x="88" y="64" textAnchor="middle" fontSize="5" fill="#C8A96E" opacity="0.7">0.998</text>
+          {/* focused squint */}
+          <ellipse cx="62" cy="78" rx="10" ry="6" fill="white" />
+          <circle cx="62" cy="78" r="5" fill="#0a0a1a" />
+          <ellipse cx="98" cy="78" rx="10" ry="6" fill="white" />
+          <circle cx="98" cy="78" r="5" fill="#0a0a1a" />
         </>
       ) : (
         <>
-          <line x1="22" y1="78" x2="8" y2="98" stroke="#c8956c" strokeWidth="9" strokeLinecap="round" />
-          <line x1="68" y1="78" x2="80" y2="94" stroke="#c8956c" strokeWidth="9" strokeLinecap="round" />
-          {/* Thought bubble */}
-          <circle cx="62" cy="28" r="3.5" fill="rgba(200,169,110,0.25)" />
-          <circle cx="70" cy="19" r="5.5" fill="rgba(200,169,110,0.22)" />
-          <circle cx="80" cy="10" r="9" fill="rgba(200,169,110,0.18)" stroke="#C8A96E" strokeWidth="0.5" />
-          <text x="80" y="14" textAnchor="middle" fontSize="9" fill="#C8A96E">?</text>
+          <ellipse cx="62" cy="78" rx="10" ry="10" fill="white" />
+          <circle cx="62" cy="78" r="6" fill="#0a0a1a" />
+          <ellipse cx="98" cy="78" rx="10" ry="10" fill="white" />
+          <circle cx="98" cy="78" r="6" fill="#0a0a1a" />
+        </>
+      )}
+      {/* pupils */}
+      <circle cx="63" cy="77" r="2.5" fill="#2a1a3e" />
+      <circle cx="99" cy="77" r="2.5" fill="#2a1a3e" />
+      {/* eye shine */}
+      <circle cx="65" cy="74" r="2.2" fill="white" opacity="0.9" />
+      <circle cx="101" cy="74" r="2.2" fill="white" opacity="0.9" />
+      <circle cx="60" cy="76" r="1" fill="white" opacity="0.4" />
+      <circle cx="96" cy="76" r="1" fill="white" opacity="0.4" />
+
+      {/* ── EYEBROWS ── */}
+      {(mood==="work"||mood==="analyze") && (
+        <>
+          <path d="M51 64 Q62 58 72 62" stroke="#120800" strokeWidth="4" fill="none" strokeLinecap="round" />
+          <path d="M88 62 Q98 58 109 64" stroke="#120800" strokeWidth="4" fill="none" strokeLinecap="round" />
+        </>
+      )}
+      {(mood==="wave"||mood==="code"||mood==="think"||mood==="study") && (
+        <>
+          <path d="M52 65 Q62 61 72 64" stroke="#120800" strokeWidth="3.5" fill="none" strokeLinecap="round" />
+          <path d="M88 64 Q98 61 108 65" stroke="#120800" strokeWidth="3.5" fill="none" strokeLinecap="round" />
         </>
       )}
 
-      {/* Collar / shirt cuff highlights */}
-      <line x1="38" y1="65" x2="52" y2="65" stroke="#C8A96E" strokeWidth="0.8" opacity="0.3" />
+      {/* ── NOSE ── */}
+      <path d="M77 82 Q80 92 83 82" stroke="#a06040" strokeWidth="1.8" fill="none" opacity="0.6" />
+      <ellipse cx="75" cy="90" rx="4" ry="2.5" fill="#b87c52" opacity="0.4" />
+      <ellipse cx="85" cy="90" rx="4" ry="2.5" fill="#b87c52" opacity="0.4" />
+
+      {/* ── MOUTH ── */}
+      {mood==="wave"    && <path d="M65 102 Q80 114 95 102" stroke="#7a3a1a" strokeWidth="3.5" fill="none" strokeLinecap="round" />}
+      {mood==="code"    && <path d="M67 102 Q80 111 93 102" stroke="#7a3a1a" strokeWidth="3" fill="none" strokeLinecap="round" />}
+      {mood==="study"   && <path d="M68 103 Q80 109 92 103" stroke="#7a3a1a" strokeWidth="3" fill="none" strokeLinecap="round" />}
+      {mood==="work"    && <line x1="66" y1="104" x2="94" y2="104" stroke="#7a3a1a" strokeWidth="3" strokeLinecap="round" />}
+      {mood==="analyze" && <path d="M66 106 Q80 99 94 106" stroke="#7a3a1a" strokeWidth="2.5" fill="none" strokeLinecap="round" />}
+      {mood==="think"   && <path d="M68 104 Q80 108 92 104" stroke="#7a3a1a" strokeWidth="3" fill="none" strokeLinecap="round" />}
+
+      {/* ── ARMS ── */}
+      {mood==="wave" && (
+        <>
+          {/* waving left arm */}
+          <line x1="38" y1="145" x2="4" y2="100" stroke="#c8956c" strokeWidth="18" strokeLinecap="round" className="arm-wave" />
+          <circle cx="4" cy="100" r="9" fill="#c8956c" className="arm-wave" />
+          {/* right arm down */}
+          <line x1="122" y1="145" x2="142" y2="195" stroke="#c8956c" strokeWidth="18" strokeLinecap="round" />
+          <circle cx="142" cy="195" r="9" fill="#c8956c" />
+        </>
+      )}
+      {mood==="study" && (
+        <>
+          <line x1="38" y1="145" x2="18" y2="195" stroke="#c8956c" strokeWidth="18" strokeLinecap="round" />
+          <circle cx="18" cy="195" r="9" fill="#c8956c" />
+          {/* right arm raised holding book */}
+          <line x1="122" y1="145" x2="138" y2="105" stroke="#c8956c" strokeWidth="18" strokeLinecap="round" />
+          <circle cx="138" cy="105" r="9" fill="#c8956c" />
+          {/* Book */}
+          <rect x="132" y="82" width="38" height="30" rx="3" fill="#C8A96E" opacity="0.9" />
+          <rect x="151" y="83" width="2" height="28" fill="#8a7040" opacity="0.6" />
+          {/* book text lines */}
+          {[0,1,2,3].map(r=><rect key={r} x={134} y={88+r*6} width={14} height={3} fill="#8a7040" opacity="0.4" rx="1" />)}
+        </>
+      )}
+      {mood==="work" && (
+        <>
+          <line x1="38" y1="145" x2="10" y2="175" stroke="#c8956c" strokeWidth="18" strokeLinecap="round" />
+          <circle cx="10" cy="175" r="9" fill="#c8956c" />
+          {/* right arm out holding wrench */}
+          <line x1="122" y1="145" x2="152" y2="140" stroke="#c8956c" strokeWidth="18" strokeLinecap="round" />
+          <circle cx="152" cy="140" r="9" fill="#c8956c" />
+          {/* Wrench */}
+          <rect x="154" y="128" width="26" height="10" rx="5" fill="#888" />
+          <rect x="152" y="126" width="10" height="14" rx="4" fill="#aaa" />
+          <circle cx="158" cy="133" r="4" fill="none" stroke="#666" strokeWidth="1.5" />
+        </>
+      )}
+      {mood==="code" && (
+        <>
+          <line x1="38" y1="145" x2="12" y2="185" stroke="#c8956c" strokeWidth="18" strokeLinecap="round" />
+          <circle cx="12" cy="185" r="9" fill="#c8956c" />
+          <line x1="122" y1="145" x2="148" y2="185" stroke="#c8956c" strokeWidth="18" strokeLinecap="round" />
+          <circle cx="148" cy="185" r="9" fill="#c8956c" />
+          {/* Laptop on lap */}
+          <rect x="22" y="192" width="116" height="28" rx="5" fill="#0a1020" />
+          <rect x="22" y="192" width="116" height="28" rx="5" fill="none" stroke="#C8A96E" strokeWidth="0.8" opacity="0.5" />
+          <rect x="24" y="194" width="112" height="24" rx="3" fill="#060e18" />
+          {/* code on screen */}
+          {[0,1,2].map(r=>(
+            <rect key={r} x={28} y={198+r*7} width={20+(r*28)%60} height={4}
+              fill="#C8A96E" opacity={0.15+r*0.06} rx="1" />
+          ))}
+          <rect x="28" y="212" width="6" height="8" fill="#C8A96E" opacity="0.5" className="caret-blink" />
+        </>
+      )}
+      {mood==="analyze" && (
+        <>
+          <line x1="38" y1="145" x2="14" y2="130" stroke="#c8956c" strokeWidth="18" strokeLinecap="round" />
+          <circle cx="14" cy="130" r="9" fill="#c8956c" />
+          <line x1="122" y1="145" x2="148" y2="130" stroke="#c8956c" strokeWidth="18" strokeLinecap="round" />
+          <circle cx="148" cy="130" r="9" fill="#c8956c" />
+          {/* clipboard with chart */}
+          <rect x="148" y="100" width="44" height="56" rx="4" fill="#06080e" stroke="#C8A96E" strokeWidth="0.8" opacity="0.9" />
+          <rect x="164" y="96" width="12" height="8" rx="2" fill="#C8A96E" opacity="0.5" />
+          <polyline points="152,148 157,132 162,140 168,118 174,126 180,108 186,115"
+            stroke="#C8A96E" strokeWidth="2" fill="none" />
+          <line x1="151" y1="150" x2="190" y2="150" stroke="#C8A96E" strokeWidth="0.8" opacity="0.3" />
+          <text x="170" y="112" textAnchor="middle" fontSize="6" fill="#C8A96E" opacity="0.8">R²=0.998</text>
+        </>
+      )}
+      {mood==="think" && (
+        <>
+          <line x1="38" y1="145" x2="16" y2="190" stroke="#c8956c" strokeWidth="18" strokeLinecap="round" />
+          <circle cx="16" cy="190" r="9" fill="#c8956c" />
+          {/* right hand on chin */}
+          <line x1="122" y1="145" x2="106" y2="120" stroke="#c8956c" strokeWidth="18" strokeLinecap="round" />
+          <circle cx="106" cy="120" r="9" fill="#c8956c" />
+          {/* thought bubbles */}
+          <circle cx="110" cy="52" r="6" fill="rgba(200,169,110,0.2)" />
+          <circle cx="120" cy="40" r="9" fill="rgba(200,169,110,0.18)" />
+          <circle cx="133" cy="26" r="15" fill="rgba(200,169,110,0.15)" stroke="#C8A96E" strokeWidth="0.8" />
+          <text x="133" y="31" textAnchor="middle" fontSize="14" fill="#C8A96E" opacity="0.7">?</text>
+        </>
+      )}
     </svg>
   );
 }
 
-/* ══════════════════════════════════════════════════════════════
-   TYPEWRITER DIALOGUE BUBBLE
-══════════════════════════════════════════════════════════════ */
-function DialogueBubble({ lines, active, sceneKey }: { lines: string[]; active: boolean; sceneKey: number }) {
-  const [lineIdx, setLineIdx] = useState(0);
-  const [typed,   setTyped]   = useState("");
-  const [done,    setDone]    = useState(false);
+/* ════════════════════════════════════════════════════════════
+   TYPEWRITER DIALOGUE
+════════════════════════════════════════════════════════════ */
+function Dialogue({ lines, active, sceneKey }: { lines: string[]; active: boolean; sceneKey: number }) {
+  const [li, setLi]       = useState(0);
+  const [typed, setTyped] = useState("");
+  const [done, setDone]   = useState(false);
 
-  useEffect(() => { setLineIdx(0); setTyped(""); setDone(false); }, [sceneKey]);
+  useEffect(() => { setLi(0); setTyped(""); setDone(false); }, [sceneKey]);
 
   useEffect(() => {
     if (!active) return;
-    const line = lines[lineIdx] ?? "";
+    const txt = lines[li] ?? "";
     setTyped(""); setDone(false);
     let i = 0;
     const t = setInterval(() => {
       i++;
-      setTyped(line.slice(0, i));
-      if (i >= line.length) { clearInterval(t); setDone(true); }
-    }, 30);
+      setTyped(txt.slice(0, i));
+      if (i >= txt.length) { clearInterval(t); setDone(true); }
+    }, 22);
     return () => clearInterval(t);
-  }, [lineIdx, active, lines]);
+  }, [li, active, lines]);
 
-  const advance = () => { if (done && lineIdx < lines.length - 1) setLineIdx(n => n + 1); };
+  const next = () => { if (done && li < lines.length - 1) setLi(n => n + 1); };
 
   return (
-    <div className={`bubble ${active ? "bubble-in" : ""}`}
-      onClick={advance} role="button" tabIndex={0}
-      onKeyDown={e => e.key === "Enter" && advance()}>
-      <div className="bubble-notch" />
-      <p className="bubble-text">
-        {typed}
-        <span className={`caret ${done ? "caret-blink" : ""}`}>▋</span>
+    <div className={`speech ${active ? "speech-in" : ""}`}
+      onClick={next} role="button" tabIndex={0} onKeyDown={e => e.key === "Enter" && next()}>
+      {/* comic-style border */}
+      <div className="speech-border" />
+      <div className="speech-tail" />
+      <p className="speech-text">
+        {typed}<span className={`tcaret ${done ? "tcaret-blink" : ""}`}>█</span>
       </p>
-      {done && lineIdx < lines.length - 1 && <div className="bubble-next">▶</div>}
-      <div className="bubble-pips">
-        {lines.map((_, i) => <span key={i} className={`pip ${i <= lineIdx ? "pip-on" : ""}`} />)}
+      {done && li < lines.length - 1 && (
+        <div className="speech-more">tap to continue ›</div>
+      )}
+      <div className="speech-pips">
+        {lines.map((_,i) => <span key={i} className={`pip ${i <= li ? "pip-lit" : ""}`} />)}
       </div>
     </div>
   );
 }
 
-/* ══════════════════════════════════════════════════════════════
-   SVG BACKGROUNDS
-══════════════════════════════════════════════════════════════ */
-function CityBg() {
-  const wins = [
-    [0,180,110,420],[120,210,90,390],[220,150,130,450],[365,195,95,405],
-    [475,165,120,435],[610,225,80,375],[705,175,115,425],[835,200,100,400],
-    [950,160,125,440],[1090,215,95,385],
+/* ════════════════════════════════════════════════════════════
+   CHAPTER TITLE CARD — fullscreen between scenes
+════════════════════════════════════════════════════════════ */
+function ChapterCard({ scene, show }: { scene: typeof SCENES[0]; show: boolean }) {
+  return (
+    <div className={`chaptercard ${show ? "cc-in" : ""}`}>
+      <div className="cc-line cc-chapter">{scene.chapter}</div>
+      <div className="cc-rule" />
+      <div className="cc-line cc-title">{scene.title}</div>
+      <div className="cc-line cc-sub">{scene.subtitle}</div>
+    </div>
+  );
+}
+
+/* ════════════════════════════════════════════════════════════
+   BACKGROUND SCENES  —  rich, layered, dark
+════════════════════════════════════════════════════════════ */
+
+/* ── PROLOGUE: Night city of Mumbai ── */
+function BgCity() {
+  const buildings = [
+    [0,160,105,440],[115,190,80,410],[205,140,130,460],[345,175,100,425],
+    [455,150,115,450],[580,200,85,400],[675,165,120,435],[805,180,95,420],
+    [910,145,125,455],[1045,190,100,410],[1155,160,60,440],
   ];
   return (
-    <svg className="sbg" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice">
+    <svg className="sbg" viewBox="0 0 1220 620" preserveAspectRatio="xMidYMid slice">
       <defs>
-        <radialGradient id="nightsky" cx="50%" cy="0%" r="100%">
-          <stop offset="0%" stopColor="#0a0a1f" />
-          <stop offset="60%" stopColor="#04040e" />
-          <stop offset="100%" stopColor="#02020a" />
+        <radialGradient id="ng1" cx="50%" cy="0%" r="90%">
+          <stop offset="0%" stopColor="#0c0c24" />
+          <stop offset="55%" stopColor="#05051a" />
+          <stop offset="100%" stopColor="#020209" />
         </radialGradient>
-        <radialGradient id="moonGlow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#fff8e0" stopOpacity="0.15" />
-          <stop offset="100%" stopColor="#fff8e0" stopOpacity="0" />
+        <radialGradient id="mg1" cx="78%" cy="12%" r="18%">
+          <stop offset="0%" stopColor="#f5edcc" stopOpacity="0.18" />
+          <stop offset="100%" stopColor="#f5edcc" stopOpacity="0" />
+        </radialGradient>
+        <radialGradient id="streetglow" cx="50%" cy="100%" r="40%">
+          <stop offset="0%" stopColor="#C8A96E" stopOpacity="0.12" />
+          <stop offset="100%" stopColor="#C8A96E" stopOpacity="0" />
         </radialGradient>
       </defs>
-      <rect width="1200" height="600" fill="url(#nightsky)" />
-      {/* Stars */}
-      {Array.from({length:80}).map((_,i)=>(
-        <circle key={i} cx={(i*173+47)%1200} cy={(i*97+13)%280} r={0.6+(i%4)*0.3}
-          fill="white" opacity={0.2+(i%6)*0.1} className="twinkle" style={{animationDelay:`${(i*0.25)%5}s`}} />
+      {/* sky */}
+      <rect width="1220" height="620" fill="url(#ng1)" />
+      {/* moon glow */}
+      <circle cx="950" cy="72" r="80" fill="url(#mg1)" />
+      {/* moon */}
+      <circle cx="950" cy="72" r="44" fill="#ede4c8" opacity="0.94" />
+      <circle cx="970" cy="58" r="36" fill="#0c0c24" />
+      <circle cx="938" cy="78" r="5" fill="rgba(0,0,0,0.14)" />
+      <circle cx="955" cy="88" r="3" fill="rgba(0,0,0,0.1)" />
+      {/* stars */}
+      {Array.from({length:100}).map((_,i)=>(
+        <circle key={i} cx={(i*179+31)%1220} cy={(i*103+17)%300}
+          r={0.5+(i%5)*0.3} fill="white"
+          opacity={0.15+(i%7)*0.08}
+          className="twinkle" style={{animationDelay:`${(i*0.22)%5}s`}} />
       ))}
-      {/* Moon */}
-      <circle cx="880" cy="75" r="55" fill="url(#moonGlow)" />
-      <circle cx="880" cy="75" r="40" fill="#f0e8d0" opacity="0.92" />
-      <circle cx="898" cy="62" r="33" fill="#0a0a1f" />
-      {/* Moon craters */}
-      <circle cx="870" cy="72" r="4" fill="rgba(0,0,0,0.12)" />
-      <circle cx="882" cy="84" r="2.5" fill="rgba(0,0,0,0.1)" />
-      {/* Buildings */}
-      {wins.map(([x,y,w,h],bi)=>(
+      {/* buildings — background layer */}
+      {buildings.map(([x,y,w,h],bi)=>(
         <g key={bi}>
-          <rect x={x} y={y} width={w} height={h} fill={`hsl(230,22%,${7+bi%5}%)`} />
-          {/* Rooftop detail */}
-          <rect x={x+w*0.3} y={y-12} width={w*0.4} height={14} fill={`hsl(230,22%,${9+bi%4}%)`} />
-          {/* Windows */}
-          {Array.from({length:Math.floor((h-20)/32)}).map((_,row)=>
-            Array.from({length:Math.floor(w/22)}).map((_,col)=>{
-              const lit = (bi*7+row*3+col*5)%10 > 3;
+          <rect x={x} y={y} width={w} height={h} fill={`hsl(230,20%,${6+bi%5}%)`} />
+          {/* roof details */}
+          <rect x={x+w*0.2} y={y-14} width={w*0.6} height={16} fill={`hsl(230,20%,${8+bi%4}%)`} />
+          <rect x={x+w*0.38} y={y-26} width={w*0.24} height={14} fill={`hsl(230,20%,${9+bi%3}%)`} />
+          {/* antennas */}
+          {bi%3===0 && <line x1={x+w*0.5} y1={y-26} x2={x+w*0.5} y2={y-52} stroke="#C8A96E" strokeWidth="1" opacity="0.25" />}
+          {/* windows */}
+          {Array.from({length:Math.floor((h-30)/34)}).map((_,row)=>
+            Array.from({length:Math.floor(w/24)}).map((_,col)=>{
+              const lit = (bi*11+row*7+col*3)%10 > 3;
               return <rect key={`${row}-${col}`}
-                x={x+6+col*22} y={y+14+row*30} width="12" height="16"
-                fill={lit?"#C8A96E":"#0d0d22"}
-                opacity={lit?(0.4+((bi+row+col)%5)*0.1):0.18}
-                className={lit&&(bi+row+col)%4===0?"flicker":""} style={{animationDelay:`${((bi+row*col)*0.4)%6}s`}} />
+                x={x+7+col*24} y={y+18+row*32} width="14" height="18"
+                fill={lit?"#C8A96E":"#0c0c22"}
+                opacity={lit ? 0.35+(bi+row)%4*0.1 : 0.15}
+                className={lit&&(bi*3+row+col)%5===0?"flicker":""}
+                style={{animationDelay:`${((bi+row*2+col)*0.35)%7}s`}} />
             })
           )}
         </g>
       ))}
-      {/* Street */}
-      <rect x="0" y="540" width="1200" height="60" fill="#070710" />
-      <rect x="0" y="538" width="1200" height="3" fill="#C8A96E" opacity="0.2" />
-      {/* Street lights */}
-      {[100,280,460,640,820,1000].map((x,i)=>(
+      {/* reflective ground */}
+      <rect x="0" y="550" width="1220" height="70" fill="#040410" />
+      <rect x="0" y="548" width="1220" height="4" fill="#C8A96E" opacity="0.18" />
+      <rect x="0" y="552" width="1220" height="68" fill="url(#streetglow)" />
+      {/* street lights */}
+      {[80,240,420,600,780,960,1120].map((x,i)=>(
         <g key={i}>
-          <rect x={x} y="480" width="3" height="60" fill="#1a1a30" />
-          <ellipse cx={x+1} cy="482" rx="18" ry="8" fill="#C8A96E" opacity="0.06" />
-          <circle cx={x+1} cy="482" r="3" fill="#C8A96E" opacity="0.7" />
+          <rect x={x} y="490" width="4" height="62" fill="#181828" />
+          <rect x={x-14} y="490" width="32" height="6" rx="3" fill="#1a1a2e" />
+          <ellipse cx={x+2} cy="492" rx="24" ry="10" fill="#C8A96E" opacity="0.1" />
+          <circle cx={x+2} cy="493" r="4" fill="#C8A96E" opacity="0.75" />
+          {/* reflection */}
+          <line x1={x+2} y1="552" x2={x+2} y2="590" stroke="#C8A96E" strokeWidth="1" opacity="0.08" />
         </g>
       ))}
-      {/* Reflection in street */}
-      <rect x="0" y="541" width="1200" height="20" fill="url(#nightsky)" opacity="0.5" />
+      {/* fog/haze layer */}
+      <rect x="0" y="420" width="1220" height="140" fill="rgba(2,2,14,0.3)" />
     </svg>
   );
 }
 
-function CampusBg() {
+/* ── CHAPTER I: ASU Campus at night ── */
+function BgCampus() {
   return (
-    <svg className="sbg" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice">
+    <svg className="sbg" viewBox="0 0 1220 620" preserveAspectRatio="xMidYMid slice">
       <defs>
-        <linearGradient id="campusSky" x1="0" y1="0" x2="0" y2="1">
+        <linearGradient id="campsky" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="#060618" />
-          <stop offset="100%" stopColor="#0c0c22" />
+          <stop offset="100%" stopColor="#0e0e28" />
         </linearGradient>
+        <radialGradient id="campglow" cx="50%" cy="60%" r="45%">
+          <stop offset="0%" stopColor="#C8A96E" stopOpacity="0.06" />
+          <stop offset="100%" stopColor="#C8A96E" stopOpacity="0" />
+        </radialGradient>
       </defs>
-      <rect width="1200" height="600" fill="url(#campusSky)" />
-      {Array.from({length:40}).map((_,i)=>(
-        <circle key={i} cx={(i*211+30)%1200} cy={(i*83)%220} r="0.8"
-          fill="white" opacity="0.25" className="twinkle" style={{animationDelay:`${i*0.4}s`}} />
+      <rect width="1220" height="620" fill="url(#campsky)" />
+      {/* stars */}
+      {Array.from({length:55}).map((_,i)=>(
+        <circle key={i} cx={(i*213+40)%1220} cy={(i*89)%260} r="0.7"
+          fill="white" opacity="0.22" className="twinkle" style={{animationDelay:`${i*0.38}s`}} />
       ))}
-      {/* Main ASU building */}
-      <rect x="280" y="100" width="640" height="420" fill="#0a0a1a" />
-      {/* Pediment */}
-      <polygon points="280,100 600,40 920,100" fill="#0c0c1e" />
-      <polygon points="300,100 600,46 900,100" fill="#0e0e22" />
-      {/* Gold header band */}
-      <rect x="280" y="100" width="640" height="14" fill="#C8A96E" opacity="0.35" />
-      {/* Columns */}
-      {[310,380,450,520,590,660,730,800,870].map((x,i)=>(
+      {/* distant city glow */}
+      <rect x="0" y="380" width="1220" height="240" fill="url(#campglow)" />
+
+      {/* MAIN BUILDING — detailed ASU-style */}
+      <rect x="200" y="80" width="820" height="460" fill="#090916" />
+      {/* giant pediment */}
+      <polygon points="200,80 610,10 1020,80" fill="#0b0b1c" />
+      <polygon points="220,80 610,18 1000,80" fill="#0d0d20" />
+      {/* gold band at top */}
+      <rect x="200" y="78" width="820" height="16" fill="#C8A96E" opacity="0.3" />
+      {/* colonnade */}
+      {Array.from({length:12}).map((_,i)=>(
         <g key={i}>
-          <rect x={x} y={114} width={18} height={406} fill="#0f0f22" />
-          <rect x={x} y={114} width={18} height={406} fill="#C8A96E" opacity="0.03" />
-          <ellipse cx={x+9} cy={114} rx={11} ry={5} fill="#141430" />
+          <rect x={218+i*62} y={94} width={20} height={446} fill="#0c0c1e" />
+          {/* column capital */}
+          <rect x={213+i*62} y={90} width={30} height={8} rx="2" fill="#141428" />
+          {/* column base */}
+          <rect x={213+i*62} y={534} width={30} height={8} rx="2" fill="#141428" />
         </g>
       ))}
-      {/* Windows */}
-      {[0,1,2,3,4].map(row=>
-        [0,1,2,3,4,5,6,7].map(col=>(
-          <g key={`${row}-${col}`}>
-            <rect x={300+col*78} y={130+row*76} width={48} height={62} fill="#0d1030" />
-            <rect x={300+col*78} y={130+row*76} width={48} height={62}
-              fill="#C8A96E" opacity={(row+col)%3===0?0.12:0.03}
-              className={(row+col)%4===0?"flicker":""} style={{animationDelay:`${(row*col*0.3)%5}s`}} />
-            <line x1={324+col*78} y1={130+row*76} x2={324+col*78} y2={192+row*76} stroke="#1a1a3a" strokeWidth="1" opacity="0.4" />
-          </g>
-        ))
+      {/* windows — 5 rows × 10 cols */}
+      {Array.from({length:5}).map((_,row)=>
+        Array.from({length:10}).map((_,col)=>{
+          const lit = (row*3+col*7+13)%10 > 4;
+          return (
+            <g key={`${row}-${col}`}>
+              <rect x={228+col*74} y={100+row*82} width={52} height={68} fill="#0c1030" />
+              <rect x={228+col*74} y={100+row*82} width={52} height={68}
+                fill="#C8A96E" opacity={lit?0.1:0.02}
+                className={lit&&(row+col)%3===0?"flicker":""}
+                style={{animationDelay:`${((row*col+1)*0.28)%5}s`}} />
+              {/* window cross */}
+              <line x1={254+col*74} y1={100+row*82} x2={254+col*74} y2={168+row*82} stroke="#151530" strokeWidth="1" opacity="0.5" />
+              <line x1={228+col*74} y1={134+row*82} x2={280+col*74} y2={134+row*82} stroke="#151530" strokeWidth="1" opacity="0.5" />
+            </g>
+          );
+        })
       )}
-      {/* ASU lettering */}
-      <text x="600" y="80" textAnchor="middle" fontSize="22" fill="#C8A96E" opacity="0.6"
-        fontFamily="Georgia,serif" letterSpacing="8">A S U</text>
-      {/* Ground */}
-      <rect x="0" y="520" width="1200" height="80" fill="#060610" />
-      <rect x="220" y="518" width="760" height="4" fill="#C8A96E" opacity="0.15" />
-      {/* Trees */}
-      {[80,160,990,1090].map((x,i)=>(
+      {/* ASU text on pediment */}
+      <text x="610" y="58" textAnchor="middle" fontSize="26" fill="#C8A96E"
+        fontFamily="Georgia,serif" letterSpacing="12" opacity="0.55">ASU</text>
+      <text x="610" y="74" textAnchor="middle" fontSize="9" fill="#C8A96E"
+        fontFamily="sans-serif" letterSpacing="4" opacity="0.3">FULTON SCHOOLS OF ENGINEERING</text>
+
+      {/* GROUND */}
+      <rect x="0" y="542" width="1220" height="78" fill="#060610" />
+      <rect x="140" y="540" width="940" height="4" fill="#C8A96E" opacity="0.14" />
+      {/* walkway lights */}
+      {[180,350,520,700,880,1050].map((x,i)=>(
         <g key={i}>
-          <rect x={x+10} y="430" width="16" height="90" fill="#0e0e08" />
-          <ellipse cx={x+18} cy="410" rx="35" ry="48" fill="#0a140a" />
-          <ellipse cx={x+18} cy="395" rx="28" ry="38" fill="#0c180c" />
+          <rect x={x} y="510" width="3" height="34" fill="#141420" />
+          <circle cx={x+1} cy="512" r="5" fill="#C8A96E" opacity="0.55" />
+          <ellipse cx={x+1} cy="513" rx="16" ry="7" fill="#C8A96E" opacity="0.07" />
         </g>
       ))}
-      {/* Math/science particles */}
-      {["∑","π","∫","Δ","λ","∇","∂","∞","α","β"].map((s,i)=>(
-        <text key={i} x={(i*130+40)%1100} y={360-(i*28)%180} fontSize="13"
-          fill="#C8A96E" opacity="0.15" className="floatup" style={{animationDelay:`${i*0.55}s`}}>{s}</text>
+      {/* Trees */}
+      {[60,120,1080,1150].map((x,i)=>(
+        <g key={i}>
+          <rect x={x+12} y="440" width="16" height="104" fill="#0c0c08" />
+          <ellipse cx={x+20} cy="418" rx="38" ry="52" fill="#080e08" />
+          <ellipse cx={x+20} cy="400" rx="30" ry="42" fill="#0a120a" />
+          <ellipse cx={x+20} cy="385" rx="22" ry="32" fill="#0c160c" />
+        </g>
+      ))}
+      {/* floating formulas */}
+      {["∑","π","∫","Δ","λ","∇","∂","∞","α","β","σ","μ"].map((s,i)=>(
+        <text key={i} x={(i*105+50)%1100} y={340-(i*22)%200}
+          fontSize="14" fill="#C8A96E" opacity="0.12"
+          className="floatup" style={{animationDelay:`${i*0.5}s`}}>{s}</text>
       ))}
     </svg>
   );
 }
 
-function PlantBg() {
+/* ── CHAPTER II: Power Plant interior ── */
+function BgPlant() {
   return (
-    <svg className="sbg" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice">
-      <rect width="1200" height="600" fill="#020208" />
-      <rect width="1200" height="320" fill="#050510" />
-      {/* Cooling towers */}
-      {[[80,60,140,420],[300,50,155,440],[850,55,148,435],[1040,65,130,415]].map(([x,y,w,h],i)=>(
+    <svg className="sbg" viewBox="0 0 1220 620" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <radialGradient id="plantsky" cx="50%" cy="0%" r="70%">
+          <stop offset="0%" stopColor="#06060e" />
+          <stop offset="100%" stopColor="#020208" />
+        </radialGradient>
+        <radialGradient id="boilerglow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#ff6600" stopOpacity="0.12" />
+          <stop offset="100%" stopColor="#ff6600" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+      <rect width="1220" height="620" fill="url(#plantsky)" />
+      {/* background dark sky */}
+      <rect width="1220" height="280" fill="#040408" />
+
+      {/* cooling towers — large */}
+      {[[40,40,160,500],[250,30,180,520],[820,35,170,510],[1040,45,150,495]].map(([x,y,w,h],i)=>(
         <g key={i}>
-          <path d={`M${x} ${y+h} C${x+w*0.15} ${y+h*0.3} ${x+w*0.3} ${y+20} ${x+w/2} ${y+30} C${x+w*0.7} ${y+20} ${x+w*0.85} ${y+h*0.3} ${x+w} ${y+h}`}
-            fill="#0a0a18" />
-          <path d={`M${x+w*0.15} ${y+h} C${x+w*0.28} ${y+h*0.5} ${x+w*0.38} ${y+35} ${x+w/2} ${y+42} C${x+w*0.62} ${y+35} ${x+w*0.72} ${y+h*0.5} ${x+w*0.85} ${y+h}`}
-            fill="#0e0e22" />
-          {/* Steam plumes */}
-          {[0,1,2].map(s=>(
-            <ellipse key={s} cx={x+w/2} cy={y-20-s*25} rx={20-s*3} ry={12-s*2}
-              fill="white" opacity={0.03-s*0.005} className="steam" style={{animationDelay:`${i*0.6+s*0.3}s`}} />
+          {/* tower shape */}
+          <path d={`M${x} ${y+h} C${x+w*0.12} ${y+h*0.25} ${x+w*0.28} ${y+15} ${x+w/2} ${y+25} C${x+w*0.72} ${y+15} ${x+w*0.88} ${y+h*0.25} ${x+w} ${y+h}`}
+            fill={`hsl(230,18%,${5+i%3}%)`} />
+          {/* inner shadow */}
+          <path d={`M${x+w*0.15} ${y+h} C${x+w*0.27} ${y+h*0.4} ${x+w*0.38} ${y+35} ${x+w/2} ${y+42} C${x+w*0.62} ${y+35} ${x+w*0.73} ${y+h*0.4} ${x+w*0.85} ${y+h}`}
+            fill={`hsl(230,18%,${7+i%3}%)`} />
+          {/* rim light */}
+          <path d={`M${x+w*0.1} ${y+h} C${x+w*0.2} ${y+h*0.3} ${x+w*0.35} ${y+20} ${x+w/2} ${y+28}`}
+            fill="none" stroke="#C8A96E" strokeWidth="0.8" opacity="0.15" />
+          {/* steam */}
+          {[0,1,2,3].map(s=>(
+            <ellipse key={s} cx={x+w/2+(s%2===0?-8:8)} cy={y-18-s*28}
+              rx={22-s*3} ry={14-s*2}
+              fill="white" opacity={0.04-s*0.007}
+              className="steam" style={{animationDelay:`${i*0.55+s*0.28}s`}} />
           ))}
         </g>
       ))}
-      {/* Main building */}
-      <rect x="470" y="160" width="260" height="380" fill="#080814" />
-      <rect x="460" y="148" width="280" height="18" fill="#C8A96E" opacity="0.25" />
-      {/* Pipes */}
-      {[500,540,580,620,660,700].map((x,i)=>(
+
+      {/* main plant structure */}
+      <rect x="420" y="130" width="380" height="420" fill="#080810" />
+      <rect x="408" y="116" width="404" height="22" fill="#C8A96E" opacity="0.22" />
+      {/* pipes */}
+      {[445,488,531,574,617,660,703,746,789].map((x,i)=>(
         <g key={i}>
-          <rect x={x} y="178" width="14" height="342" fill="#0c0c1e" />
-          <line x1={x+7} y1="178" x2={x+7} y2="520" stroke="#C8A96E" strokeWidth="0.5" opacity="0.08" />
+          <rect x={x} y="138" width="16" height="412" fill="#0c0c18" />
+          <line x1={x+8} y1="138" x2={x+8} y2="550" stroke="#C8A96E" strokeWidth="0.6" opacity="0.06" />
+          {i%2===0 && <rect x={x-8} y={200+i*25} width={32} height={12} rx="4" fill="#0e0e1e" />}
         </g>
       ))}
-      {/* Control room window */}
-      <rect x="550" y="260" width="100" height="70" fill="#0a1428" opacity="0.9" />
-      <rect x="550" y="260" width="100" height="70" fill="none" stroke="#C8A96E" strokeWidth="0.8" opacity="0.5" />
-      <rect x="550" y="260" width="100" height="70" fill="#C8A96E" opacity="0.04" className="flicker" style={{animationDelay:"0.5s"}} />
-      {/* Warning lights */}
-      {[490,525,560,595,630,665,700].map((x,i)=>(
-        <circle key={i} cx={x} cy="168" r="4"
-          fill={i%3===0?"#ff3333":i%3===1?"#C8A96E":"#33ff88"} opacity="0.75"
-          className="warnblink" style={{animationDelay:`${i*0.35}s`}} />
+      {/* boiler glow */}
+      <rect x="500" y="250" width="220" height="180" fill="url(#boilerglow)" />
+      {/* control panel window */}
+      <rect x="510" y="280" width="200" height="120" rx="5" fill="#060e1a" />
+      <rect x="510" y="280" width="200" height="120" rx="5" fill="none" stroke="#C8A96E" strokeWidth="0.8" opacity="0.45" />
+      <rect x="510" y="280" width="200" height="120" fill="#C8A96E" opacity="0.03" className="flicker" style={{animationDelay:"0.8s"}} />
+      {/* gauges in window */}
+      {[535,580,625,670].map((x,i)=>(
+        <g key={i}>
+          <circle cx={x} cy="330" r="16" fill="#04080e" stroke="#C8A96E" strokeWidth="0.6" opacity="0.5" />
+          <line x1={x} y1="330"
+            x2={x+12*Math.cos((i*0.8-1.2))}
+            y2={330+12*Math.sin((i*0.8-1.2))}
+            stroke="#C8A96E" strokeWidth="1.2" opacity="0.6" />
+          <circle cx={x} cy="330" r="2" fill="#C8A96E" opacity="0.5" />
+        </g>
       ))}
-      {/* Sparks */}
-      {Array.from({length:12}).map((_,i)=>(
-        <circle key={i} cx={480+(i*70)%280} cy={280+(i*30)%120} r="1.5"
-          fill="#ffaa00" opacity="0.7" className="sparkle" style={{animationDelay:`${i*0.4}s`}} />
+      {/* warning lights row */}
+      {[432,464,496,528,560,592,624,656,688,720,752,784].map((x,i)=>(
+        <circle key={i} cx={x} cy="132" r="5"
+          fill={i%4===0?"#ff2222":i%4===1?"#ffaa00":i%4===2?"#C8A96E":"#22aa44"}
+          opacity="0.8" className="warnblink" style={{animationDelay:`${i*0.28}s`}} />
       ))}
-      {/* Ground */}
-      <rect x="0" y="508" width="1200" height="92" fill="#03030a" />
-      <rect x="0" y="506" width="1200" height="3" fill="#C8A96E" opacity="0.12" />
+      {/* sparks floating up from base */}
+      {Array.from({length:18}).map((_,i)=>(
+        <circle key={i}
+          cx={420+(i*42)%380}
+          cy={400+(i*22)%120}
+          r={1+(i%3)*0.5}
+          fill={i%2===0?"#ff6600":"#ffcc00"}
+          opacity="0.75" className="sparkle" style={{animationDelay:`${i*0.3}s`}} />
+      ))}
+      {/* ground */}
+      <rect x="0" y="550" width="1220" height="70" fill="#030308" />
+      <rect x="0" y="548" width="1220" height="3" fill="#C8A96E" opacity="0.1" />
     </svg>
   );
 }
 
-function LabBg() {
+/* ── CHAPTER III: Tech lab / dev room ── */
+function BgLab() {
   return (
-    <svg className="sbg" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice">
-      <rect width="1200" height="600" fill="#030310" />
-      {/* Perspective grid floor */}
-      {Array.from({length:16}).map((_,i)=>(
-        <line key={`h${i}`} x1="0" y1={480+i*8} x2="1200" y2={480+i*8}
-          stroke="#C8A96E" strokeWidth="0.4" opacity={0.04+i*0.003} />
+    <svg className="sbg" viewBox="0 0 1220 620" preserveAspectRatio="xMidYMid slice">
+      <rect width="1220" height="620" fill="#030310" />
+      {/* perspective grid floor */}
+      {Array.from({length:20}).map((_,i)=>(
+        <line key={`h${i}`} x1="0" y1={490+i*6} x2="1220" y2={490+i*6}
+          stroke="#C8A96E" strokeWidth="0.5" opacity={0.03+i*0.004} />
       ))}
-      {Array.from({length:32}).map((_,i)=>(
-        <line key={`v${i}`} x1={i*40} y1="480" x2={i*40} y2="600"
+      {Array.from({length:40}).map((_,i)=>(
+        <line key={`v${i}`} x1={i*32} y1="488" x2={i*32} y2="620"
           stroke="#C8A96E" strokeWidth="0.4" opacity="0.04" />
       ))}
-      {/* Workstations */}
-      {[60,360,720,1000].map((x,wi)=>(
+      {/* WORKSTATIONS — detailed */}
+      {[40,340,720,1000].map((x,wi)=>(
         <g key={wi}>
-          <rect x={x} y="390" width="190" height="14" rx="3" fill="#0e0e22" />
-          <rect x={x+5} y="380" width="90" height="40" rx="3" fill="#111" />
-          {/* Monitor */}
-          <rect x={x+8} y="260" width="176" height="122" rx="4" fill="#0a1020" />
-          <rect x={x+8} y="260" width="176" height="122" rx="4" fill="none" stroke="#C8A96E" strokeWidth="0.6" opacity="0.4" />
-          {/* Screen content */}
-          <rect x={x+12} y="264" width="168" height="114" rx="2" fill="#060e18" />
-          {[0,1,2,3,4,5,6].map(row=>(
-            <rect key={row} x={x+16} y={270+row*15} width={20+(row*37)%110} height="5"
-              fill="#C8A96E" opacity={0.08+row*0.03} rx="1" />
+          {/* desk */}
+          <rect x={x} y="400" width="200" height="14" rx="3" fill="#0e0e22" />
+          <rect x={x+15} y="414" width="8" height="80" fill="#0b0b18" />
+          <rect x={x+177} y="414" width="8" height="80" fill="#0b0b18" />
+          {/* monitor stand */}
+          <rect x={x+94} y="388" width="14" height="22" fill="#0e0e22" />
+          <rect x={x+82} y="395" width="38" height="8" rx="2" fill="#0e0e22" />
+          {/* monitor */}
+          <rect x={x+8} y="258" width="186" height="132" rx="5" fill="#090d16" />
+          <rect x={x+8} y="258" width="186" height="132" rx="5" fill="none" stroke="#C8A96E" strokeWidth="0.7" opacity="0.4" />
+          {/* screen */}
+          <rect x={x+12} y="262" width="178" height="124" rx="3" fill="#05090f" />
+          {/* IDE theme — code editor */}
+          {/* line numbers */}
+          {Array.from({length:8}).map((_,r)=>(
+            <text key={r} x={x+16} y={274+r*14} fontSize="7" fill="#5a5268" fontFamily="monospace">{wi*8+r+1}</text>
           ))}
-          {/* Cursor blink */}
-          <rect x={x+16} y="375" width="6" height="8" fill="#C8A96E" opacity="0.5" className="warnblink" />
-          {/* Monitor stand */}
-          <rect x={x+88} y="382" width="12" height="20" fill="#0e0e22" />
+          {/* code lines */}
+          {[
+            {c:"#6272a4",w:30},{c:"#C8A96E",w:50},{c:"#8be9fd",w:40},
+            {c:"#6272a4",w:25},{c:"#50fa7b",w:55},{c:"#C8A96E",w:35},
+            {c:"#ff79c6",w:45},{c:"#6272a4",w:20},
+          ].map(({c,w},r)=>(
+            <rect key={r} x={x+28} y={270+r*14} width={w+(wi*7+r*11)%40} height={5}
+              fill={c} opacity="0.5" rx="1" />
+          ))}
+          {/* blinking cursor */}
+          <rect x={x+28} y="374" width="5" height="9" fill="#C8A96E" opacity="0.7" className="warnblink" />
         </g>
       ))}
-      {/* Floating code tokens */}
-      {["if()","===","=>","{...}","async","await","O(n)","API","SQL","[]","()=>","null"].map((t,i)=>(
-        <text key={i} x={(i*110+20)%1150} y={60+(i*58)%360} fontSize="11"
-          fill="#C8A96E" opacity="0.14" fontFamily="monospace"
-          className="floatup" style={{animationDelay:`${i*0.5}s`}}>{t}</text>
+      {/* floating code tokens */}
+      {["const","=>","async","await","O(n²)","SELECT","API","git push",".map()",
+        "if(x)","null","return","import","export","useState","useRef"].map((t,i)=>(
+        <text key={i} x={(i*78+20)%1180} y={40+(i*48)%380}
+          fontSize={10+(i%3)*2} fill="#C8A96E" opacity={0.08+(i%4)*0.03}
+          fontFamily="monospace" className="floatup" style={{animationDelay:`${i*0.45}s`}}>{t}</text>
       ))}
-      {/* Node connection lines */}
-      {[[150,320,400,260],[500,280,800,340],[200,400,650,360],[750,300,1050,280]].map(([x1,y1,x2,y2],i)=>(
-        <line key={i} x1={x1} y1={y1} x2={x2} y2={y2}
-          stroke="#C8A96E" strokeWidth="0.6" opacity="0.1"
-          strokeDasharray="5 10" className="dashmove" style={{animationDelay:`${i}s`}} />
+      {/* connection graph */}
+      {[[140,300,380,240],[480,260,720,320],[840,280,1100,240],[200,380,600,340],
+        [700,360,1000,400],[350,220,800,180]].map(([x1,y1,x2,y2],i)=>(
+        <g key={i}>
+          <line x1={x1} y1={y1} x2={x2} y2={y2}
+            stroke="#C8A96E" strokeWidth="0.7" opacity="0.09"
+            strokeDasharray="6 12" className="dashmove" style={{animationDelay:`${i*0.8}s`}} />
+          <circle cx={x1} cy={y1} r="4" fill="#C8A96E" opacity="0.15" />
+          <circle cx={x2} cy={y2} r="4" fill="#C8A96E" opacity="0.15" />
+        </g>
       ))}
-      {/* Node dots */}
-      {[[150,320],[400,260],[500,280],[800,340],[200,400],[650,360],[750,300],[1050,280]].map(([x,y],i)=>(
-        <circle key={i} cx={x} cy={y} r="3" fill="#C8A96E" opacity="0.2" />
-      ))}
-      <rect x="0" y="488" width="1200" height="112" fill="#030310" />
+      <rect x="0" y="490" width="1220" height="130" fill="#030310" />
     </svg>
   );
 }
 
-function DataBg() {
+/* ── CHAPTER IV: Data center / analysis room ── */
+function BgData() {
   return (
-    <svg className="sbg" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice">
-      <rect width="1200" height="600" fill="#020208" />
-      {/* Matrix rain columns */}
-      {Array.from({length:32}).map((_,i)=>(
-        <text key={i} x={i*38+8} y="0" fontSize="13" fill="#C8A96E" fontFamily="monospace"
-          className="matrixfall" opacity="0.18"
-          style={{animationDelay:`${(i*0.28)%4}s`,animationDuration:`${2.5+(i%5)*0.8}s`}}>
-          {["0","1","Σ","∫","λ","π","∞"][i%7]}
+    <svg className="sbg" viewBox="0 0 1220 620" preserveAspectRatio="xMidYMid slice">
+      <rect width="1220" height="620" fill="#020208" />
+      {/* matrix rain — 40 columns */}
+      {Array.from({length:40}).map((_,i)=>(
+        <text key={i} x={i*31+6} y="0" fontSize="12" fill="#C8A96E"
+          fontFamily="monospace" className="matrixfall" opacity="0.2"
+          style={{animationDelay:`${(i*0.26)%5}s`,animationDuration:`${2+((i*7)%5)*0.6}s`}}>
+          {["0","1","Σ","∫","λ","π","∞","∂","α","β"][i%10]}
         </text>
       ))}
-      {/* Server racks */}
-      {[40,175,310,860,995,1130].map((x,i)=>(
-        <g key={i}>
-          <rect x={x} y="130" width="110" height="380" rx="3" fill="#080812" />
-          <rect x={x} y="130" width="110" height="380" rx="3" fill="none" stroke="#C8A96E" strokeWidth="0.4" opacity="0.2" />
-          {Array.from({length:14}).map((_,row)=>(
+      {/* server racks — both sides */}
+      {[20,150,280,910,1040,1150].map((x,ri)=>(
+        <g key={ri}>
+          <rect x={x} y="100" width="118" height="440" rx="4" fill="#070710" />
+          <rect x={x} y="100" width="118" height="440" rx="4" fill="none" stroke="#C8A96E" strokeWidth="0.5" opacity="0.18" />
+          {/* rack units */}
+          {Array.from({length:16}).map((_,row)=>(
             <g key={row}>
-              <rect x={x+5} y={138+row*26} width="100" height="18" rx="2" fill="#0c0c1e" />
-              <circle cx={x+97} cy={147+row*26} r="3.5"
-                fill={row%4===0?"#00ee88":row%4===1?"#C8A96E":row%4===2?"#4488ff":"#ff4444"}
-                opacity="0.8" className="warnblink" style={{animationDelay:`${(i+row)*0.18}s`}} />
-              <rect x={x+8} y={141+row*26} width={30+(i+row)%40} height="4" fill="#C8A96E" opacity="0.07" rx="1" />
+              <rect x={x+5} y={108+row*26} width={108} height={20} rx="2" fill="#0b0b1c" />
+              <rect x={x+5} y={108+row*26} width={108} height={20} rx="2" fill="none" stroke="#C8A96E" strokeWidth="0.3" opacity="0.15" />
+              {/* drive bays */}
+              {[0,1,2,3].map(b=>(
+                <rect key={b} x={x+8+b*24} y={110+row*26} width={20} height={8} rx="1" fill="#0e0e20" />
+              ))}
+              {/* status LED */}
+              <circle cx={x+105} cy={118+row*26} r="3.5"
+                fill={row%5===0?"#00ee88":row%5===1?"#C8A96E":row%5===2?"#4488ff":row%5===3?"#ff4444":"#aaaaaa"}
+                opacity="0.85" className="warnblink" style={{animationDelay:`${(ri*2+row)*0.15}s`}} />
             </g>
           ))}
         </g>
       ))}
-      {/* Central holographic display */}
-      <g transform="translate(600,310)">
-        <ellipse cx="0" cy="100" rx="140" ry="22" fill="#C8A96E" opacity="0.04" />
-        <ellipse cx="0" cy="100" rx="100" ry="14" fill="#C8A96E" opacity="0.06" />
-        {/* Bars */}
-        {[35,65,48,88,55,78,42,92,60,70].map((h,i)=>(
-          <rect key={i} x={-105+i*24} y={100-h} width="18" height={h}
-            fill="#C8A96E" opacity={0.08+i*0.025} className="bargrow" style={{animationDelay:`${i*0.08}s`}} />
+      {/* center holographic analytics display */}
+      <g transform="translate(610,300)">
+        {/* holo platform */}
+        <ellipse cx="0" cy="120" rx="160" ry="28" fill="#C8A96E" opacity="0.04" />
+        <ellipse cx="0" cy="120" rx="120" ry="18" fill="#C8A96E" opacity="0.06" />
+        {/* vertical beam */}
+        <rect x="-1" y="-60" width="2" height="180" fill="#C8A96E" opacity="0.04" />
+        {/* bar chart */}
+        {[38,72,52,96,60,84,46,100,68,78].map((h,i)=>(
+          <rect key={i} x={-115+i*26} y={120-h} width={20} height={h}
+            fill="#C8A96E" opacity={0.07+i*0.02} className="bargrow"
+            style={{animationDelay:`${i*0.09}s`}} />
         ))}
-        <line x1="-110" y1="100" x2="110" y2="100" stroke="#C8A96E" strokeWidth="1" opacity="0.25" />
-        {/* R² label */}
-        <text x="0" y="-20" textAnchor="middle" fontSize="12" fill="#C8A96E" opacity="0.5"
-          fontFamily="monospace">R² = 0.998</text>
-        <text x="0" y="-6" textAnchor="middle" fontSize="8" fill="#C8A96E" opacity="0.3"
-          fontFamily="monospace">p = 1.02E-47</text>
-        {/* Trend line */}
-        <polyline points="-105,98 -80,72 -55,80 -30,50 -5,62 20,35 45,48 70,22 95,30"
-          stroke="#C8A96E" strokeWidth="1.5" fill="none" opacity="0.35" />
+        <line x1="-120" y1="120" x2="120" y2="120" stroke="#C8A96E" strokeWidth="1" opacity="0.2" />
+        {/* trend overlay */}
+        <polyline points="-115,118 -88,84 -62,96 -36,56 -10,68 16,38 42,52 68,22 94,34 114,18"
+          stroke="#C8A96E" strokeWidth="2" fill="none" opacity="0.4" />
+        {/* labels */}
+        <text x="0" y="-30" textAnchor="middle" fontSize="14" fill="#C8A96E" opacity="0.5"
+          fontFamily="monospace" letterSpacing="1">R² = 0.998</text>
+        <text x="0" y="-14" textAnchor="middle" fontSize="8" fill="#C8A96E" opacity="0.3"
+          fontFamily="monospace">p = 1.02E-47  ·  n = 42 years</text>
+        <text x="0" y="-2" textAnchor="middle" fontSize="7" fill="#C8A96E" opacity="0.2"
+          fontFamily="monospace">GDP · BEA · FRED · DHS · Kaggle</text>
       </g>
-      <rect x="0" y="510" width="1200" height="90" fill="#020208" />
+      <rect x="0" y="540" width="1220" height="80" fill="#020208" />
     </svg>
   );
 }
 
-function WorkshopBg() {
+/* ── CHAPTER V: Mechanical workshop with gears ── */
+function BgWorkshop() {
   return (
-    <svg className="sbg" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice">
-      <rect width="1200" height="600" fill="#030308" />
-      <rect width="1200" height="520" fill="#060610" />
-      {/* Shelf */}
-      <rect x="0" y="90" width="1200" height="10" fill="#0e0e1e" />
-      {/* Rotating gears */}
-      {[[180,270,50,1],[420,240,65,-1],[720,280,42,1],[980,255,58,-1],[1100,240,36,1]].map(([cx,cy,r,dir],i)=>(
-        <g key={i} style={{transformOrigin:`${cx}px ${cy}px`,animation:`${dir===1?"spin":"spinrev"} ${5+i*1.2}s linear infinite`}}>
-          <circle cx={cx} cy={cy} r={r} fill="none" stroke="#C8A96E" strokeWidth="2.5" opacity="0.18" />
-          {Array.from({length:10}).map((_,t)=>(
+    <svg className="sbg" viewBox="0 0 1220 620" preserveAspectRatio="xMidYMid slice">
+      <rect width="1220" height="620" fill="#030309" />
+      <rect width="1220" height="550" fill="#060610" />
+      {/* back wall bricks subtle */}
+      {Array.from({length:8}).map((_,r)=>
+        Array.from({length:18}).map((_,c)=>(
+          <rect key={`${r}-${c}`}
+            x={c*70+(r%2)*35} y={r*42}
+            width="68" height="40"
+            fill="none" stroke="#0c0c18" strokeWidth="0.8" opacity="0.4" />
+        ))
+      )}
+      {/* shelf */}
+      <rect x="0" y="92" width="1220" height="12" fill="#0e0e1e" />
+      <rect x="0" y="102" width="1220" height="3" fill="#C8A96E" opacity="0.1" />
+
+      {/* large spinning gears */}
+      {[
+        {cx:160,cy:260,r:80,dir:1,teeth:14,spd:8},
+        {cx:380,cy:220,r:100,dir:-1,teeth:18,spd:10},
+        {cx:680,cy:270,r:70,dir:1,teeth:12,spd:7},
+        {cx:900,cy:240,r:90,dir:-1,teeth:16,spd:9},
+        {cx:1100,cy:255,r:65,dir:1,teeth:12,spd:7.5},
+      ].map(({cx,cy,r,dir,teeth,spd},i)=>(
+        <g key={i} style={{transformOrigin:`${cx}px ${cy}px`,
+          animation:`${dir===1?"spin":"spinrev"} ${spd}s linear infinite`}}>
+          {/* outer ring */}
+          <circle cx={cx} cy={cy} r={r} fill="none" stroke="#C8A96E" strokeWidth="3" opacity="0.16" />
+          {/* teeth */}
+          {Array.from({length:teeth}).map((_,t)=>(
             <rect key={t}
-              x={cx+(r-5)*Math.cos(t*Math.PI/5)-4}
-              y={cy+(r-5)*Math.sin(t*Math.PI/5)-10}
-              width="7" height="18"
-              transform={`rotate(${t*36},${cx},${cy})`}
-              fill="#C8A96E" opacity="0.18" rx="1.5" />
+              x={cx+(r-6)*Math.cos(t*Math.PI*2/teeth)-5}
+              y={cy+(r-6)*Math.sin(t*Math.PI*2/teeth)-14}
+              width="10" height="22"
+              transform={`rotate(${t*360/teeth},${cx},${cy})`}
+              fill="#C8A96E" opacity="0.15" rx="2" />
           ))}
-          <circle cx={cx} cy={cy} r={r*0.32} fill="#0a0a14" stroke="#C8A96E" strokeWidth="1.2" opacity="0.25" />
-          <circle cx={cx} cy={cy} r={r*0.12} fill="#C8A96E" opacity="0.2" />
+          {/* inner ring */}
+          <circle cx={cx} cy={cy} r={r*0.65} fill="#040408" stroke="#C8A96E" strokeWidth="1.5" opacity="0.12" />
+          {/* spokes */}
+          {[0,1,2,3].map(s=>(
+            <line key={s}
+              x1={cx+r*0.2*Math.cos(s*Math.PI/2)} y1={cy+r*0.2*Math.sin(s*Math.PI/2)}
+              x2={cx+r*0.6*Math.cos(s*Math.PI/2)} y2={cy+r*0.6*Math.sin(s*Math.PI/2)}
+              stroke="#C8A96E" strokeWidth="2" opacity="0.1" />
+          ))}
+          {/* hub */}
+          <circle cx={cx} cy={cy} r={r*0.18} fill="#0a0a14" stroke="#C8A96E" strokeWidth="1.5" opacity="0.2" />
+          <circle cx={cx} cy={cy} r={r*0.07} fill="#C8A96E" opacity="0.15" />
         </g>
       ))}
-      {/* Workbench */}
-      <rect x="80" y="390" width="1040" height="22" rx="3" fill="#0d0d1e" />
-      <rect x="80" y="390" width="1040" height="3" fill="#C8A96E" opacity="0.1" />
-      {/* Floating skill badges */}
-      {["Six Sigma","SolidWorks","Lean","PERT","Kanban","VRIO","CSWA","MS Project"].map((s,i)=>(
-        <g key={i} className="floatup" style={{animationDelay:`${i*0.65}s`}}>
-          <rect x={(i*148)%1000+30} y={130+(i*55)%200} width={s.length*7+18} height="24" rx="4"
-            fill="#0c0c1e" stroke="#C8A96E" strokeWidth="0.6" opacity="0.55" />
-          <text x={(i*148)%1000+39} y={146+(i*55)%200} fontSize="10"
-            fill="#C8A96E" opacity="0.65" fontFamily="sans-serif">{s}</text>
+
+      {/* workbench */}
+      <rect x="60" y="400" width="1100" height="24" rx="4" fill="#0c0c1c" />
+      <rect x="60" y="398" width="1100" height="4" fill="#C8A96E" opacity="0.08" />
+      {/* bench legs */}
+      {[80,560,1120].map((x,i)=>(
+        <rect key={i} x={x} y="424" width="18" height="120" fill="#0a0a18" />
+      ))}
+
+      {/* floating skill badges */}
+      {["Six Sigma GB","CSWA","Lean","PERT","Kanban","VRIO","MS Project",
+        "SolidWorks","Python","Tableau","AnyLogic","LabVIEW"].map((s,i)=>(
+        <g key={i} className="floatup" style={{animationDelay:`${i*0.58}s`}}>
+          <rect x={(i*98+30)%1080+30} y={130+(i*55)%220}
+            width={s.length*7.5+18} height="26" rx="4"
+            fill="#0a0a1a" stroke="#C8A96E" strokeWidth="0.7" opacity="0.55" />
+          <text x={(i*98+30)%1080+39} y={147+(i*55)%220}
+            fontSize="10" fill="#C8A96E" opacity="0.65" fontFamily="sans-serif">{s}</text>
         </g>
       ))}
-      <rect x="0" y="494" width="1200" height="106" fill="#03030a" />
+      <rect x="0" y="500" width="1220" height="120" fill="#03030a" />
     </svg>
   );
 }
 
-function HorizonBg() {
+/* ── FINALE: Desert horizon sunrise, Phoenix ── */
+function BgHorizon() {
   return (
-    <svg className="sbg" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice">
+    <svg className="sbg" viewBox="0 0 1220 620" preserveAspectRatio="xMidYMid slice">
       <defs>
-        <radialGradient id="goldsun" cx="50%" cy="95%" r="65%">
-          <stop offset="0%" stopColor="#3d2200" />
-          <stop offset="35%" stopColor="#1e0e00" />
-          <stop offset="100%" stopColor="#030308" />
+        <radialGradient id="sunrise" cx="50%" cy="98%" r="70%">
+          <stop offset="0%" stopColor="#3d1e00" />
+          <stop offset="30%" stopColor="#1c0a00" />
+          <stop offset="65%" stopColor="#08040e" />
+          <stop offset="100%" stopColor="#02020a" />
         </radialGradient>
-        <radialGradient id="sunhalo" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#C8A96E" stopOpacity="0.22" />
+        <radialGradient id="suncore" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#C8A96E" stopOpacity="0.25" />
+          <stop offset="50%" stopColor="#C8A96E" stopOpacity="0.08" />
           <stop offset="100%" stopColor="#C8A96E" stopOpacity="0" />
         </radialGradient>
       </defs>
-      <rect width="1200" height="600" fill="url(#goldsun)" />
-      {Array.from({length:50}).map((_,i)=>(
-        <circle key={i} cx={(i*173)%1200} cy={(i*67)%300} r="0.7"
-          fill="white" opacity="0.18" className="twinkle" style={{animationDelay:`${i*0.3}s`}} />
+      <rect width="1220" height="620" fill="url(#sunrise)" />
+      {/* faint stars */}
+      {Array.from({length:60}).map((_,i)=>(
+        <circle key={i} cx={(i*179+12)%1220} cy={(i*73+8)%320} r="0.65"
+          fill="white" opacity="0.15" className="twinkle" style={{animationDelay:`${i*0.28}s`}} />
       ))}
-      {/* Rising sun disk */}
-      <circle cx="600" cy="530" r="200" fill="url(#sunhalo)" />
-      <circle cx="600" cy="530" r="90" fill="#C8A96E" opacity="0.1" />
-      <circle cx="600" cy="530" r="55" fill="#C8A96E" opacity="0.14" />
-      {/* Sun rays */}
-      {Array.from({length:16}).map((_,i)=>(
+      {/* sun halo layers */}
+      <circle cx="610" cy="540" r="300" fill="url(#suncore)" />
+      <circle cx="610" cy="540" r="120" fill="#C8A96E" opacity="0.08" />
+      <circle cx="610" cy="540" r="70" fill="#C8A96E" opacity="0.12" />
+      <circle cx="610" cy="540" r="40" fill="#C8A96E" opacity="0.18" />
+      {/* sun rays */}
+      {Array.from({length:20}).map((_,i)=>(
         <line key={i}
-          x1={600+92*Math.cos(i*Math.PI/8)} y1={530+92*Math.sin(i*Math.PI/8)}
-          x2={600+200*Math.cos(i*Math.PI/8)} y2={530+200*Math.sin(i*Math.PI/8)}
-          stroke="#C8A96E" strokeWidth="0.8" opacity="0.08" />
+          x1={610+95*Math.cos(i*Math.PI/10)}
+          y1={540+95*Math.sin(i*Math.PI/10)}
+          x2={610+260*Math.cos(i*Math.PI/10)}
+          y2={540+260*Math.sin(i*Math.PI/10)}
+          stroke="#C8A96E" strokeWidth="0.8" opacity="0.06" />
       ))}
-      {/* Horizon line */}
-      <rect x="0" y="500" width="1200" height="2" fill="#C8A96E" opacity="0.22" />
-      <rect x="0" y="502" width="1200" height="98" fill="#04030a" />
-      {/* Phoenix text */}
-      <text x="600" y="490" textAnchor="middle" fontSize="11" fill="#C8A96E" opacity="0.3"
-        fontFamily="Georgia,serif" letterSpacing="8">PHOENIX  ·  ARIZONA</text>
-      {/* Birds */}
-      {[[180,200],[320,175],[500,215],[750,195],[920,210],[1060,182]].map(([x,y],i)=>(
-        <path key={i} d={`M${x} ${y} q7-7 14 0 q7 7 14 0`}
-          stroke="#C8A96E" strokeWidth="1.3" fill="none" opacity="0.3"
+      {/* horizon line */}
+      <rect x="0" y="502" width="1220" height="2" fill="#C8A96E" opacity="0.2" />
+      {/* ground */}
+      <rect x="0" y="504" width="1220" height="116" fill="#050308" />
+      {/* desert landscape silhouette */}
+      <path d="M0 504 Q100 490 200 504 Q300 515 400 502 Q500 490 610 504 Q720 515 820 502 Q920 490 1020 504 Q1100 512 1220 504 L1220 620 L0 620 Z"
+        fill="#030208" />
+      {/* distant city lights Phoenix */}
+      {Array.from({length:24}).map((_,i)=>(
+        <rect key={i} x={(i*52+30)%1160} y={488-(i%4)*8} width={2+(i%3)} height={4+(i%6)*2}
+          fill="#C8A96E" opacity={0.1+(i%5)*0.05} className="flicker"
+          style={{animationDelay:`${i*0.3}s`}} />
+      ))}
+      <text x="610" y="494" textAnchor="middle" fontSize="11" fill="#C8A96E" opacity="0.28"
+        fontFamily="Georgia,serif" letterSpacing="10">PHOENIX  ·  ARIZONA</text>
+      {/* birds */}
+      {[[160,200,0.9],[280,175,1],[450,210,0.85],[640,195,1],[820,215,0.9],[990,188,1],[1100,205,0.85]].map(([x,y,s],i)=>(
+        <path key={i}
+          d={`M${x} ${y} q${8*+s}-${7*+s} ${16*+s} 0 q${8*+s} ${7*+s} ${16*+s} 0`}
+          stroke="#C8A96E" strokeWidth={1.2*+s} fill="none" opacity="0.28"
           className="floatup" style={{animationDelay:`${i*1.1}s`}} />
+      ))}
+      {/* foreground desert plants */}
+      {[[50,500],[1150,500],[200,508],[1020,506]].map(([x,y],i)=>(
+        <g key={i}>
+          <rect x={x} y={y} width="4" height="50" fill="#120e08" />
+          <ellipse cx={x+2} cy={y} rx="12" ry="20" fill="#0e0a06" />
+          {/* arms */}
+          <rect x={x-14} y={y+10} width="14" height="3" rx="1" fill="#120e08" />
+          <ellipse cx={x-14} cy={y+8} rx="5" ry="8" fill="#0e0a06" />
+          <rect x={x+4} y={y+18} width="14" height="3" rx="1" fill="#120e08" />
+          <ellipse cx={x+18} cy={y+16} rx="5" ry="8" fill="#0e0a06" />
+        </g>
       ))}
     </svg>
   );
 }
 
 const BGMAP: Record<string, React.FC> = {
-  city: CityBg, campus: CampusBg, plant: PlantBg,
-  lab: LabBg, data: DataBg, workshop: WorkshopBg, horizon: HorizonBg,
+  city: BgCity, campus: BgCampus, plant: BgPlant,
+  lab: BgLab, data: BgData, workshop: BgWorkshop, horizon: BgHorizon,
 };
 
-/* ══════════════════════════════════════════════════════════════
-   TITLE CARD
-══════════════════════════════════════════════════════════════ */
-function TitleCard({ scene, vis }: { scene: typeof SCENES[0]; vis: boolean }) {
-  return (
-    <div className={`titlecard ${vis ? "tc-in" : ""}`}>
-      <span className="tc-chapter">{scene.chapter}</span>
-      <span className="tc-sep">·</span>
-      <span className="tc-title">{scene.title}</span>
-      <span className="tc-sub">{scene.subtitle}</span>
-    </div>
-  );
-}
-
-/* ══════════════════════════════════════════════════════════════
+/* ════════════════════════════════════════════════════════════
    MAIN APP
-══════════════════════════════════════════════════════════════ */
+════════════════════════════════════════════════════════════ */
 export default function Home() {
-  const [idx,        setIdx]        = useState(0);
-  const [cutting,    setCutting]    = useState(false);
-  const [titleVis,   setTitleVis]   = useState(false);
-  const [dialogOn,   setDialogOn]   = useState(false);
-  const [charX,      setCharX]      = useState(28);
-  const [charWalk,   setCharWalk]   = useState(false);
-  const [menuOpen,   setMenuOpen]   = useState(false);
-  const [infoOpen,   setInfoOpen]   = useState(false);
-  const busy    = useRef(false);
-  const lastW   = useRef(0);
-  const touchX  = useRef(0);
-  const scene   = SCENES[idx];
-  const Bg      = BGMAP[scene.bg];
+  const [idx,          setIdx]        = useState(0);
+  const [phase,        setPhase]      = useState<"scene"|"titlecard">("scene");
+  const [sceneVis,     setSceneVis]   = useState(false);
+  const [dialogOn,     setDialogOn]   = useState(false);
+  const [charX,        setCharX]      = useState(28);
+  const [charWalk,     setCharWalk]   = useState(false);
+  const [menuOpen,     setMenuOpen]   = useState(false);
+  const [infoOpen,     setInfoOpen]   = useState(false);
+  const busy   = useRef(false);
+  const lastW  = useRef(0);
+  const touchX = useRef(0);
+  const scene  = SCENES[idx];
+  const Bg     = BGMAP[scene.bg];
 
+  /* ── NAVIGATE ── */
   const go = useCallback((next: number) => {
     if (busy.current || next === idx || next < 0 || next >= SCENES.length) return;
     busy.current = true;
     const right = next > idx;
 
+    // 1. char walks out + fade dialogue
     setCharWalk(true);
-    setCharX(right ? 115 : -20);
+    setCharX(right ? 120 : -25);
     setDialogOn(false);
-    setTitleVis(false);
+    setSceneVis(false);
     setInfoOpen(false);
 
-    setTimeout(() => setCutting(true), 480);
-
+    // 2. hard cut to title card
     setTimeout(() => {
       setIdx(next);
-      setCharX(right ? -15 : 115);
-      setCutting(false);
+      setCharX(right ? -18 : 120);
+      setPhase("titlecard");
+    }, 600);
+
+    // 3. title card shown, then reveal scene
+    setTimeout(() => {
+      setPhase("scene");
+      setSceneVis(true);
+    }, 1800);
+
+    // 4. char walks in
+    setTimeout(() => {
+      setCharX(28);
       setTimeout(() => {
-        setCharX(28);
-        setTimeout(() => {
-          setCharWalk(false);
-          setTitleVis(true);
-          setTimeout(() => { setDialogOn(true); busy.current = false; }, 700);
-        }, 750);
-      }, 80);
-    }, 680);
+        setCharWalk(false);
+        setTimeout(() => { setDialogOn(true); busy.current = false; }, 500);
+      }, 700);
+    }, 2000);
   }, [idx]);
 
+  /* ── BOOT ── */
   useEffect(() => {
-    setTimeout(() => setTitleVis(true), 300);
-    setTimeout(() => setDialogOn(true), 1000);
+    setPhase("titlecard");
+    setTimeout(() => { setPhase("scene"); setSceneVis(true); }, 1600);
+    setTimeout(() => { setDialogOn(true); }, 2400);
   }, []);
 
+  /* ── INPUT ── */
   useEffect(() => {
     const h = (e: KeyboardEvent) => {
       if (e.key==="ArrowRight"||e.key==="ArrowDown") go(idx+1);
@@ -833,7 +1046,7 @@ export default function Home() {
   useEffect(() => {
     const h = (e: WheelEvent) => {
       const n = Date.now();
-      if (n - lastW.current < 950) return;
+      if (n - lastW.current < 1100) return;
       lastW.current = n;
       if (e.deltaY > 30) go(idx+1);
       else if (e.deltaY < -30) go(idx-1);
@@ -846,7 +1059,7 @@ export default function Home() {
     const ts = (e: TouchEvent) => { touchX.current = e.touches[0].clientX; };
     const te = (e: TouchEvent) => {
       const d = touchX.current - e.changedTouches[0].clientX;
-      if (Math.abs(d) < 55) return;
+      if (Math.abs(d) < 60) return;
       if (d > 0) go(idx+1); else go(idx-1);
     };
     window.addEventListener("touchstart", ts, { passive: true });
@@ -859,21 +1072,19 @@ export default function Home() {
   return (
     <div className="film">
 
-      {/* ── FILM CUT ── */}
-      <div className={`filmcut ${cutting ? "cutting" : ""}`}>
-        <div className="fc-top" /><div className="fc-bot" />
-      </div>
-
-      {/* ── BG ── */}
+      {/* ══ BACKGROUND ══ */}
       <div className="bglayer"><Bg /></div>
 
-      {/* ── VIGNETTE ── */}
+      {/* ══ VIGNETTE ══ */}
       <div className="vignette" />
 
-      {/* ── LETTERBOX ── */}
+      {/* ══ CHAPTER TITLE CARD ══ */}
+      <ChapterCard scene={scene} show={phase === "titlecard"} />
+
+      {/* ══ LETTERBOX BARS ══ */}
       <div className="lb lb-top" /><div className="lb lb-bot" />
 
-      {/* ── INFO DRAWER ── */}
+      {/* ══ INFO DRAWER ══ */}
       <aside className={`drawer ${infoOpen ? "drawer-open" : ""}`}>
         <button className="drawer-close" onClick={() => setInfoOpen(false)}>✕</button>
         {info && (
@@ -883,8 +1094,8 @@ export default function Home() {
               <div className="drow" key={i}>
                 <span className="dkey">{k}</span>
                 <span className="dval">
-                  {k==="Email"  ? <a href={`mailto:${v}`}>{v}</a>
-                 : k==="Phone"  ? <a href={`tel:+14807425812`}>{v}</a>
+                  {k==="Email"    ? <a href={`mailto:${v}`}>{v}</a>
+                 : k==="Phone"    ? <a href="tel:+14807425812">{v}</a>
                  : k==="LinkedIn" ? <a href="https://www.linkedin.com/in/prathambhilare" target="_blank" rel="noreferrer">{v}</a>
                  : k==="GitHub"   ? <a href="https://github.com/bhilarepratham" target="_blank" rel="noreferrer">{v}</a>
                  : v}
@@ -895,11 +1106,11 @@ export default function Home() {
         )}
       </aside>
 
-      {/* ── SCENE MENU ── */}
+      {/* ══ SCENE MENU ══ */}
       <div className={`smenu ${menuOpen ? "smenu-open" : ""}`}>
         <button className="smenu-x" onClick={() => setMenuOpen(false)}>✕</button>
         <nav>
-          {SCENES.map((s, i) => (
+          {SCENES.map((s,i) => (
             <button key={s.id} className={`smitem ${i===idx?"smitem-on":""}`}
               onClick={() => { go(i); setMenuOpen(false); }}>
               <span className="smchap">{s.chapter}</span>
@@ -910,15 +1121,16 @@ export default function Home() {
         </nav>
       </div>
 
-      {/* ── TOP HUD ── */}
-      <header className="hud-top">
+      {/* ══ TOP HUD ══ */}
+      <header className={`hud-top ${sceneVis ? "hud-in" : ""}`}>
         <button className="brand" onClick={() => go(0)}>
           <div className="brand-mark">PB</div>
           <span>Pratham Bhilare</span>
         </button>
-
-        <TitleCard scene={scene} vis={titleVis} />
-
+        <div className="hud-chapter">
+          <span className="hud-ch">{scene.chapter}</span>
+          <span className="hud-ctitle">{scene.title}</span>
+        </div>
         <div className="hud-actions">
           <button className="hbtn" onClick={() => setInfoOpen(v => !v)} title="Scene details">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -933,36 +1145,49 @@ export default function Home() {
         </div>
       </header>
 
-      {/* ── STAGE ── */}
-      <div className="stage">
+      {/* ══ STAGE ══ */}
+      <div className={`stage ${sceneVis ? "stage-in" : ""}`}>
         <div className="groundline" />
+        {/* foreground dust particles */}
+        <div className="stage-particles" aria-hidden="true">
+          {Array.from({length:16}).map((_,i)=>(
+            <div key={i} className="dust" style={{
+              left:`${(i*67+11)%95}%`,
+              animationDelay:`${(i*0.7)%7}s`,
+              animationDuration:`${8+(i*1.3)%8}s`,
+              width:`${1+(i%3)}px`, height:`${1+(i%3)}px`,
+              opacity: 0.06+(i%5)*0.03,
+            }} />
+          ))}
+        </div>
         <div className="charwrap" style={{ left: `${charX}%` }}>
-          <DialogueBubble lines={scene.dialogue} active={dialogOn} sceneKey={idx} />
+          <Dialogue lines={scene.lines} active={dialogOn} sceneKey={idx} />
           <Character mood={scene.mood} walking={charWalk} />
         </div>
       </div>
 
-      {/* ── BOTTOM HUD ── */}
-      <div className="hud-bot">
-        <button className="arrow" onClick={() => go(idx-1)} disabled={idx===0}>‹</button>
+      {/* ══ BOTTOM HUD ══ */}
+      <div className={`hud-bot ${sceneVis ? "hud-in" : ""}`}>
+        <button className="navbtn" onClick={() => go(idx-1)} disabled={idx===0}>‹</button>
         <div className="dots">
-          {SCENES.map((s,i)=>(
-            <button key={s.id} className={`dot ${i===idx?"dot-on":""}`} onClick={() => go(i)} title={s.title} />
+          {SCENES.map((s,i) => (
+            <button key={s.id} className={`dot ${i===idx?"dot-on":""}`}
+              onClick={() => go(i)} title={s.title} />
           ))}
         </div>
-        <button className="arrow" onClick={() => go(idx+1)} disabled={idx===SCENES.length-1}>›</button>
+        <button className="navbtn" onClick={() => go(idx+1)} disabled={idx===SCENES.length-1}>›</button>
       </div>
 
-      {/* ── FILM STRIP PROGRESS ── */}
+      {/* ══ FILM PROGRESS ══ */}
       <div className="filmstrip">
         <div className="filmfill" style={{ width:`${(idx/(SCENES.length-1))*100}%` }} />
       </div>
 
-      {/* ── FIRST SCENE HINT ── */}
-      {idx === 0 && (
+      {/* ══ HINT (first scene) ══ */}
+      {idx===0 && sceneVis && (
         <div className="hint">
           <span>Scroll · Arrow keys · Swipe to navigate</span>
-          <span className="hint-arrow">→</span>
+          <span className="hint-arr">→</span>
         </div>
       )}
 
