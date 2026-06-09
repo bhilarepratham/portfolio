@@ -269,10 +269,24 @@ strong { font-weight: 600; color: var(--t1); }
   flex-shrink: 0; line-height: 1; width: 28px; text-align: center;
 }
 .exp-chevron.open { transform: rotate(45deg); color: var(--t1); }
-.exp-bullets {
-  list-style: none; padding: 0 16px 20px 16px;
-  display: flex; flex-direction: column; gap: 10px;
+.exp-expand {
   animation: expandDown 0.3s var(--easeOut);
+}
+.exp-courses, .exp-tools-row {
+  display: flex; gap: 12px; align-items: baseline;
+  padding: 10px 16px; border-bottom: 1px solid var(--div2);
+  font-size: 13px; flex-wrap: wrap;
+}
+.exp-courses { border-top: 1px solid var(--div2); }
+.exp-courses-label, .exp-tools-label {
+  font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--blue); flex-shrink: 0; min-width: 88px; padding-top: 2px;
+}
+.exp-courses-val, .exp-tools-val {
+  color: var(--t3); line-height: 1.6;
+}
+.exp-bullets {
+  list-style: none; padding: 14px 16px 8px; display: flex; flex-direction: column; gap: 10px;
 }
 .exp-bullets li {
   font-size: 14px; color: var(--t2); line-height: 1.75;
