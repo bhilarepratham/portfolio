@@ -337,6 +337,65 @@ section {
   gap: 12px;
 }
 
+/* Certifications */
+
+.cert-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.cert-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.025);
+  border-radius: 22px;
+}
+
+.cert-badge {
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(182, 167, 255, 0.22), rgba(125, 211, 252, 0.16));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.cert-body {
+  min-width: 0;
+}
+
+.cert-body .year {
+  color: var(--muted);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin-bottom: 6px;
+}
+
+.cert-body h3 {
+  margin: 0 0 6px;
+  font-size: 16px;
+  letter-spacing: -0.03em;
+  color: white;
+  line-height: 1.3;
+}
+
+.cert-body p {
+  margin: 0;
+  color: var(--soft);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
 .highlight-card,
 .edu-card,
 .exp-card,
@@ -413,7 +472,7 @@ section {
 }
 
 .skills-grid {
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .project-grid {
@@ -755,8 +814,14 @@ section {
   .research-list,
   .skills-grid,
   .project-grid,
+  .cert-grid,
   .mini-grid {
     grid-template-columns: 1fr;
+  }
+
+  .cert-card {
+    padding: 14px;
+    border-radius: 16px;
   }
 
   .highlight-card,
