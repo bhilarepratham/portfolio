@@ -2,32 +2,36 @@
 
 import { useEffect, useState } from "react";
 
-const tickerWords = [
-  "Project management",
-  "Operations management",
-  "Process optimization",
-  "Data analysis",
-  "Lean systems",
-  "Business analysis",
-  "Product thinking",
-  "Six Sigma",
-];
-
 const highlights = [
   {
     stat: "15%",
-    title: "Cost reduction",
-    text: "Used AI-driven warehouse location analysis to identify a more efficient logistics setup and reduce expected costs.",
+    title: "Logistics cost reduction",
+    text: "AI-driven warehouse location optimization across 537 Amazon distribution centers outperformed Excel Solver by ~15–18% in weighted transport cost.",
+  },
+  {
+    stat: "3.85",
+    title: "GPA at ASU",
+    text: "MS Management of Technology at Arizona State University's Ira A. Fulton Schools of Engineering, graduating May 2026.",
+  },
+  {
+    stat: "$250K",
+    title: "Project budget managed",
+    text: "Led end-to-end planning for a $250,000 customer portal implementation with a 9-phase WBS and 210-day critical path.",
   },
   {
     stat: "20.34%",
-    title: "Solar efficiency",
-    text: "Improved the performance of a solar PV heat recovery concept from 18.22% to 20.34% through engineering analysis.",
+    title: "Solar panel efficiency",
+    text: "Improved PV panel efficiency from 18.22% to 20.34% through forced-air convection heat recovery — published as an engineering paper.",
   },
   {
     stat: "$100M",
-    title: "Scalable business model",
-    text: "Built an operational model for a 15-minute grocery delivery platform with a revenue projection through 2029.",
+    title: "Projected revenue model",
+    text: "Designed operations and financial model for FlazzMart, a 15-minute grocery delivery startup projecting $100M revenue by Year 5.",
+  },
+  {
+    stat: "42 yrs",
+    title: "Econometric study",
+    text: "Conducted a 42-year longitudinal OLS regression study (1980–2021) analyzing immigration's impact on GDP, unemployment, and personal income.",
   },
 ];
 
@@ -60,35 +64,34 @@ const experience = [
     company: "Arizona State University · Graduate Teaching Assistant",
     desc: "Supporting graduate and undergraduate coursework in Industrial and Systems Engineering.",
     points: [
-      "Evaluating assignments and providing feedback to maintain consistent grading standards.",
+      "Evaluating assignments and providing feedback to maintain consistent grading standards across 50+ students.",
       "Coordinating Canvas workflows, communication, and confidential student data handling.",
-      "Collaborating with faculty on rubrics and assessment criteria to improve academic integrity.",
-      "Supporting 50+ students across enterprise modeling, quality management, and systems engineering.",
+      "Collaborating with faculty on rubrics and assessment criteria across enterprise modeling, quality management, and systems engineering.",
     ],
   },
   {
     year: "Jan 2024 — Apr 2024",
-    company: "TATA Power · Mechanical Maintenance Engineer Intern",
-    desc: "Worked in power-plant operations with daily inspections, preventive maintenance, and troubleshooting support.",
+    company: "Tata Power · Mechanical Maintenance Intern",
+    desc: "Supervised mechanical outage activities at Trombay Thermal Power Station (Unit 5: 500 MW & Unit 8: 250 MW) across a 14-week period.",
     points: [
-      "Performed inspections to reduce unplanned downtime risk and improve operational reliability.",
-      "Documented procedures and inspection findings for better continuity and training.",
-      "Supported corrective actions through data-driven troubleshooting.",
+      "Conducted routine inspections of boiler components — pulverisers, burners, air heaters, economizers — improving combustion efficiency.",
+      "Implemented LOTO and Permit-to-Work procedures during equipment isolation, achieving zero safety incidents.",
+      "Performed Job Safety Analysis (JSA) for confined space entry tasks and documented coal transportation workflows.",
     ],
   },
   {
     year: "Dec 2022 — Jan 2023",
     company: "Matharu Sons · Process Optimization Trainee",
-    desc: "Managed fabrication and process coordination on fuel dispenser truck projects.",
+    desc: "Participated in end-to-end fabrication of fuel tankers (500–25,000L capacity) using Mild Steel.",
     points: [
-      "Oversaw design and layout for three fabrication projects from planning to delivery.",
-      "Improved workflows and safety measures to achieve full compliance with standards.",
-      "Coordinated with cross-functional fabrication teams to meet schedule and quality requirements.",
+      "Operated 3-roller bending machines and performed MIG/CO₂ welding for structural joining of tanker shells and baffle plates.",
+      "Performed hydrostatic pressure testing at 2,000 PSI to ensure structural integrity before dispatch.",
+      "Assisted in a 5-stage surface finishing process: sandblasting → soldering → primer → basecoat → clearcoat.",
     ],
   },
   {
     year: "Jun 2020 — Jul 2020",
-    company: "CIPET: Centre for Skilling & Technical Support · Industrial In-Plant Training",
+    company: "CIPET: Centre for Skilling & Technical Support · In-Plant Training",
     desc: "Completed foundational technical training in conventional tooling and manufacturing processes.",
     points: [
       "Studied lathe and milling operations, tool selection, and machining fundamentals.",
@@ -99,88 +102,155 @@ const experience = [
 
 const projects = [
   {
-    title: "Strategic Market Intelligence Web Scraping Application",
-    meta: "Python · Market intelligence",
-    result: "Built a Python app that converts scattered public company data into strategic insight.",
-    desc: "Automated scraping, cleaning, comparison, and visualization for competitive analysis and market intelligence workflows.",
-    tags: ["Python", "Competitive Strategy", "Market Intelligence", "Data Analysis"],
+    title: "Journey Air – Autonomous Airline Disruption Recovery",
+    meta: "Product Development · B2B SaaS",
+    result: "Honeywell Aerospace-sponsored platform targeting $4M–$10M annual revenue for a mid-size carrier.",
+    desc: "Designed a white-label SDK using Google Flutter to automate flight rebooking, baggage rerouting, and lounge provisioning via a single-tap mobile interface. Built a 5-year financial model showing positive NPV and $54.75M in projected annual savings from a 2-minute boarding time reduction.",
+    tags: ["Product Management", "Systems Engineering", "Financial Modeling", "B2B SaaS"],
+    image: "/assets/Dashboard.jpg",
+  },
+  {
+    title: "Strategic Market Intelligence Dashboard",
+    meta: "Python · Data Engineering",
+    result: "Scraped and aggregated real-time strategic data for 50+ publicly traded companies across 6 industries.",
+    desc: "Built a Streamlit financial intelligence app with an SQLite relational database, dual data sourcing via Yahoo Finance API + BeautifulSoup web scraping, and interactive Plotly visualizations — all with a modular 5-file architecture and built-in rate limiting.",
+    tags: ["Python", "Streamlit", "SQLite", "Market Intelligence", "Data Analysis"],
     image: "/assets/Dashboard.jpg",
   },
   {
     title: "AI-Powered Warehouse Location Optimization",
     meta: "Operations · Optimization",
-    result: "Identified an approach that achieved around 15% better cost efficiency.",
-    desc: "Compared AI-based modeling with manual solver approaches to create a logistics plan that scales more effectively.",
-    tags: ["AI", "Logistics", "Enterprise Operations", "Process Optimization"],
+    result: "Identified ~15–18% better cost efficiency over traditional solver approaches across 537 warehouses.",
+    desc: "Benchmarked Gen AI grid search vs. Excel Solver (GRG Nonlinear) to minimize weighted transport cost across the Amazon distribution network. Identified southeast Missouri as the optimal placement node, validated via Python/Matplotlib geospatial visualization.",
+    tags: ["AI", "Logistics", "Python", "Operations Research", "Process Optimization"],
     image: "/assets/analytics-table.png",
   },
   {
-    title: "FlazzMart – Grocery Delivery Platform",
-    meta: "Entrepreneurship · Business model",
-    result: "Designed a 15-minute grocery delivery model with a detailed growth story.",
-    desc: "Built market sizing and financial assumptions for a micro-fulfillment concept centered on faster delivery and lower operational friction.",
-    tags: ["Business Modeling", "Market Research", "Financial Forecasting", "Project Management"],
+    title: "ERP Industry Strategic Analysis",
+    meta: "Strategy · Market Research",
+    result: "Delivered a 40-page analysis of a $64.83B market covering SAP, Oracle, and Workday.",
+    desc: "Applied Porter's Five Forces, VRIO Framework, and Core Competence Theory across 10+ resources per company. Analyzed cloud ERP growth from $34.8B (2023) to a projected $123.42B by 2030 at 18% CAGR, with actionable recommendations on AI and cloud adoption strategy.",
+    tags: ["Strategic Analysis", "VRIO", "Porter's Five Forces", "Market Research"],
+    image: "/assets/analytics-table.png",
+  },
+  {
+    title: "FlazzMart – 15-Minute Grocery Delivery Platform",
+    meta: "Entrepreneurship · Business Model",
+    result: "Modeled a path from $5M Year 1 revenue to $100M by Year 5 on a $3M seed ask.",
+    desc: "Designed full-stack business plan including TAM/SAM/SOM sizing ($68.6B market by 2032), competitive benchmarking against Instacart (63% share), a $730 annual LTV model, and an AI-driven logistics architecture with MFCs and EV fleets for sub-15-minute delivery.",
+    tags: ["Business Modeling", "Market Research", "Financial Forecasting", "Go-to-Market"],
     image: "/assets/flazzmart.png",
   },
   {
-    title: "Markstrat Business Simulation Project",
-    meta: "Simulation · B2B growth",
-    result: "Drove simulated B2B growth to $18M in revenue with an SPI of 438.",
-    desc: "Used pricing, promotion, inventory, and R&D allocation decisions to improve awareness, sales, and market position.",
-    tags: ["Strategic Planning", "Market Analysis", "Data Analysis", "Process Optimization"],
+    title: "BYD Disruptive Innovation Strategy",
+    meta: "Strategy · Competitive Analysis",
+    result: "Analyzed BYD's rise to #1 EV seller globally, surpassing Tesla in Q4 2023.",
+    desc: "Evaluated BYD's vertical integration, 20,000+ patent portfolio, $2.1B in Chinese government subsidies, and 880% UK sales growth. Scored innovation model across viability, feasibility, and financial opportunity dimensions; recommended global expansion as the highest-value next step.",
+    tags: ["Disruptive Innovation", "Competitive Analysis", "IP Strategy", "EV Market"],
     image: "/assets/markstrat.png",
   },
   {
-    title: "VR Usability Testing",
-    meta: "UX · Virtual reality",
-    result: "Converted participant feedback into concrete usability fixes for a learning experience.",
-    desc: "Observed button sensitivity, feedback clarity, and flow issues using think-aloud testing and direct user observation.",
-    tags: ["UX", "Usability Testing", "Documentation", "VR"],
+    title: "Customer Portal Implementation – Medical Products LLC",
+    meta: "Project Management · Operations",
+    result: "Led end-to-end planning for a $250,000 portal across a 12-month, 210-day critical path.",
+    desc: "Built a 9-phase WBS in Microsoft Project with PERT estimation across 48 tasks. Identified 8 key risks (2 high-risk: Employee Turnover Rf=0.86, Learning Curve Rf=0.72) and designed a RAM mapping 9 deliverables across 7 roles with zero overlap.",
+    tags: ["MS Project", "Risk Management", "WBS", "Stakeholder Management"],
+    image: "/assets/markstrat.png",
+  },
+  {
+    title: "VR Usability Testing – Water Purification Simulation",
+    meta: "UX · Usability Research",
+    result: "Identified 5 critical interaction issues; delivered 7 actionable UX recommendations.",
+    desc: "Conducted task-based think-aloud usability testing on Meta Quest 2 (6DoF) across 6 structured scenarios. Evaluated all purification stages, confirmed 100% conceptual retention despite interface friction, and authored a full APA usability report with hardware comparison (Quest 2 vs. HTC Vive Pro).",
+    tags: ["UX Research", "VR", "Usability Testing", "Think-Aloud Protocol"],
     image: "/assets/vr.jpg",
   },
   {
     title: "Heat Recovery from Solar Photovoltaic Panels",
     meta: "Research · Engineering",
-    result: "Improved solar system efficiency from 18.22% to 20.34%.",
-    desc: "Led data collection and analysis on a solar heat recovery concept and published the work as an engineering paper.",
-    tags: ["Research", "Process Optimization", "Data Analysis", "Engineering"],
+    result: "Improved solar efficiency from 18.22% to 20.34% — published as a peer-reviewed paper.",
+    desc: "Designed and fabricated a forced-air convection dryer powered by PV waste heat, reducing panel operating temperature by 3.82°C. Instrumented with 6 K-type thermocouples, a pyranometer, and NI DAQ hardware. Managed end-to-end execution including SolidWorks modelling within ₹7,020 budget.",
+    tags: ["Research", "SolidWorks", "LabVIEW", "Data Analysis", "Thermodynamics"],
     image: "/assets/solar-dryer.png",
   },
   {
-    title: "42-Year Economic Data Analysis",
-    meta: "Analytics · Business insight",
-    result: "Analyzed 42 years of economic data to support decision-making.",
-    desc: "Worked with long-term data patterns to connect technical analysis with business and strategic interpretation.",
-    tags: ["Data Analysis", "Economic Trends", "Business Analysis", "Visualization"],
+    title: "42-Year Immigration & U.S. Economy Study",
+    meta: "Analytics · Econometrics",
+    result: "R² = 0.998 income prediction model; identified GDP as dominant predictor (p = 1.02E-47).",
+    desc: "Built a master dataset from 4 federal sources (DHS, BEA, FRED, Kaggle) with 42 observations. Applied OLS regression with train/test split and IQR outlier detection. Found immigration statistically insignificant (p > 0.05) across GDP, unemployment, and personal income outcomes.",
+    tags: ["Python", "OLS Regression", "Excel", "Statistical Analysis", "Policy Research"],
     image: "/assets/image.png",
   },
 ];
 
 const skills = [
   {
-    title: "Operations",
-    text: "Operations Management, Quality Management, Process Optimization, Kanban, Lean thinking.",
+    title: "Project & Operations Management",
+    text: "WBS, critical path, risk matrices, Kanban, Lean, Six Sigma, PERT estimation, process optimization.",
   },
   {
-    title: "Analytics",
-    text: "Excel, Tableau, data analysis, strategic modeling, performance measurement.",
+    title: "Data & Analytics",
+    text: "OLS regression, time-series forecasting, Excel modeling, Tableau, Python (Pandas, NumPy, Matplotlib).",
+  },
+  {
+    title: "Product & Strategy",
+    text: "Business Model Canvas, Porter's Five Forces, VRIO, TAM/SAM/SOM, competitive benchmarking, go-to-market.",
   },
   {
     title: "Engineering Tools",
-    text: "SolidWorks, Ansys, AnyLogic, systems modeling, manufacturing fundamentals.",
+    text: "SolidWorks, Ansys, AnyLogic, LabVIEW, systems modeling, manufacturing fundamentals.",
   },
   {
-    title: "Product / PM",
-    text: "Project coordination, cross-functional collaboration, documentation, stakeholder communication.",
+    title: "Software & Platforms",
+    text: "Microsoft Project, Streamlit, SQLite, yFinance, BeautifulSoup, Plotly, Google Flutter, VS Code.",
+  },
+  {
+    title: "Soft Skills",
+    text: "Cross-functional collaboration, technical documentation, stakeholder communication, academic instruction.",
   },
 ];
 
 const certifications = [
-  "Project Management: International Projects",
-  "Six Sigma: Green Belt",
-  "SOLIDWORKS Associate",
-  "Siemens Mobility - Commercial Project Manager Job Simulation",
-  "Advanced Tableau Desktop",
+  {
+    name: "Six Sigma: Green Belt",
+    body: "Professional Certification",
+    desc: "Quality management and process improvement methodology.",
+  },
+  {
+    name: "Project Management: International Projects",
+    body: "Professional Certification",
+    desc: "Global project coordination, compliance, and cross-cultural execution.",
+  },
+  {
+    name: "SOLIDWORKS Associate (CSWA)",
+    body: "Dassault Systèmes",
+    desc: "Certified proficiency in 3D CAD design and modeling.",
+  },
+  {
+    name: "Advanced Tableau Desktop",
+    body: "Data Visualization",
+    desc: "Advanced dashboard design and visual analytics workflows.",
+  },
+  {
+    name: "Siemens Mobility – Commercial PM Job Simulation",
+    body: "Forage / Siemens",
+    desc: "Commercial project management in a mobility industry context.",
+  },
+];
+
+const research = [
+  {
+    type: "Peer-reviewed publication",
+    title: "Heat Recovery from Solar Photovoltaic Panels",
+    desc: "Experimental study on improving PV efficiency through forced-air convection heat recovery. Panel efficiency improved from 18.22% to 20.34% through DC fan-driven air circulation. Designed and fabricated a compact agricultural dryer powered by PV waste heat.",
+    tags: ["Solar Energy", "Thermodynamics", "SolidWorks", "LabVIEW", "NI DAQ"],
+  },
+  {
+    type: "Academic / applied work",
+    title: "ASEM vs. INCOSE Competency Framework Analysis",
+    desc: "Comparative literature review of two major engineering professional societies across 4 peer-reviewed sources. Mapped 4 core competency domains across EMBoK and SECF, benchmarked 5 certification levels, and identified 3 strategic collaboration opportunities to address workforce gaps in socio-technical systems engineering.",
+    tags: ["Systems Engineering", "INCOSE", "ASEM", "Competency Frameworks"],
+  },
 ];
 
 export default function Home() {
@@ -254,11 +324,11 @@ export default function Home() {
           <nav className={`nav ${navOpen ? "open" : ""}`} id="siteNav">
             <a href="#home" onClick={() => setNavOpen(false)}>Home</a>
             <a href="#highlights" onClick={() => setNavOpen(false)}>Highlights</a>
-            <a href="#education" onClick={() => setNavOpen(false)}>Education</a>
             <a href="#experience" onClick={() => setNavOpen(false)}>Experience</a>
+            <a href="#projects" onClick={() => setNavOpen(false)}>Projects</a>
             <a href="#research" onClick={() => setNavOpen(false)}>Research</a>
             <a href="#skills" onClick={() => setNavOpen(false)}>Skills</a>
-            <a href="#projects" onClick={() => setNavOpen(false)}>Projects</a>
+            <a href="#certifications" onClick={() => setNavOpen(false)}>Certifications</a>
             <a href="#contact" onClick={() => setNavOpen(false)}>Contact</a>
           </nav>
         </div>
@@ -270,7 +340,7 @@ export default function Home() {
             <div className="hero-grid">
               <div>
                 <div className="eyebrow">
-                  Graduate Teaching Assistant @ ASU · MS Management of Technology ’26
+                  Graduate Teaching Assistant @ ASU · MS Management of Technology &apos;26
                 </div>
                 <h1>Pratham Bhilare</h1>
                 <p className="subhead">
@@ -286,14 +356,12 @@ export default function Home() {
                   <a className="btn" href="#experience">
                     See experience
                   </a>
+                  <a className="btn" href="mailto:pratham.bhilare1010@gmail.com">
+                    Get in touch
+                  </a>
                 </div>
                 <div className="hero-note">
-                  MS Management of Technology at Arizona State University with a
-                  3.85 GPA, a Bachelor’s in Mechanical Engineering, and hands-on
-                  experience in process improvement, fabrication coordination,
-                  supply-chain thinking, and academic instruction. Open to Summer
-                  2026 roles in Project Management, Product Management, Industrial
-                  Engineering, Manufacturing Engineering, and Business Analysis.
+                  MS Management of Technology at Arizona State University (GPA 3.85), Bachelor&apos;s in Mechanical Engineering, and hands-on experience across power plant operations, fabrication, supply-chain optimization, and academic instruction. Open to Summer 2026 roles in Project Management, Product Management, Industrial Engineering, and Business Analysis.
                 </div>
               </div>
 
@@ -318,6 +386,8 @@ export default function Home() {
                     "Business analysis",
                     "Product thinking",
                     "Six Sigma",
+                    "Systems engineering",
+                    "Financial modeling",
                   ].map((word, index) => (
                     <span key={`${dupIndex}-${index}-${word}`}>{word}</span>
                   ))
@@ -389,57 +459,8 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="research" className="fade-in">
-          <div className="eyebrow-number">04 — Research</div>
-          <div className="section-title">
-            <div>
-              <h2>Research and publications</h2>
-            </div>
-          </div>
-
-          <div className="research-list">
-            <article className="research-card panel reveal">
-              <div className="year">Publication</div>
-              <h3>Heat Recovery from Solar Photovoltaic Panels</h3>
-              <p>
-                Research focused on improving solar panel efficiency through
-                thermal recovery design and analysis. The profile notes a
-                performance improvement from 18.22% to 20.34%.
-              </p>
-            </article>
-
-            <article className="research-card panel reveal">
-              <div className="year">Academic / applied work</div>
-              <h3>Operational model for 15-minute grocery delivery</h3>
-              <p>
-                Designed a business and operations model with forecasted growth
-                to $100M revenue by 2029, combining logistics, planning, and
-                market assumptions.
-              </p>
-            </article>
-          </div>
-        </section>
-
-        <section id="skills" className="fade-in">
-          <div className="eyebrow-number">05 — Skills</div>
-          <div className="section-title">
-            <div>
-              <h2>Skills</h2>
-            </div>
-          </div>
-
-          <div className="skills-grid">
-            {skills.map((skill) => (
-              <div className="skill-card panel reveal" key={skill.title}>
-                <h3>{skill.title}</h3>
-                <p>{skill.text}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
         <section id="projects" className="fade-in">
-          <div className="eyebrow-number">06 — Projects</div>
+          <div className="eyebrow-number">04 — Projects</div>
           <div className="section-title">
             <div>
               <h2>Projects</h2>
@@ -470,26 +491,76 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="contact" className="fade-in">
-          <div className="eyebrow-number">07 — Certifications</div>
+        <section id="research" className="fade-in">
+          <div className="eyebrow-number">05 — Research</div>
           <div className="section-title">
             <div>
-              <h2>Certifications and tools</h2>
+              <h2>Research &amp; Publications</h2>
             </div>
           </div>
 
-          <div className="mini-grid">
-            {certifications.map((cert) => (
-              <article className="mini-card panel reveal" key={cert}>
-                <div className="year">Certification</div>
-                <h3>{cert}</h3>
-                <p>Professional credential listed in the profile.</p>
+          <div className="research-list">
+            {research.map((item) => (
+              <article className="research-card panel reveal" key={item.title}>
+                <div className="year">{item.type}</div>
+                <h3>{item.title}</h3>
+                <p>{item.desc}</p>
+                <div className="tag-row" style={{ marginTop: 14 }}>
+                  {item.tags.map((tag) => (
+                    <span className="tag" key={tag}>{tag}</span>
+                  ))}
+                </div>
               </article>
             ))}
           </div>
+        </section>
 
-          <div className="eyebrow-number" style={{ marginTop: 28 }}>
-            08 — Contact
+        <section id="skills" className="fade-in">
+          <div className="eyebrow-number">06 — Skills</div>
+          <div className="section-title">
+            <div>
+              <h2>Skills</h2>
+            </div>
+          </div>
+
+          <div className="skills-grid">
+            {skills.map((skill) => (
+              <div className="skill-card panel reveal" key={skill.title}>
+                <h3>{skill.title}</h3>
+                <p>{skill.text}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section id="certifications" className="fade-in">
+          <div className="eyebrow-number">07 — Certifications</div>
+          <div className="section-title">
+            <div>
+              <h2>Certifications</h2>
+            </div>
+          </div>
+
+          <div className="cert-grid">
+            {certifications.map((cert) => (
+              <article className="cert-card panel reveal" key={cert.name}>
+                <div className="cert-badge">✓</div>
+                <div className="cert-body">
+                  <div className="year">{cert.body}</div>
+                  <h3>{cert.name}</h3>
+                  <p>{cert.desc}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section id="contact" className="fade-in">
+          <div className="eyebrow-number">08 — Contact</div>
+          <div className="section-title">
+            <div>
+              <h2>Get in touch</h2>
+            </div>
           </div>
 
           <div className="panel contact-card reveal">
@@ -504,6 +575,9 @@ export default function Home() {
               <div className="hero-actions" style={{ marginTop: 0 }}>
                 <a className="btn primary" href="mailto:pratham.bhilare1010@gmail.com">
                   Email Pratham
+                </a>
+                <a className="btn" href="https://www.linkedin.com/in/prathambhilare" target="_blank" rel="noreferrer noopener">
+                  LinkedIn
                 </a>
                 <a className="btn" href="#home">
                   Back to top
@@ -537,7 +611,7 @@ export default function Home() {
           </div>
         </section>
 
-        <div className="footer">@Pratham Ankush Bhilare</div>
+        <div className="footer">© Pratham Ankush Bhilare · Phoenix, AZ</div>
       </main>
     </>
   );
