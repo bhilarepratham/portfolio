@@ -107,7 +107,6 @@ const projects = [
     result: "Honeywell Aerospace-sponsored platform targeting $4M–$10M annual revenue for a mid-size carrier.",
     desc: "Designed a white-label SDK using Google Flutter to automate flight rebooking, baggage rerouting, and lounge provisioning via a single-tap mobile interface. Built a 5-year financial model showing positive NPV and $54.75M in projected annual savings from a 2-minute boarding time reduction.",
     tags: ["Product Management", "Systems Engineering", "Financial Modeling", "B2B SaaS"],
-    image: "/assets/Dashboard.jpg",
   },
   {
     title: "Strategic Market Intelligence Dashboard",
@@ -115,7 +114,6 @@ const projects = [
     result: "Scraped and aggregated real-time strategic data for 50+ publicly traded companies across 6 industries.",
     desc: "Built a Streamlit financial intelligence app with an SQLite relational database, dual data sourcing via Yahoo Finance API + BeautifulSoup web scraping, and interactive Plotly visualizations — all with a modular 5-file architecture and built-in rate limiting.",
     tags: ["Python", "Streamlit", "SQLite", "Market Intelligence", "Data Analysis"],
-    image: "/assets/Dashboard.jpg",
   },
   {
     title: "AI-Powered Warehouse Location Optimization",
@@ -123,7 +121,6 @@ const projects = [
     result: "Identified ~15–18% better cost efficiency over traditional solver approaches across 537 warehouses.",
     desc: "Benchmarked Gen AI grid search vs. Excel Solver (GRG Nonlinear) to minimize weighted transport cost across the Amazon distribution network. Identified southeast Missouri as the optimal placement node, validated via Python/Matplotlib geospatial visualization.",
     tags: ["AI", "Logistics", "Python", "Operations Research", "Process Optimization"],
-    image: "/assets/analytics-table.png",
   },
   {
     title: "ERP Industry Strategic Analysis",
@@ -131,7 +128,6 @@ const projects = [
     result: "Delivered a 40-page analysis of a $64.83B market covering SAP, Oracle, and Workday.",
     desc: "Applied Porter's Five Forces, VRIO Framework, and Core Competence Theory across 10+ resources per company. Analyzed cloud ERP growth from $34.8B (2023) to a projected $123.42B by 2030 at 18% CAGR, with actionable recommendations on AI and cloud adoption strategy.",
     tags: ["Strategic Analysis", "VRIO", "Porter's Five Forces", "Market Research"],
-    image: "/assets/analytics-table.png",
   },
   {
     title: "FlazzMart – 15-Minute Grocery Delivery Platform",
@@ -139,7 +135,6 @@ const projects = [
     result: "Modeled a path from $5M Year 1 revenue to $100M by Year 5 on a $3M seed ask.",
     desc: "Designed full-stack business plan including TAM/SAM/SOM sizing ($68.6B market by 2032), competitive benchmarking against Instacart (63% share), a $730 annual LTV model, and an AI-driven logistics architecture with MFCs and EV fleets for sub-15-minute delivery.",
     tags: ["Business Modeling", "Market Research", "Financial Forecasting", "Go-to-Market"],
-    image: "/assets/flazzmart.png",
   },
   {
     title: "BYD Disruptive Innovation Strategy",
@@ -147,7 +142,6 @@ const projects = [
     result: "Analyzed BYD's rise to #1 EV seller globally, surpassing Tesla in Q4 2023.",
     desc: "Evaluated BYD's vertical integration, 20,000+ patent portfolio, $2.1B in Chinese government subsidies, and 880% UK sales growth. Scored innovation model across viability, feasibility, and financial opportunity dimensions; recommended global expansion as the highest-value next step.",
     tags: ["Disruptive Innovation", "Competitive Analysis", "IP Strategy", "EV Market"],
-    image: "/assets/markstrat.png",
   },
   {
     title: "Customer Portal Implementation – Medical Products LLC",
@@ -155,7 +149,6 @@ const projects = [
     result: "Led end-to-end planning for a $250,000 portal across a 12-month, 210-day critical path.",
     desc: "Built a 9-phase WBS in Microsoft Project with PERT estimation across 48 tasks. Identified 8 key risks (2 high-risk: Employee Turnover Rf=0.86, Learning Curve Rf=0.72) and designed a RAM mapping 9 deliverables across 7 roles with zero overlap.",
     tags: ["MS Project", "Risk Management", "WBS", "Stakeholder Management"],
-    image: "/assets/markstrat.png",
   },
   {
     title: "VR Usability Testing – Water Purification Simulation",
@@ -163,7 +156,6 @@ const projects = [
     result: "Identified 5 critical interaction issues; delivered 7 actionable UX recommendations.",
     desc: "Conducted task-based think-aloud usability testing on Meta Quest 2 (6DoF) across 6 structured scenarios. Evaluated all purification stages, confirmed 100% conceptual retention despite interface friction, and authored a full APA usability report with hardware comparison (Quest 2 vs. HTC Vive Pro).",
     tags: ["UX Research", "VR", "Usability Testing", "Think-Aloud Protocol"],
-    image: "/assets/vr.jpg",
   },
   {
     title: "Heat Recovery from Solar Photovoltaic Panels",
@@ -171,7 +163,6 @@ const projects = [
     result: "Improved solar efficiency from 18.22% to 20.34% — published as a peer-reviewed paper.",
     desc: "Designed and fabricated a forced-air convection dryer powered by PV waste heat, reducing panel operating temperature by 3.82°C. Instrumented with 6 K-type thermocouples, a pyranometer, and NI DAQ hardware. Managed end-to-end execution including SolidWorks modelling within ₹7,020 budget.",
     tags: ["Research", "SolidWorks", "LabVIEW", "Data Analysis", "Thermodynamics"],
-    image: "/assets/solar-dryer.png",
   },
   {
     title: "42-Year Immigration & U.S. Economy Study",
@@ -179,7 +170,6 @@ const projects = [
     result: "R² = 0.998 income prediction model; identified GDP as dominant predictor (p = 1.02E-47).",
     desc: "Built a master dataset from 4 federal sources (DHS, BEA, FRED, Kaggle) with 42 observations. Applied OLS regression with train/test split and IQR outlier detection. Found immigration statistically insignificant (p > 0.05) across GDP, unemployment, and personal income outcomes.",
     tags: ["Python", "OLS Regression", "Excel", "Statistical Analysis", "Policy Research"],
-    image: "/assets/image.png",
   },
 ];
 
@@ -469,9 +459,6 @@ export default function Home() {
           <div className="project-grid">
             {projects.map((project) => (
               <article className="project-card reveal" key={project.title}>
-                <div className="project-media">
-                  <img src={project.image} alt={project.title} />
-                </div>
                 <div className="project-body">
                   <div className="project-meta">{project.meta}</div>
                   <h3>{project.title}</h3>
