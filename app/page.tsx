@@ -150,56 +150,83 @@ const EXPERIENCE = [
     company: "Arizona State University",
     role: "Graduate Teaching Assistant",
     location: "Tempe, AZ",
+    courses: "IEE 530 – Enterprise Modeling · IEE 554 – Risk Management · IEE 556 – Intro to Systems Engineering · IEE 552 – Strategic Technologic Planning · IEE 477 – System Dynamics and Thinking · IEE 571 – Quality Management",
     points: [
-      "Supporting graduate and undergraduate coursework in Industrial and Systems Engineering across enterprise modeling, quality management, and systems engineering",
-      "Evaluating assignments and providing consistent feedback for 50+ students — maintaining rubric standards in collaboration with faculty",
-      "Managing Canvas workflows, grade reporting, and confidential student data handling across multiple course sections",
+      "Supported coursework operations for 50+ undergraduate and graduate students across Systems Engineering, Enterprise Modeling, and Quality Management courses, improving assignment turnaround and grading consistency through structured evaluation workflows",
+      "Collaborated with faculty to standardise grading rubrics and assessment processes, helping improve evaluation accuracy and maintain academic integrity across multiple courses",
+      "Managed Canvas LMS workflows, student communications, and confidential academic records while consistently meeting strict academic deadlines across 6+ technical courses",
+      "Strengthened stakeholder communication and workflow coordination skills by supporting cross-functional academic operations in a fast-paced university environment",
     ],
+    tools: "Canvas LMS · Excel · Microsoft Office",
   },
   {
     period: "Jan 2024 – Apr 2024",
     company: "Tata Power",
-    role: "Mechanical Maintenance Intern",
-    location: "Mumbai, India",
+    role: "Mechanical Maintenance Engineer Intern",
+    location: "Chembur, Maharashtra, India",
+    courses: "",
     points: [
-      "Supervised mechanical outage activities at Trombay Thermal Power Station — Unit 5 (500 MW) and Unit 8 (250 MW) — across a 14-week engagement",
-      "Conducted routine inspections of boiler components including pulverisers, burners, air heaters, and economizers, contributing to improved combustion efficiency and reduced emissions",
-      "Implemented Lockout/Tagout (LOTO) and Permit-to-Work (PTW) procedures during all equipment isolation events — achieved zero safety incidents across the full engagement",
-      "Performed Job Safety Analysis (JSA) for confined space entry tasks; documented and tracked the complete coal transportation workflow from Coal Jetty through to Boiler Drum",
-      "Studied and mapped the Flue Gas Desulphurisation (FGD) cycle and fly ash handling system (ESP → Cyclonic Hopper → Filter Bags → Silo → Bulker)",
+      "Conducted preventive maintenance inspections across critical power plant equipment (boilers, pulverisers, burners, air heaters, economisers), helping improve operational reliability and reduce the risk of unplanned downtime",
+      "Collaborated with maintenance teams to identify root causes of equipment failures and implement corrective actions using data-driven troubleshooting methods",
+      "Documented maintenance procedures, inspection reports, and operational metrics — creating process records that supported continuous improvement initiatives and team training",
+      "Implemented Lockout/Tagout (LOTO) and Permit-to-Work (PTW) procedures during all equipment isolation events, achieving zero safety incidents across the full 14-week engagement",
+      "Contributed to safe plant operations (500 MW + 250 MW units) by following industrial safety protocols and identifying maintenance process improvement opportunities",
     ],
+    tools: "Excel · Maintenance Documentation Systems · Preventive Maintenance Procedures",
   },
   {
     period: "Dec 2022 – Jan 2023",
     company: "Matharu Sons",
     role: "Process Optimization Trainee",
     location: "Navi Mumbai, India",
+    courses: "",
     points: [
-      "Participated in end-to-end fabrication of fuel tankers (500–25,000L capacity) using Mild Steel — from sheet metal rolling to final customer delivery",
-      "Operated 3-roller bending machines to form cylindrical tanker bodies; performed CO₂/MIG welding for structural joining of tanker shells and baffle plates",
-      "Performed hydrostatic pressure testing at 2,000 PSI on completed fuel tankers to detect leakage points and verify structural integrity before dispatch",
-      "Completed a 5-stage surface finishing process — sandblasting → body soldering → primer coating → basecoat → clearcoat — ensuring corrosion resistance and durability",
+      "Managed design and fabrication coordination for 3 fuel dispenser truck projects (500–25,000L capacity), ensuring on-time delivery while meeting client specifications and quality standards",
+      "Improved manufacturing workflow safety measures and process controls, contributing to 100% compliance with industry safety and operational standards",
+      "Coordinated cross-functional fabrication teams to monitor project progress, resolve production issues, and maintain delivery schedules",
+      "Supported process optimisation initiatives by identifying operational bottlenecks and implementing workflow improvements across fabrication activities",
+      "Performed hydrostatic pressure testing at 2,000 PSI and 5-stage surface finishing (sandblasting → soldering → primer → basecoat → clearcoat)",
     ],
+    tools: "Excel · SolidWorks · Process Mapping · Quality Control Methods",
+  },
+  {
+    period: "Jun 2020 – Jul 2020",
+    company: "CIPET: Centre for Skilling & Technical Support",
+    role: "Industrial In-Plant Training",
+    location: "Navi Mumbai, India",
+    courses: "",
+    points: [
+      "Built foundational manufacturing and machining knowledge through hands-on training in lathe and milling operations, tooling selection, and production safety practices",
+      "Learned quality control procedures, precision measurement techniques, and standard manufacturing workflows used in industrial environments",
+      "Completed technical training demonstrating adaptability and self-driven learning across conventional machining concepts and manufacturing safety practices",
+    ],
+    tools: "Conventional Machining Concepts · Precision Measurement · Manufacturing Safety Practices",
   },
 ];
 
 const EDUCATION = [
   {
     period: "Aug 2024 – May 2026",
-    institution: "Arizona State University",
+    institution: "Arizona State University — Ira A. Fulton Schools of Engineering",
     degree: "Master of Science, Management of Technology",
-    detail: "GPA 3.85 · Ira A. Fulton Schools of Engineering · Focus: PM, Product Strategy, Data Analytics",
+    detail: "GPA 3.85 · Focus: Operations, Project Management, Product Strategy, Data Analytics",
   },
   {
     period: "2021 – 2024",
     institution: "Pillai College of Engineering",
     degree: "Bachelor of Technology, Mechanical Engineering",
-    detail: "Navi Mumbai, India · Graduated with distinction",
+    detail: "Navi Mumbai, India",
   },
   {
     period: "2018 – 2021",
     institution: "Father Agnel Technical Education Complex",
-    degree: "Diploma, Mechanical Engineering",
+    degree: "Diploma of Education, Mechanical Engineering",
+    detail: "Navi Mumbai, India",
+  },
+  {
+    period: "2018",
+    institution: "Ryan International School",
+    degree: "10th Standard",
     detail: "Navi Mumbai, India",
   },
 ];
@@ -223,16 +250,16 @@ const SKILLS = [
     tags: ["Product Roadmapping","Business Model Canvas","TAM / SAM / SOM","Go-to-Market","User Stories","OKRs","Porter's Five Forces","VRIO Framework","Competitive Analysis"],
   },
   {
+    area: "Operations & Quality",
+    tags: ["Operations Management","Quality Management","Process Optimization","Lean Manufacturing","Six Sigma (Green Belt)","DMAIC","Bottleneck Analysis","Kanban"],
+  },
+  {
     area: "Data & Analytics",
     tags: ["OLS Regression","Time-Series Forecasting","Python (Pandas · NumPy)","Tableau","Excel Modeling","KPI Dashboards","A/B Testing Principles","Data Cleaning"],
   },
   {
-    area: "Frameworks & Methods",
-    tags: ["Agile / Scrum","Lean","Six Sigma (Green Belt)","V-Model","Kanban","Design Thinking","DMAIC","Change Management"],
-  },
-  {
     area: "Tools & Platforms",
-    tags: ["MS Project","JIRA","Tableau","Python","Streamlit","SQLite","Flutter","BeautifulSoup","Plotly","VS Code","SolidWorks","LabVIEW"],
+    tags: ["MS Project","JIRA","Tableau","AnyLogic","SolidWorks","Python","Streamlit","Canvas LMS","Flutter","LabVIEW","VS Code","SQLite"],
   },
 ];
 
@@ -364,7 +391,7 @@ export default function Home() {
         </div>
 
         <div className="hero-body">
-          <p className="hero-label">MS Management of Technology · ASU Fulton · GPA 3.83</p>
+          <p className="hero-label">MS Management of Technology · ASU | Operations & Project Management Professional | Process Optimization</p>
           <h1 className="hero-name">Pratham<br/>Bhilare.</h1>
           <p className="hero-titles">Project Manager&nbsp;·&nbsp;Product Manager&nbsp;·&nbsp;Operations Analyst</p>
           <p className="hero-bio">
@@ -395,9 +422,9 @@ export default function Home() {
           <h2 className="s-h2">Engineering roots.<br/>Management edge.</h2>
 
           <div className="about-bio">
-            <p>I'm a mechanical engineer turned management-of-technology graduate — which means I understand how systems are built <strong>and</strong> how to deliver them on time, on scope, and on strategy.</p>
-            <p>At Tata Power I managed outages on 750 MW of live generation capacity. At ASU I've shipped 10 cross-functional projects — from a Honeywell-sponsored product platform to AI-driven logistics optimisation across 537 warehouses. I currently support 50+ students as a Graduate Teaching Assistant in Industrial & Systems Engineering.</p>
-            <p>I think in roadmaps. I speak in data. I measure everything.</p>
+            <p>I&apos;ve always been interested in one question: why do some systems perform better than others? That curiosity led me into manufacturing, operations, and project execution — where I saw how small process gaps could create major inefficiencies in cost, quality, and delivery.</p>
+            <p>Instead of just identifying problems, I focus on improving them. I helped improve solar panel efficiency from 18.22% to 20.34% through a redesigned heat recovery system. I used operational analysis to identify warehouse optimisation opportunities projected to reduce costs by 15%. I&apos;ve also led projects in rapid delivery operations, cross-functional product development, and large-scale data analysis — the focus is always the same: improve performance with practical, measurable solutions.</p>
+            <p>My experience spans manufacturing operations, process optimisation, systems thinking, and project coordination across both academic and industry environments. What drives me is bridging technical thinking with business impact — using data, process improvement, and collaboration to help teams work more efficiently and make better decisions.</p>
           </div>
 
           {/* ── Experience ── */}
@@ -415,9 +442,23 @@ export default function Home() {
                   <span className={`exp-chevron ${openExp===i?"open":""}`}>+</span>
                 </button>
                 {openExp===i && (
-                  <ul className="exp-bullets">
-                    {e.points.map((pt,j) => <li key={j}>{pt}</li>)}
-                  </ul>
+                  <div className="exp-expand">
+                    {e.courses && (
+                      <div className="exp-courses">
+                        <span className="exp-courses-label">Courses supported</span>
+                        <span className="exp-courses-val">{e.courses}</span>
+                      </div>
+                    )}
+                    <ul className="exp-bullets">
+                      {e.points.map((pt,j) => <li key={j}>{pt}</li>)}
+                    </ul>
+                    {e.tools && (
+                      <div className="exp-tools-row">
+                        <span className="exp-tools-label">Tools</span>
+                        <span className="exp-tools-val">{e.tools}</span>
+                      </div>
+                    )}
+                  </div>
                 )}
               </div>
             ))}
