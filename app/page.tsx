@@ -1,130 +1,280 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 
-/* ─── DATA ───────────────────────────────────────────────── */
-const STATS = [
-  { val: "3.85",  label: "GPA at ASU",              unit: "" },
-  { val: "15",    label: "Logistics cost reduction", unit: "%" },
-  { val: "250",   label: "Project budget managed",   unit: "K" },
-  { val: "0.998", label: "Regression R² score",      unit: "" },
-  { val: "54.75", label: "Projected savings",        unit: "M" },
-  { val: "42",    label: "Years of economic data",   unit: "" },
+/* ══════════════════════════════════════════════════════════
+   DATA
+══════════════════════════════════════════════════════════ */
+const CUBE_FACES = [
+  { stat: "3.85",  unit: "",  label: "GPA · ASU Fulton" },
+  { stat: "$250K", unit: "",  label: "Budget Managed" },
+  { stat: "10",    unit: "+", label: "PM Projects" },
+  { stat: "15",    unit: "%", label: "Cost Reduction" },
+  { stat: "42",    unit: "",  label: "Yrs Data Analysed" },
+  { stat: "0",     unit: "",  label: "Safety Incidents" },
 ];
 
-const PROJECTS = [
-  { n:"01", title:"Journey Air",                  meta:"Product · B2B SaaS",         result:"$54.75M projected annual savings · Honeywell Aerospace sponsored" },
-  { n:"02", title:"Warehouse AI Optimizer",        meta:"Operations · AI",            result:"15–18% cost reduction across 537 Amazon distribution centers" },
-  { n:"03", title:"Market Intelligence Dashboard", meta:"Python · Data Engineering",  result:"Real-time data on 50+ public companies across 6 industries" },
-  { n:"04", title:"ERP Industry Analysis",         meta:"Strategy · Research",        result:"40-page analysis of $64.83B market — SAP, Oracle, Workday" },
-  { n:"05", title:"FlazzMart",                     meta:"Entrepreneurship · Ops",     result:"$5M → $100M revenue model · $3M seed ask · 15-min delivery" },
-  { n:"06", title:"BYD Disruptive Strategy",       meta:"Competitive Analysis",       result:"Mapped #1 EV seller globally · 20,000+ patents · 880% UK growth" },
-  { n:"07", title:"Customer Portal — Medical LLC", meta:"Project Management",         result:"$250K budget · 9-phase WBS · 210-day critical path" },
-  { n:"08", title:"VR Usability Testing",          meta:"UX Research",                result:"5 critical issues found · 7 recommendations · Meta Quest 2" },
-  { n:"09", title:"Solar PV Heat Recovery",        meta:"Research · Engineering",     result:"18.22% → 20.34% efficiency · peer-reviewed publication" },
-  { n:"10", title:"42-Year Economic Study",        meta:"Analytics · Econometrics",   result:"R²=0.998 · GDP dominant predictor p=1.02E-47 · 4 federal sources" },
+const PM_PROJECTS = [
+  {
+    tag: "Product · B2B SaaS",
+    title: "Journey Air",
+    org: "Honeywell Aerospace · ASU TMC 593",
+    outcome: "$54.75M projected annual savings",
+    bullets: [
+      "Led product development for Honeywell-sponsored airline disruption platform",
+      "Built B2B SaaS Business Model Canvas targeting U.S. Tier 1 & Tier 2 airlines",
+      "Conducted 2 rounds of customer discovery interviews → 6 behavioral personas",
+      "Applied V-Model systems engineering across 4 platform modules",
+      "5-year NPV model · $150M–$300M serviceable market",
+    ],
+    tools: ["V-Model","BMC","Customer Discovery","Financial Modeling","SaaS Pricing"],
+  },
+  {
+    tag: "Project Management · $250K",
+    title: "Customer Portal Implementation",
+    org: "Medical Products LLC",
+    outcome: "210-day critical path · on-scope delivery",
+    bullets: [
+      "Led end-to-end planning for a $250K portal with 9-phase WBS in MS Project",
+      "Quantified 8 key risks — 2 classified high-risk (Turnover Rf=0.86, Learning Curve Rf=0.72)",
+      "Built RAM mapping 9 deliverables across 7 roles with zero overlap",
+      "PERT estimation across 48 tasks · 7 milestone checkpoints Jan–Nov",
+      "Designed 6-type communication framework across Zoom, Slack, JIRA, Teams",
+    ],
+    tools: ["MS Project","WBS","Risk Matrix","RAM","PERT","JIRA","Stakeholder Mgmt"],
+  },
+  {
+    tag: "Startup · Go-to-Market",
+    title: "FlazzMart",
+    org: "Academic Venture · ASU TEM 501",
+    outcome: "$5M → $100M revenue model in 5 years",
+    bullets: [
+      "Designed full business plan for 15-min grocery delivery targeting Phoenix metro",
+      "TAM/SAM/SOM: $68.6B market by 2032 · $40M SOM in 3 years",
+      "Benchmarked Instacart (63% share), Amazon Fresh, Walmart Grocery",
+      "Multi-stream revenue: delivery fees, subscriptions, vendor commissions, in-app ads",
+      "$730 annual LTV · break-even Year 3 · 55%→65% gross margin trajectory",
+    ],
+    tools: ["TAM/SAM/SOM","Revenue Modeling","Competitive Analysis","GTM","LTV Modeling"],
+  },
+  {
+    tag: "Strategy · Market Research",
+    title: "ERP Industry Analysis",
+    org: "ASU Strategic Management of Technology",
+    outcome: "40-page strategic report on $64.83B market",
+    bullets: [
+      "Analyzed SAP, Oracle, Workday — representing ~44% combined market share",
+      "Applied VRIO across 10+ resources per company to identify competitive advantages",
+      "Modeled cloud ERP growth $34.8B → $123.42B by 2030 at 18% CAGR",
+      "Benchmarked AI/cloud adoption: SAP 15% R&D, Workday 17% YoY ML-driven growth",
+      "Mapped vertical integration depth and M&A activity across all three players",
+    ],
+    tools: ["Porter's Five Forces","VRIO","RBV","Core Competence","Market Sizing"],
+  },
+  {
+    tag: "Disruptive Innovation",
+    title: "BYD Global Strategy",
+    org: "Team Strategy Project",
+    outcome: "Scored 9.5/10 across viability, feasibility & financial opportunity",
+    bullets: [
+      "Analyzed BYD's rise to #1 EV seller — 526K BEV sales vs Tesla's 484K in Q4 2023",
+      "Evaluated 20,000+ patent portfolio and $2.1B government subsidy advantage",
+      "Mapped global patent filing across US, EU, China, South Korea",
+      "Identified 880% UK sales growth as primary international expansion signal",
+      "Recommended global urban EV expansion as highest-value strategic next step",
+    ],
+    tools: ["Disruptive Innovation","IP Strategy","SWOT","BMC","Financial Benchmarking"],
+  },
+  {
+    tag: "Operations · Process",
+    title: "Warehouse AI Optimizer",
+    org: "Enterprise Operations Analysis",
+    outcome: "15–18% cost reduction over Excel Solver baseline",
+    bullets: [
+      "Engineered AI grid search to find optimal warehouse across 537 Amazon centers",
+      "Minimized weighted transport cost to ~29.8M units vs Solver's 35.2M",
+      "Prompt-engineered ChatGPT through custom distance formula implementation",
+      "Visualized national warehouse network geospatially in Python/Matplotlib",
+      "Proved Gen AI outperforms GRG Nonlinear Solver for large-scale logistics",
+    ],
+    tools: ["AI Optimization","Python","Excel Solver","Geospatial Analysis","Prompt Engineering"],
+  },
 ];
 
-const SKILLS = [
-  { area:"Project & Operations",  items:["WBS","Critical Path","Lean","Six Sigma","Kanban","PERT","Risk Analysis"] },
-  { area:"Data & Analytics",      items:["OLS Regression","Python","Pandas","Tableau","Excel","Time-Series"] },
-  { area:"Product & Strategy",    items:["Porter's Five Forces","VRIO","TAM/SAM/SOM","BMC","Go-to-Market"] },
-  { area:"Engineering Tools",     items:["SolidWorks","Ansys","AnyLogic","LabVIEW","MS Project","NI DAQ"] },
-  { area:"Software & Code",       items:["Streamlit","SQLite","Plotly","Flutter","BeautifulSoup","yFinance"] },
+const SKILLS_PM = [
+  { cat:"Delivery & Planning",   items:["WBS","Critical Path","Gantt","PERT","Milestone Tracking","MS Project","JIRA"] },
+  { cat:"Product Strategy",      items:["Roadmapping","BMC","TAM/SAM/SOM","Go-to-Market","User Stories","OKRs","Prioritization"] },
+  { cat:"Stakeholder & Risk",    items:["RAM","Risk Matrix","Communication Plans","Change Management","Stakeholder Mapping"] },
+  { cat:"Analytics & Data",      items:["OLS Regression","Excel Modeling","Tableau","Python","KPI Dashboards","A/B Thinking"] },
+  { cat:"Frameworks",            items:["Agile","Lean","Six Sigma GB","VRIO","Porter's Five Forces","V-Model","Kanban"] },
+  { cat:"Tools & Platforms",     items:["MS Project","JIRA","Streamlit","Slack","Tableau","Python","Figma (basic)"] },
 ];
 
-const EXPERIENCE = [
-  { period:"May 2025 — Present", co:"Arizona State University",  role:"Graduate Teaching Assistant", pts:["Grading and feedback for 50+ students in Industrial & Systems Engineering","Canvas workflow management and faculty collaboration on assessment rubrics","Supporting enterprise modeling, quality management, and systems engineering courses"] },
-  { period:"Jan 2024 — Apr 2024", co:"Tata Power",               role:"Mechanical Maintenance Intern", pts:["Supervised outage activities at Trombay Thermal Power Station — 500 MW + 250 MW","Inspected boilers, pulverisers, burners, air heaters — improving combustion efficiency","Implemented LOTO + PTW procedures. Zero safety incidents across 14 weeks."] },
-  { period:"Dec 2022 — Jan 2023", co:"Matharu Sons",              role:"Process Optimization Trainee",  pts:["End-to-end fabrication of fuel tankers (500–25,000L) in Mild Steel","MIG/CO₂ welding, 3-roller bending, hydrostatic pressure testing at 2,000 PSI","5-stage surface finishing: sandblasting → soldering → primer → basecoat → clearcoat"] },
+const CERTS = [
+  "Six Sigma: Green Belt",
+  "SOLIDWORKS Associate (CSWA)",
+  "Advanced Tableau Desktop",
+  "Project Management: International Projects",
+  "Siemens Mobility — Commercial PM Simulation",
 ];
 
-/* ─── COUNTER HOOK ───────────────────────────────────────── */
-function useCounter(target: string, active: boolean) {
-  const [display, setDisplay] = useState("0");
+/* ══════════════════════════════════════════════════════════
+   3-D CUBE HERO
+══════════════════════════════════════════════════════════ */
+function Cube3D() {
+  const [rotX, setRotX] = useState(-18);
+  const [rotY, setRotY] = useState(225);
+  const dragging  = useRef(false);
+  const lastPos   = useRef({ x: 0, y: 0 });
+  const autoTimer = useRef<ReturnType<typeof setInterval> | null>(null);
+  const velY      = useRef(0.35);
+
+  const startAuto = useCallback(() => {
+    if (autoTimer.current) clearInterval(autoTimer.current);
+    autoTimer.current = setInterval(() => {
+      setRotY(r => r + velY.current);
+    }, 16);
+  }, []);
+
   useEffect(() => {
-    if (!active) return;
-    const isFloat = target.includes(".");
-    const num = parseFloat(target);
-    const duration = 1800;
-    const steps = 60;
-    let step = 0;
-    const timer = setInterval(() => {
-      step++;
-      const progress = step / steps;
-      const eased = 1 - Math.pow(1 - progress, 3);
-      const current = num * eased;
-      setDisplay(isFloat ? current.toFixed(target.split(".")[1].length) : Math.floor(current).toString());
-      if (step >= steps) { clearInterval(timer); setDisplay(target); }
-    }, duration / steps);
-    return () => clearInterval(timer);
-  }, [active, target]);
-  return display;
-}
+    startAuto();
+    return () => { if (autoTimer.current) clearInterval(autoTimer.current); };
+  }, [startAuto]);
 
-/* ─── STAT CARD ──────────────────────────────────────────── */
-function StatCard({ val, label, unit, active, delay }: { val:string;label:string;unit:string;active:boolean;delay:number }) {
-  const count = useCounter(val, active);
+  const onPointerDown = (e: React.PointerEvent) => {
+    dragging.current = true;
+    lastPos.current = { x: e.clientX, y: e.clientY };
+    if (autoTimer.current) clearInterval(autoTimer.current);
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+  };
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (!dragging.current) return;
+    const dx = e.clientX - lastPos.current.x;
+    const dy = e.clientY - lastPos.current.y;
+    velY.current = dx * 0.4;
+    setRotY(r => r + dx * 0.55);
+    setRotX(r => Math.max(-35, Math.min(35, r - dy * 0.4)));
+    lastPos.current = { x: e.clientX, y: e.clientY };
+  };
+  const onPointerUp = () => {
+    dragging.current = false;
+    startAuto();
+  };
+
+  const faces = [
+    { rot: "rotateY(0deg)   translateZ(140px)" },
+    { rot: "rotateY(90deg)  translateZ(140px)" },
+    { rot: "rotateY(180deg) translateZ(140px)" },
+    { rot: "rotateY(-90deg) translateZ(140px)" },
+    { rot: "rotateX(90deg)  translateZ(140px)" },
+    { rot: "rotateX(-90deg) translateZ(140px)" },
+  ];
+
   return (
-    <div className="stat-card" style={{ animationDelay:`${delay}s`, animation: active ? `statIn 0.7s ${delay}s cubic-bezier(0.22,1,0.36,1) both` : "none" }}>
-      <div className="stat-num">{count}<span className="stat-unit">{unit}</span></div>
-      <div className="stat-label">{label}</div>
+    <div className="cube-scene"
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerUp}
+      onPointerLeave={onPointerUp}
+      style={{ cursor: dragging.current ? "grabbing" : "grab" }}>
+      <div className="cube-wrap"
+        style={{ transform: `rotateX(${rotX}deg) rotateY(${rotY}deg)` }}>
+        {faces.map((f, i) => (
+          <div key={i} className={`cube-face face-${i}`}
+            style={{ transform: f.rot }}>
+            <div className="face-inner">
+              <div className="face-stat">{CUBE_FACES[i].stat}<span className="face-unit">{CUBE_FACES[i].unit}</span></div>
+              <div className="face-label">{CUBE_FACES[i].label}</div>
+            </div>
+            <div className="face-grid" aria-hidden="true">
+              {Array.from({length:9}).map((_,j) => <div key={j} className="face-cell" />)}
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="cube-shadow" />
     </div>
   );
 }
 
-/* ─── SECTION HOOK ───────────────────────────────────────── */
-function useSection(ref: React.RefObject<HTMLElement | null>) {
-  const [active, setActive] = useState(false);
+/* ══════════════════════════════════════════════════════════
+   INTERSECTION HOOK
+══════════════════════════════════════════════════════════ */
+function useVisible(ref: React.RefObject<HTMLElement | null>, threshold = 0.2) {
+  const [vis, setVis] = useState(false);
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) setActive(true); },
-      { threshold: 0.25 }
-    );
+    const el = ref.current; if (!el) return;
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVis(true); }, { threshold });
     io.observe(el);
     return () => io.disconnect();
-  }, [ref]);
-  return active;
+  }, [ref, threshold]);
+  return vis;
 }
 
-/* ─── MAIN ───────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════
+   PROJECT CARD
+══════════════════════════════════════════════════════════ */
+function ProjectCard({ p, i, active }: { p: typeof PM_PROJECTS[0]; i: number; active: boolean }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className={`pcard ${active ? "pcard-in" : ""}`}
+      style={{ animationDelay: `${i * 0.08}s` }}>
+      <div className="pcard-header" onClick={() => setOpen(v => !v)}>
+        <div className="pcard-left">
+          <span className="pcard-tag">{p.tag}</span>
+          <h3 className="pcard-title">{p.title}</h3>
+          <span className="pcard-org">{p.org}</span>
+        </div>
+        <div className="pcard-right">
+          <span className="pcard-outcome">{p.outcome}</span>
+          <span className={`pcard-chevron ${open ? "open" : ""}`}>›</span>
+        </div>
+      </div>
+      {open && (
+        <div className="pcard-body">
+          <ul className="pcard-bullets">
+            {p.bullets.map((b, j) => <li key={j}>{b}</li>)}
+          </ul>
+          <div className="pcard-tools">
+            {p.tools.map((t, j) => <span key={j} className="ptool">{t}</span>)}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════
+   APP
+══════════════════════════════════════════════════════════ */
 export default function Home() {
-  const [scrollY,   setScrollY]   = useState(0);
-  const [progress,  setProgress]  = useState(0);
-  const [activeNav, setActiveNav] = useState(0);
-  const [menuOpen,  setMenuOpen]  = useState(false);
+  const [scrollY,  setScrollY]  = useState(0);
+  const [progress, setProgress] = useState(0);
+  const [navOpen,  setNavOpen]  = useState(false);
+  const [activeS,  setActiveS]  = useState(0);
 
   const heroRef    = useRef<HTMLElement>(null);
-  const statsRef   = useRef<HTMLElement>(null);
-  const expRef     = useRef<HTMLElement>(null);
+  const aboutRef   = useRef<HTMLElement>(null);
   const projRef    = useRef<HTMLElement>(null);
   const skillsRef  = useRef<HTMLElement>(null);
   const contactRef = useRef<HTMLElement>(null);
+  const sections   = [heroRef, aboutRef, projRef, skillsRef, contactRef];
+  const navItems   = ["Home", "About", "Projects", "Skills", "Contact"];
 
-  const statsActive   = useSection(statsRef);
-  const expActive     = useSection(expRef);
-  const projActive    = useSection(projRef);
-  const skillsActive  = useSection(skillsRef);
-  const contactActive = useSection(contactRef);
-
-  const sections = [heroRef, statsRef, expRef, projRef, skillsRef, contactRef];
-  const navLabels = ["Home","Numbers","Experience","Projects","Skills","Contact"];
+  const aboutVis   = useVisible(aboutRef);
+  const projVis    = useVisible(projRef);
+  const skillsVis  = useVisible(skillsRef);
+  const contactVis = useVisible(contactRef);
 
   useEffect(() => {
     const onScroll = () => {
-      const sy = window.scrollY;
+      const sy  = window.scrollY;
       const max = document.body.scrollHeight - window.innerHeight;
       setScrollY(sy);
       setProgress(max > 0 ? sy / max : 0);
-
       sections.forEach((ref, i) => {
-        const el = ref.current;
-        if (!el) return;
-        const rect = el.getBoundingClientRect();
-        if (rect.top <= window.innerHeight * 0.5 && rect.bottom >= window.innerHeight * 0.5) {
-          setActiveNav(i);
-        }
+        const el = ref.current; if (!el) return;
+        const r  = el.getBoundingClientRect();
+        if (r.top <= window.innerHeight * 0.5 && r.bottom >= window.innerHeight * 0.5) setActiveS(i);
       });
     };
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -133,321 +283,247 @@ export default function Home() {
 
   const scrollTo = (ref: React.RefObject<HTMLElement | null>) => {
     ref.current?.scrollIntoView({ behavior: "smooth" });
-    setMenuOpen(false);
+    setNavOpen(false);
   };
 
   return (
-    <div className="root">
+    <div className="app">
 
-      {/* ══ SCAN LINE OVERLAY ══ */}
-      <div className="scanlines" aria-hidden="true" />
+      {/* ── PROGRESS ── */}
+      <div className="prog-bar"><div className="prog-fill" style={{ width:`${progress*100}%` }} /></div>
 
-      {/* ══ PROGRESS BAR ══ */}
-      <div className="progress-bar">
-        <div className="progress-fill" style={{ width:`${progress*100}%` }} />
-      </div>
-
-      {/* ══ SIDE NAV DOTS ══ */}
-      <nav className="sidenav" aria-label="Section navigation">
-        {navLabels.map((label, i) => (
-          <button key={i} className={`snav-dot ${i===activeNav?"snav-active":""}`}
-            onClick={() => scrollTo(sections[i])} title={label}>
-            <span className="snav-tip">{label}</span>
-          </button>
-        ))}
-      </nav>
-
-      {/* ══ TOPBAR ══ */}
+      {/* ── TOPBAR ── */}
       <header className="topbar">
-        <div className="tb-inner">
-          <button className="tb-brand" onClick={() => scrollTo(heroRef)}>
+        <div className="tb-wrap">
+          <button className="tb-logo" onClick={() => scrollTo(heroRef)}>
             <div className="tb-mark">PB</div>
-            <span>Pratham Bhilare</span>
+            <div className="tb-txt">
+              <strong>Pratham Bhilare</strong>
+              <span>PM · Product · Operations</span>
+            </div>
           </button>
 
-          <nav className={`tb-nav ${menuOpen?"tb-nav-open":""}`}>
-            {navLabels.map((l,i) => (
-              <button key={i} className={`tb-link ${i===activeNav?"tb-link-on":""}`}
-                onClick={() => scrollTo(sections[i])}>{l}</button>
+          <nav className={`tb-nav ${navOpen ? "open" : ""}`}>
+            {navItems.map((n, i) => (
+              <button key={i} className={`tb-link ${i === activeS ? "on" : ""}`}
+                onClick={() => scrollTo(sections[i])}>{n}</button>
             ))}
+            <a href="mailto:pratham.bhilare1010@gmail.com" className="tb-cta">Hire Me</a>
           </nav>
 
-          <button className="tb-hamburger" onClick={() => setMenuOpen(v => !v)} aria-label="Menu">
-            <span className={menuOpen?"open":""}/><span className={menuOpen?"open":""}/><span className={menuOpen?"open":""}/>
+          <button className="tb-burger" onClick={() => setNavOpen(v => !v)} aria-label="Menu">
+            <span /><span /><span />
           </button>
         </div>
       </header>
 
-      {/* ══════════════════════════════════════════════════════
-          SECTION 1 — HERO
-      ══════════════════════════════════════════════════════ */}
-      <section ref={heroRef} id="home" className="section hero-section">
+      {/* ══════════════════════════════════════
+          HERO
+      ══════════════════════════════════════ */}
+      <section ref={heroRef} className="hero">
+        {/* ambient grid */}
+        <div className="hero-grid" aria-hidden="true"
+          style={{ transform: `translateY(${scrollY * 0.12}px)` }}>
+          {Array.from({length: 16}).map((_,i) => (
+            <div key={`h${i}`} className="hg-line hg-h" style={{ top: `${i * 6.5}%` }} />
+          ))}
+          {Array.from({length: 16}).map((_,i) => (
+            <div key={`v${i}`} className="hg-line hg-v" style={{ left: `${i * 6.5}%` }} />
+          ))}
+        </div>
 
-        {/* layered parallax background */}
-        <div className="hero-bg">
-          <div className="hero-grid" style={{ transform:`translateY(${scrollY*0.15}px)` }} aria-hidden="true">
-            {Array.from({length:20}).map((_,i)=>(
-              <div key={i} className="grid-line-h" style={{top:`${i*5.5}%`}} />
-            ))}
-            {Array.from({length:20}).map((_,i)=>(
-              <div key={i} className="grid-line-v" style={{left:`${i*5.5}%`}} />
-            ))}
+        {/* glow orbs */}
+        <div className="orb orb-a" style={{ transform:`translate(${scrollY*0.05}px,${scrollY*0.03}px)` }} />
+        <div className="orb orb-b" style={{ transform:`translate(${-scrollY*0.04}px,${scrollY*0.04}px)` }} />
+
+        <div className="hero-inner">
+          <div className="hero-left">
+            <div className="hero-eyebrow">
+              <span className="eyebrow-dot" />
+              Available for Summer 2026 · Phoenix, AZ
+            </div>
+            <h1 className="hero-h1">
+              <span className="h1-line">Project &amp;</span>
+              <span className="h1-line h1-accent">Product</span>
+              <span className="h1-line">Manager.</span>
+            </h1>
+            <p className="hero-sub">
+              MS Management of Technology · ASU · GPA 3.85<br />
+              I build roadmaps, manage delivery, and ship outcomes.
+            </p>
+            <div className="hero-btns">
+              <button className="btn-primary" onClick={() => scrollTo(projRef)}>View Projects</button>
+              <button className="btn-ghost"   onClick={() => scrollTo(skillsRef)}>PM Toolkit</button>
+              <a href="mailto:pratham.bhilare1010@gmail.com" className="btn-ghost">Contact</a>
+            </div>
+            <div className="hero-tags">
+              {["Product Roadmaps","Stakeholder Management","Risk Analysis","Data-Driven Decisions","Agile · Lean · Six Sigma"].map((t,i) => (
+                <span key={i} className="hero-tag" style={{ animationDelay:`${0.9+i*0.1}s` }}>{t}</span>
+              ))}
+            </div>
           </div>
-          <div className="hero-orb orb-1" style={{ transform:`translate(${scrollY*0.08}px, ${scrollY*0.04}px)` }} />
-          <div className="hero-orb orb-2" style={{ transform:`translate(${-scrollY*0.06}px, ${scrollY*0.05}px)` }} />
-          <div className="hero-orb orb-3" style={{ transform:`translate(${scrollY*0.04}px, ${-scrollY*0.03}px)` }} />
-          {/* floating data particles */}
-          <div className="particles" aria-hidden="true">
-            {Array.from({length:24}).map((_,i)=>(
-              <div key={i} className="particle" style={{
-                left:`${(i*41+7)%96}%`,
-                animationDelay:`${(i*0.7)%9}s`,
-                animationDuration:`${10+(i*1.3)%10}s`,
-                width:`${1+(i%3)}px`, height:`${1+(i%3)}px`,
-              }} />
-            ))}
+          <div className="hero-right">
+            <Cube3D />
+            <p className="cube-hint">Drag to rotate</p>
           </div>
         </div>
 
-        <div className="hero-content">
-          <div className="hero-eyebrow">
-            <span className="eyebrow-line" />
-            <span>Graduate Teaching Assistant · ASU · MS Management of Technology &apos;26</span>
-          </div>
-
-          <h1 className="hero-name">
-            <span className="hero-word hero-w1">Pratham</span>
-            <span className="hero-word hero-w2">Bhilare</span>
-          </h1>
-
-          <div className="hero-rule" />
-
-          <p className="hero-sub">
-            Industrial engineer. Project thinker. Data-driven problem solver.
-            <br />
-            I turn complex systems into measurable outcomes.
-          </p>
-
-          <div className="hero-roles">
-            {["Project Management","Product Management","Industrial Engineering","Business Analysis"].map((r,i)=>(
-              <span key={i} className="hero-role" style={{animationDelay:`${0.8+i*0.12}s`}}>{r}</span>
-            ))}
-          </div>
-
-          <div className="hero-actions">
-            <button className="cta-btn cta-primary" onClick={() => scrollTo(projRef)}>View Projects</button>
-            <button className="cta-btn" onClick={() => scrollTo(contactRef)}>Get in Touch</button>
-          </div>
-        </div>
-
-        {/* scroll indicator */}
-        <div className="scroll-indicator">
-          <div className="scroll-mouse">
-            <div className="scroll-wheel" />
-          </div>
+        <div className="scroll-cue">
+          <div className="scroll-mouse"><div className="scroll-dot" /></div>
           <span>Scroll</span>
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════════════════
-          SECTION 2 — STATS
-      ══════════════════════════════════════════════════════ */}
-      <section ref={statsRef} id="highlights" className="section stats-section">
-        <div className="section-inner">
-          <div className={`section-label ${statsActive?"label-in":""}`}>By the numbers</div>
-          <h2 className={`section-h2 ${statsActive?"h2-in":""}`}>
-            Work that <em>moves the needle</em>
+      {/* ══════════════════════════════════════
+          ABOUT / EXPERIENCE
+      ══════════════════════════════════════ */}
+      <section ref={aboutRef} className="section about-section">
+        <div className="s-wrap">
+          <div className={`s-eyebrow ${aboutVis ? "vis" : ""}`}>Background</div>
+          <h2 className={`s-h2 ${aboutVis ? "vis" : ""}`}>
+            Engineering roots.<br /><em>Management edge.</em>
           </h2>
-          <div className="stats-grid">
-            {STATS.map((s,i) => (
-              <StatCard key={i} {...s} active={statsActive} delay={0.1+i*0.1} />
-            ))}
-          </div>
 
-          {/* animated divider */}
-          <div className={`divider-line ${statsActive?"divider-in":""}`} />
-
-          {/* education strip */}
-          <div className={`edu-strip ${statsActive?"edu-in":""}`}>
-            <div className="edu-item" style={{animationDelay:"0.6s"}}>
-              <span className="edu-year">2024 — 2026</span>
-              <span className="edu-school">Arizona State University</span>
-              <span className="edu-deg">MS Management of Technology · GPA 3.85</span>
-            </div>
-            <div className="edu-sep" />
-            <div className="edu-item" style={{animationDelay:"0.75s"}}>
-              <span className="edu-year">2021 — 2024</span>
-              <span className="edu-school">Pillai College of Engineering</span>
-              <span className="edu-deg">BTech, Mechanical Engineering</span>
-            </div>
-            <div className="edu-sep" />
-            <div className="edu-item" style={{animationDelay:"0.9s"}}>
-              <span className="edu-year">2018 — 2021</span>
-              <span className="edu-school">Father Agnel Technical Complex</span>
-              <span className="edu-deg">Diploma, Mechanical Engineering</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════════
-          SECTION 3 — EXPERIENCE
-      ══════════════════════════════════════════════════════ */}
-      <section ref={expRef} id="experience" className="section exp-section">
-        <div className="exp-bg" aria-hidden="true">
-          <div className="exp-scan" />
-        </div>
-        <div className="section-inner">
-          <div className={`section-label ${expActive?"label-in":""}`}>Where I&apos;ve worked</div>
-          <h2 className={`section-h2 ${expActive?"h2-in":""}`}>
-            Real environments. <em>Real impact.</em>
-          </h2>
-          <div className="exp-list">
-            {EXPERIENCE.map((e,i) => (
-              <div key={i} className={`exp-card ${expActive?"exp-card-in":""}`}
-                style={{animationDelay:`${0.2+i*0.18}s`}}>
-                <div className="exp-left">
-                  <div className="exp-period">{e.period}</div>
-                  <div className="exp-co">{e.co}</div>
-                  <div className="exp-role">{e.role}</div>
-                </div>
-                <div className="exp-right">
-                  {e.pts.map((p,j) => (
-                    <div key={j} className="exp-pt">
-                      <span className="exp-dash">—</span>
-                      <span>{p}</span>
-                    </div>
-                  ))}
-                </div>
+          <div className="about-grid">
+            {/* Left: bio */}
+            <div className={`about-bio ${aboutVis ? "vis" : ""}`}>
+              <p>I&apos;m a mechanical engineer turned management-of-technology graduate — which means I understand how systems are built <em>and</em> how to deliver them on time, on budget, and on strategy.</p>
+              <p>At Tata Power, I managed maintenance outages on 750 MW of generation capacity. At ASU, I&apos;ve shipped 10 cross-functional projects — from a Honeywell-sponsored airline product to AI-driven logistics optimization.</p>
+              <p>I think in roadmaps, speak in data, and measure everything.</p>
+              <div className="about-meta">
+                <div className="meta-item"><span className="meta-k">Status</span><span className="meta-v">Open to Summer 2026 roles</span></div>
+                <div className="meta-item"><span className="meta-k">Location</span><span className="meta-v">Phoenix, AZ — open to relocation</span></div>
+                <div className="meta-item"><span className="meta-k">Degree</span><span className="meta-v">MS Management of Technology · ASU</span></div>
+                <div className="meta-item"><span className="meta-k">GPA</span><span className="meta-v">3.85 / 4.0</span></div>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
+            </div>
 
-      {/* ══════════════════════════════════════════════════════
-          SECTION 4 — PROJECTS
-      ══════════════════════════════════════════════════════ */}
-      <section ref={projRef} id="projects" className="section proj-section">
-        <div className="proj-bg" aria-hidden="true">
-          {Array.from({length:8}).map((_,i)=>(
-            <div key={i} className="proj-beam" style={{
-              left:`${i*13}%`,
-              animationDelay:`${i*0.4}s`,
-              animationDuration:`${4+i*0.6}s`,
-            }} />
-          ))}
-        </div>
-        <div className="section-inner">
-          <div className={`section-label ${projActive?"label-in":""}`}>Selected work</div>
-          <h2 className={`section-h2 ${projActive?"h2-in":""}`}>
-            10 projects. <em>Real outcomes.</em>
-          </h2>
-          <div className="proj-grid">
-            {PROJECTS.map((p,i) => (
-              <div key={i} className={`proj-card ${projActive?"proj-card-in":""}`}
-                style={{animationDelay:`${0.05+i*0.07}s`}}>
-                <div className="proj-num">{p.n}</div>
-                <div className="proj-body">
-                  <div className="proj-meta">{p.meta}</div>
-                  <div className="proj-title">{p.title}</div>
-                  <div className="proj-result">{p.result}</div>
+            {/* Right: experience timeline */}
+            <div className="exp-timeline">
+              {[
+                { period:"2025–Now",  co:"Arizona State University", role:"Graduate Teaching Assistant", note:"50+ students · ISE courses" },
+                { period:"Jan–Apr 24",co:"Tata Power",               role:"Mechanical Maintenance Intern", note:"500 MW + 250 MW · 0 incidents" },
+                { period:"Dec 22–Jan 23",co:"Matharu Sons",          role:"Process Optimization Trainee", note:"Fuel tankers · 2000 PSI testing" },
+                { period:"2021–2024", co:"Pillai College of Engg",   role:"BTech Mechanical Engineering", note:"Graduated" },
+              ].map((e, i) => (
+                <div key={i} className={`tl-item ${aboutVis ? "vis" : ""}`}
+                  style={{ transitionDelay:`${0.2+i*0.14}s` }}>
+                  <div className="tl-line">
+                    <div className="tl-dot" />
+                    {i < 3 && <div className="tl-connector" />}
+                  </div>
+                  <div className="tl-body">
+                    <div className="tl-period">{e.period}</div>
+                    <div className="tl-co">{e.co}</div>
+                    <div className="tl-role">{e.role}</div>
+                    <div className="tl-note">{e.note}</div>
+                  </div>
                 </div>
-                <div className="proj-arrow">→</div>
-              </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════
+          PROJECTS
+      ══════════════════════════════════════ */}
+      <section ref={projRef} className="section proj-section">
+        <div className="s-wrap">
+          <div className={`s-eyebrow ${projVis ? "vis" : ""}`}>Selected Work</div>
+          <h2 className={`s-h2 ${projVis ? "vis" : ""}`}>
+            6 projects.<br /><em>Real outcomes.</em>
+          </h2>
+          <p className={`s-sub ${projVis ? "vis" : ""}`}>
+            Click any project to expand full scope, deliverables, and tools used.
+          </p>
+          <div className="proj-list">
+            {PM_PROJECTS.map((p, i) => (
+              <ProjectCard key={i} p={p} i={i} active={projVis} />
             ))}
           </div>
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════════════════
-          SECTION 5 — SKILLS
-      ══════════════════════════════════════════════════════ */}
-      <section ref={skillsRef} id="skills" className="section skills-section">
-        <div className="section-inner">
-          <div className={`section-label ${skillsActive?"label-in":""}`}>Expertise</div>
-          <h2 className={`section-h2 ${skillsActive?"h2-in":""}`}>
-            The <em>toolkit</em>
+      {/* ══════════════════════════════════════
+          SKILLS
+      ══════════════════════════════════════ */}
+      <section ref={skillsRef} className="section skills-section">
+        <div className="s-wrap">
+          <div className={`s-eyebrow ${skillsVis ? "vis" : ""}`}>PM Toolkit</div>
+          <h2 className={`s-h2 ${skillsVis ? "vis" : ""}`}>
+            Built for delivery.<br /><em>Proven in the field.</em>
           </h2>
           <div className="skills-grid">
-            {SKILLS.map((s,i) => (
-              <div key={i} className={`skill-block ${skillsActive?"skill-in":""}`}
-                style={{animationDelay:`${0.1+i*0.12}s`}}>
-                <div className="skill-area">{s.area}</div>
-                <div className="skill-items">
-                  {s.items.map((item,j) => (
-                    <span key={j} className="skill-tag"
-                      style={{animationDelay:`${0.2+i*0.12+j*0.05}s`,
-                        animation: skillsActive ? `tagPop 0.4s ${0.2+i*0.12+j*0.05}s cubic-bezier(0.34,1.56,0.64,1) both` : "none"
-                      }}>{item}</span>
+            {SKILLS_PM.map((s, i) => (
+              <div key={i} className={`sk-card ${skillsVis ? "vis" : ""}`}
+                style={{ transitionDelay:`${0.1+i*0.1}s` }}>
+                <div className="sk-cat">{s.cat}</div>
+                <div className="sk-tags">
+                  {s.items.map((item, j) => (
+                    <span key={j} className={`sk-tag ${skillsVis ? "tag-vis" : ""}`}
+                      style={{ transitionDelay:`${0.2+i*0.1+j*0.04}s` }}>{item}</span>
                   ))}
                 </div>
               </div>
             ))}
           </div>
 
-          {/* certifications */}
-          <div className={`cert-row ${skillsActive?"cert-in":""}`}>
-            {["Six Sigma Green Belt","SOLIDWORKS Associate (CSWA)","Advanced Tableau Desktop","Project Management: Intl","Siemens Mobility PM Simulation"].map((c,i)=>(
-              <div key={i} className="cert-badge" style={{animationDelay:`${0.7+i*0.08}s`}}>
-                <span className="cert-check">✓</span>
-                <span>{c}</span>
-              </div>
-            ))}
+          <div className={`cert-section ${skillsVis ? "vis" : ""}`}>
+            <div className="cert-label">Certifications</div>
+            <div className="cert-list">
+              {CERTS.map((c, i) => (
+                <div key={i} className={`cert-item ${skillsVis ? "vis" : ""}`}
+                  style={{ transitionDelay:`${0.6+i*0.08}s` }}>
+                  <span className="cert-icon">✓</span>
+                  <span>{c}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════════════════
-          SECTION 6 — CONTACT
-      ══════════════════════════════════════════════════════ */}
-      <section ref={contactRef} id="contact" className="section contact-section">
-        <div className="contact-bg" aria-hidden="true">
-          <div className="contact-orb" />
-        </div>
-        <div className="section-inner contact-inner">
-          <div className={`section-label ${contactActive?"label-in":""}`}>Let&apos;s connect</div>
-          <h2 className={`section-h2 contact-h2 ${contactActive?"h2-in":""}`}>
-            Open to <em>Summer 2026</em>
+      {/* ══════════════════════════════════════
+          CONTACT
+      ══════════════════════════════════════ */}
+      <section ref={contactRef} className="section contact-section">
+        <div className="contact-orb" />
+        <div className="s-wrap contact-wrap">
+          <div className={`s-eyebrow ${contactVis ? "vis" : ""}`}>Let&apos;s Talk</div>
+          <h2 className={`s-h2 contact-h2 ${contactVis ? "vis" : ""}`}>
+            Open to <em>Summer 2026.</em>
           </h2>
-          <p className={`contact-note ${contactActive?"note-in":""}`}>
-            Seeking roles in Project Management, Product Management, Industrial Engineering,
-            and Business Analysis. Phoenix, AZ — open to relocation.
+          <p className={`contact-note ${contactVis ? "vis" : ""}`}>
+            Seeking Product Manager, Project Manager, Industrial Engineering,
+            and Business Analysis roles. Ready to own a roadmap, drive delivery,
+            and build something worth shipping.
           </p>
-
-          <div className={`contact-grid ${contactActive?"contact-grid-in":""}`}>
-            <a href="mailto:pratham.bhilare1010@gmail.com" className="contact-card">
-              <div className="cc-icon">✉</div>
-              <div className="cc-label">Email</div>
-              <div className="cc-val">pratham.bhilare1010@gmail.com</div>
-            </a>
-            <a href="tel:+14807425812" className="contact-card">
-              <div className="cc-icon">☏</div>
-              <div className="cc-label">Phone</div>
-              <div className="cc-val">+1 (480) 742-5812</div>
-            </a>
-            <a href="https://www.linkedin.com/in/prathambhilare" target="_blank" rel="noreferrer" className="contact-card">
-              <div className="cc-icon">in</div>
-              <div className="cc-label">LinkedIn</div>
-              <div className="cc-val">linkedin.com/in/prathambhilare</div>
-            </a>
-            <a href="https://github.com/bhilarepratham" target="_blank" rel="noreferrer" className="contact-card">
-              <div className="cc-icon">⌥</div>
-              <div className="cc-label">GitHub</div>
-              <div className="cc-val">github.com/bhilarepratham</div>
-            </a>
+          <div className={`contact-cards ${contactVis ? "vis" : ""}`}>
+            {[
+              { icon:"✉", label:"Email",    val:"pratham.bhilare1010@gmail.com", href:"mailto:pratham.bhilare1010@gmail.com" },
+              { icon:"☏", label:"Phone",    val:"+1 (480) 742-5812",              href:"tel:+14807425812" },
+              { icon:"in", label:"LinkedIn", val:"linkedin.com/in/prathambhilare",href:"https://www.linkedin.com/in/prathambhilare" },
+              { icon:"⌥", label:"GitHub",   val:"github.com/bhilarepratham",      href:"https://github.com/bhilarepratham" },
+            ].map((c, i) => (
+              <a key={i} href={c.href} target={c.href.startsWith("http") ? "_blank" : undefined}
+                rel="noreferrer" className="cc-card"
+                style={{ transitionDelay:`${0.3+i*0.08}s` }}>
+                <div className="cc-icon">{c.icon}</div>
+                <div className="cc-label">{c.label}</div>
+                <div className="cc-val">{c.val}</div>
+              </a>
+            ))}
           </div>
-
-          <div className={`contact-ctas ${contactActive?"ctas-in":""}`}>
-            <a href="mailto:pratham.bhilare1010@gmail.com" className="cta-btn cta-primary">Email Pratham</a>
-            <a href="https://www.linkedin.com/in/prathambhilare" target="_blank" rel="noreferrer" className="cta-btn">LinkedIn Profile</a>
+          <div className={`contact-actions ${contactVis ? "vis" : ""}`}>
+            <a href="mailto:pratham.bhilare1010@gmail.com" className="btn-primary">Email Pratham</a>
+            <a href="https://www.linkedin.com/in/prathambhilare" target="_blank" rel="noreferrer" className="btn-ghost">LinkedIn</a>
           </div>
         </div>
-
-        <div className="footer-strip">
+        <footer className="footer">
           <span>© Pratham Ankush Bhilare · Phoenix, AZ</span>
-          <span>Open to Summer 2026</span>
-        </div>
+          <span>Open to Summer 2026 · PM · Product · Operations</span>
+        </footer>
       </section>
 
     </div>
