@@ -253,6 +253,17 @@ const research = [
   },
 ];
 
+function SceneMarker({ num, label }: { num: string; label: string }) {
+  return (
+    <div className="scene-marker">
+      <span className="scene-marker-text">
+        <span className="scene-num">{num}</span>
+        {label}
+      </span>
+    </div>
+  );
+}
+
 export default function Home() {
   const [navOpen, setNavOpen] = useState(false);
 
@@ -318,7 +329,7 @@ export default function Home() {
             aria-expanded={navOpen}
             aria-controls="siteNav"
           >
-            Menu
+            {navOpen ? "Close" : "Menu"}
           </button>
 
           <nav className={`nav ${navOpen ? "open" : ""}`} id="siteNav">
@@ -335,79 +346,77 @@ export default function Home() {
       </header>
 
       <main id="home" className="wrap">
-        <section className="hero fade-in">
-          <div className="hero-panel reveal">
-            <div className="hero-grid">
-              <div>
-                <div className="eyebrow">
-                  Graduate Teaching Assistant @ ASU · MS Management of Technology &apos;26
-                </div>
-                <h1>Pratham Bhilare</h1>
-                <p className="subhead">
-                  Industrial engineer and project-minded problem solver focused on
-                  process optimization, product thinking, and business analysis.
-                  I turn technical work into measurable outcomes through modeling,
-                  data analysis, and structured execution.
-                </p>
-                <div className="hero-actions">
-                  <a className="btn primary" href="#projects">
-                    View selected work
-                  </a>
-                  <a className="btn" href="#experience">
-                    See experience
-                  </a>
-                  <a className="btn" href="mailto:pratham.bhilare1010@gmail.com">
-                    Get in touch
-                  </a>
-                </div>
-                <div className="hero-note">
-                  MS Management of Technology at Arizona State University (GPA 3.85), Bachelor&apos;s in Mechanical Engineering, and hands-on experience across power plant operations, fabrication, supply-chain optimization, and academic instruction. Open to Summer 2026 roles in Project Management, Product Management, Industrial Engineering, and Business Analysis.
-                </div>
-              </div>
 
-              <div className="portrait-shell">
-                <div className="portrait-card reveal">
-                  <div className="portrait">
-                    <img src="/assets/portrait.jpg" alt="Portrait of Pratham Bhilare" />
-                  </div>
-                </div>
+        {/* HERO */}
+        <section className="hero fade-in">
+          <div className="hero-eyebrow">
+            Graduate Teaching Assistant @ ASU &nbsp;·&nbsp; MS Management of Technology &apos;26
+          </div>
+
+          <div className="hero-grid">
+            <div className="hero-left">
+              <h1>Pratham<br /><em>Bhilare</em></h1>
+              <div className="hero-rule" />
+              <p className="subhead">
+                Industrial engineer and project-minded problem solver focused on
+                process optimization, product thinking, and business analysis.
+                Turning technical work into measurable outcomes through modeling,
+                data analysis, and structured execution.
+              </p>
+              <div className="hero-actions">
+                <a className="btn primary" href="#projects">View selected work</a>
+                <a className="btn" href="#experience">Experience</a>
+                <a className="btn" href="mailto:pratham.bhilare1010@gmail.com">Get in touch</a>
               </div>
+              <p className="hero-note">
+                MS Management of Technology at Arizona State University (GPA 3.85),
+                Bachelor&apos;s in Mechanical Engineering, and hands-on experience across
+                power plant operations, fabrication, supply-chain optimization, and
+                academic instruction. Open to Summer 2026 roles in Project Management,
+                Product Management, Industrial Engineering, and Business Analysis.
+              </p>
             </div>
 
-            <div className="hero-strip" aria-hidden="true">
-              <div className="hero-strip-track">
-                {Array.from({ length: 2 }).flatMap((_, dupIndex) =>
-                  [
-                    "Project management",
-                    "Operations management",
-                    "Process optimization",
-                    "Data analysis",
-                    "Lean systems",
-                    "Business analysis",
-                    "Product thinking",
-                    "Six Sigma",
-                    "Systems engineering",
-                    "Financial modeling",
-                  ].map((word, index) => (
-                    <span key={`${dupIndex}-${index}-${word}`}>{word}</span>
-                  ))
-                )}
+            <div className="portrait-shell reveal">
+              <div className="portrait-card">
+                <div className="portrait-bar-top" />
+                <div className="portrait">
+                  <img src="/assets/portrait.jpg" alt="Portrait of Pratham Bhilare" />
+                </div>
+                <div className="portrait-bar-bottom" />
               </div>
+            </div>
+          </div>
+
+          <div className="hero-strip" aria-hidden="true">
+            <div className="hero-strip-track">
+              {Array.from({ length: 2 }).flatMap((_, dupIndex) =>
+                [
+                  "Project management",
+                  "Operations management",
+                  "Process optimization",
+                  "Data analysis",
+                  "Lean systems",
+                  "Business analysis",
+                  "Product thinking",
+                  "Six Sigma",
+                  "Systems engineering",
+                  "Financial modeling",
+                ].map((word, index) => (
+                  <span key={`${dupIndex}-${index}`}>{word}</span>
+                ))
+              )}
             </div>
           </div>
         </section>
 
+        {/* HIGHLIGHTS */}
         <section id="highlights" className="fade-in">
-          <div className="eyebrow-number">01 — Highlights</div>
-          <div className="section-title">
-            <div>
-              <h2>Highlights</h2>
-            </div>
-          </div>
-
+          <SceneMarker num="I" label="Highlights" />
+          <h2>By the <em>numbers</em></h2>
           <div className="highlights-grid">
             {highlights.map((item) => (
-              <div className="highlight-card panel reveal" key={item.title}>
+              <div className="highlight-card reveal" key={item.title}>
                 <div className="highlight-stat">{item.stat}</div>
                 <h3>{item.title}</h3>
                 <p>{item.text}</p>
@@ -416,18 +425,14 @@ export default function Home() {
           </div>
         </section>
 
+        {/* EDUCATION */}
         <section id="education" className="fade-in">
-          <div className="eyebrow-number">02 — Education</div>
-          <div className="section-title">
-            <div>
-              <h2>Education</h2>
-            </div>
-          </div>
-
+          <SceneMarker num="II" label="Education" />
+          <h2><em>Academic</em> background</h2>
           <div className="edu-list">
             {education.map((item) => (
-              <article className="edu-card panel reveal" key={item.school}>
-                <div className="year">{item.year}</div>
+              <article className="edu-card reveal" key={item.school}>
+                <span className="year">{item.year}</span>
                 <h3>{item.school}</h3>
                 <p>{item.degree}</p>
               </article>
@@ -435,41 +440,35 @@ export default function Home() {
           </div>
         </section>
 
+        {/* EXPERIENCE */}
         <section id="experience" className="fade-in">
-          <div className="eyebrow-number">03 — Experience</div>
-          <div className="section-title">
-            <div>
-              <h2>Experience</h2>
-            </div>
-          </div>
-
+          <SceneMarker num="III" label="Experience" />
+          <h2>Where I&apos;ve <em>worked</em></h2>
           <div className="exp-list">
             {experience.map((job) => (
-              <article className="exp-card panel reveal" key={job.company + job.year}>
-                <div className="year">{job.year}</div>
-                <h3>{job.company}</h3>
-                <p>{job.desc}</p>
-                <ul>
-                  {job.points.map((point) => (
-                    <li key={point}>{point}</li>
-                  ))}
-                </ul>
+              <article className="exp-card reveal" key={job.company + job.year}>
+                <span className="year">{job.year}</span>
+                <div className="exp-right">
+                  <h3>{job.company}</h3>
+                  <p>{job.desc}</p>
+                  <ul>
+                    {job.points.map((point) => (
+                      <li key={point}>{point}</li>
+                    ))}
+                  </ul>
+                </div>
               </article>
             ))}
           </div>
         </section>
 
+        {/* PROJECTS */}
         <section id="projects" className="fade-in">
-          <div className="eyebrow-number">04 — Projects</div>
-          <div className="section-title">
-            <div>
-              <h2>Projects</h2>
-            </div>
-          </div>
-
+          <SceneMarker num="IV" label="Projects" />
+          <h2>Selected <em>work</em></h2>
           <div className="project-grid">
             {projects.map((project) => (
-              <article className="project-card panel reveal" key={project.title}>
+              <article className="project-card reveal" key={project.title}>
                 <div className="project-media">
                   <img src={project.image} alt={project.title} />
                 </div>
@@ -480,9 +479,7 @@ export default function Home() {
                   <p>{project.desc}</p>
                   <div className="tag-row">
                     {project.tags.map((tag) => (
-                      <span className="tag" key={tag}>
-                        {tag}
-                      </span>
+                      <span className="tag" key={tag}>{tag}</span>
                     ))}
                   </div>
                 </div>
@@ -491,21 +488,17 @@ export default function Home() {
           </div>
         </section>
 
+        {/* RESEARCH */}
         <section id="research" className="fade-in">
-          <div className="eyebrow-number">05 — Research</div>
-          <div className="section-title">
-            <div>
-              <h2>Research &amp; Publications</h2>
-            </div>
-          </div>
-
+          <SceneMarker num="V" label="Research & Publications" />
+          <h2>Research &amp; <em>publications</em></h2>
           <div className="research-list">
             {research.map((item) => (
-              <article className="research-card panel reveal" key={item.title}>
-                <div className="year">{item.type}</div>
+              <article className="research-card reveal" key={item.title}>
+                <span className="year">{item.type}</span>
                 <h3>{item.title}</h3>
                 <p>{item.desc}</p>
-                <div className="tag-row" style={{ marginTop: 14 }}>
+                <div className="tag-row" style={{ marginTop: 16 }}>
                   {item.tags.map((tag) => (
                     <span className="tag" key={tag}>{tag}</span>
                   ))}
@@ -515,17 +508,13 @@ export default function Home() {
           </div>
         </section>
 
+        {/* SKILLS */}
         <section id="skills" className="fade-in">
-          <div className="eyebrow-number">06 — Skills</div>
-          <div className="section-title">
-            <div>
-              <h2>Skills</h2>
-            </div>
-          </div>
-
+          <SceneMarker num="VI" label="Skills" />
+          <h2>Areas of <em>expertise</em></h2>
           <div className="skills-grid">
             {skills.map((skill) => (
-              <div className="skill-card panel reveal" key={skill.title}>
+              <div className="skill-card reveal" key={skill.title}>
                 <h3>{skill.title}</h3>
                 <p>{skill.text}</p>
               </div>
@@ -533,20 +522,16 @@ export default function Home() {
           </div>
         </section>
 
+        {/* CERTIFICATIONS */}
         <section id="certifications" className="fade-in">
-          <div className="eyebrow-number">07 — Certifications</div>
-          <div className="section-title">
-            <div>
-              <h2>Certifications</h2>
-            </div>
-          </div>
-
+          <SceneMarker num="VII" label="Certifications" />
+          <h2><em>Credentials</em> &amp; certifications</h2>
           <div className="cert-grid">
             {certifications.map((cert) => (
-              <article className="cert-card panel reveal" key={cert.name}>
-                <div className="cert-badge">✓</div>
+              <article className="cert-card reveal" key={cert.name}>
+                <div className="cert-badge">&#10003;</div>
                 <div className="cert-body">
-                  <div className="year">{cert.body}</div>
+                  <span className="year">{cert.body}</span>
                   <h3>{cert.name}</h3>
                   <p>{cert.desc}</p>
                 </div>
@@ -555,63 +540,39 @@ export default function Home() {
           </div>
         </section>
 
+        {/* CONTACT */}
         <section id="contact" className="fade-in">
-          <div className="eyebrow-number">08 — Contact</div>
-          <div className="section-title">
-            <div>
-              <h2>Get in touch</h2>
-            </div>
-          </div>
-
-          <div className="panel contact-card reveal">
-            <div>
+          <SceneMarker num="VIII" label="Contact" />
+          <h2>Get in <em>touch</em></h2>
+          <div className="contact-card reveal">
+            <div className="contact-left">
               <p>
                 Currently seeking roles for Summer 2026 in Project Management,
-                Product Management, Industrial Engineering, Manufacturing
-                Engineering, and Business Analysis. Open to relocation and
-                collaboration across technical and operations-focused teams.
+                Product Management, Industrial Engineering, Manufacturing Engineering,
+                and Business Analysis. Open to relocation and collaboration across
+                technical and operations-focused teams.
               </p>
-
-              <div className="hero-actions" style={{ marginTop: 0 }}>
-                <a className="btn primary" href="mailto:pratham.bhilare1010@gmail.com">
-                  Email Pratham
-                </a>
-                <a className="btn" href="https://www.linkedin.com/in/prathambhilare" target="_blank" rel="noreferrer noopener">
-                  LinkedIn
-                </a>
-                <a className="btn" href="#home">
-                  Back to top
-                </a>
+              <div className="hero-actions">
+                <a className="btn primary" href="mailto:pratham.bhilare1010@gmail.com">Email Pratham</a>
+                <a className="btn" href="https://www.linkedin.com/in/prathambhilare" target="_blank" rel="noreferrer noopener">LinkedIn</a>
+                <a className="btn" href="#home">Back to top</a>
               </div>
             </div>
-
-            <div className="contact-box">
+            <div className="contact-right">
               <strong>Contact details</strong>
               <div className="contact-links">
                 <a href="tel:+14807425812">+1 (480) 742-5812</a>
-                <a href="mailto:pratham.bhilare1010@gmail.com">
-                  pratham.bhilare1010@gmail.com
-                </a>
-                <a
-                  href="https://www.linkedin.com/in/prathambhilare"
-                  target="_blank"
-                  rel="noreferrer noopener"
-                >
-                  LinkedIn profile
-                </a>
-                <a
-                  href="https://github.com/bhilarepratham"
-                  target="_blank"
-                  rel="noreferrer noopener"
-                >
-                  GitHub profile
-                </a>
+                <a href="mailto:pratham.bhilare1010@gmail.com">pratham.bhilare1010@gmail.com</a>
+                <a href="https://www.linkedin.com/in/prathambhilare" target="_blank" rel="noreferrer noopener">linkedin.com/in/prathambhilare</a>
+                <a href="https://github.com/bhilarepratham" target="_blank" rel="noreferrer noopener">github.com/bhilarepratham</a>
               </div>
             </div>
           </div>
         </section>
 
-        <div className="footer">© Pratham Ankush Bhilare · Phoenix, AZ</div>
+        <div className="footer">
+          <span className="footer-text">&#169; Pratham Ankush Bhilare &nbsp;&middot;&nbsp; Phoenix, AZ &nbsp;&middot;&nbsp; Open to Summer 2026 roles</span>
+        </div>
       </main>
     </>
   );
