@@ -673,7 +673,7 @@ function WorkshopBg() {
       {/* Shelf */}
       <rect x="0" y="90" width="1200" height="10" fill="#0e0e1e" />
       {/* Rotating gears */}
-      {[[180,270,50,1],[420,240,65,−1],[720,280,42,1],[980,255,58,−1],[1100,240,36,1]].map(([cx,cy,r,dir],i)=>(
+      {[[180,270,50,1],[420,240,65,-1],[720,280,42,1],[980,255,58,-1],[1100,240,36,1]].map(([cx,cy,r,dir],i)=>(
         <g key={i} style={{transformOrigin:`${cx}px ${cy}px`,animation:`${dir===1?"spin":"spinrev"} ${5+i*1.2}s linear infinite`}}>
           <circle cx={cx} cy={cy} r={r} fill="none" stroke="#C8A96E" strokeWidth="2.5" opacity="0.18" />
           {Array.from({length:10}).map((_,t)=>(
