@@ -209,7 +209,7 @@ const EDUCATION = [
     period: "Aug 2024 – May 2026",
     institution: "Arizona State University — Ira A. Fulton Schools of Engineering",
     degree: "Master of Science, Management of Technology",
-    detail: "GPA 3.85 · Focus: Operations, Project Management, Product Strategy, Data Analytics",
+    detail: "GPA 3.83 · Focus: Operations, Project Management, Product Strategy, Data Analytics",
   },
   {
     period: "2021 – 2024",
