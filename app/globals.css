@@ -99,16 +99,17 @@ strong { font-weight: 600; color: var(--t1); }
 }
 .hero-img {
   width: 100%; height: 100%;
-  object-fit: cover; object-position: top center;
-  opacity: 0.35; filter: contrast(1.06) saturate(0.85);
+  object-fit: cover; object-position: center 15%;
+  opacity: 0.55; filter: contrast(1.04) saturate(0.88);
 }
 .hero-fade {
   position: absolute; inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(0,0,0,0.08)  0%,
-    rgba(0,0,0,0.0)   25%,
-    rgba(0,0,0,0.35)  65%,
+    rgba(0,0,0,0.1)  0%,
+    rgba(0,0,0,0.0)  20%,
+    rgba(0,0,0,0.15) 55%,
+    rgba(0,0,0,0.75) 80%,
     rgba(0,0,0,1.0)  100%
   );
 }
