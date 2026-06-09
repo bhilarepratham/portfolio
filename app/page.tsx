@@ -146,7 +146,7 @@ const PROJECTS = [
 
 const EXPERIENCE = [
   {
-    period: "May 2025 – Present",
+    period: "May 2025 – May 2026",
     company: "Arizona State University",
     role: "Graduate Teaching Assistant",
     location: "Tempe, AZ",
@@ -358,13 +358,13 @@ export default function Home() {
       ════════════════════════════════ */}
       <section ref={secHero} className="hero">
         <div className="hero-photo-layer"
-          style={{ transform:`translateY(${scrollY*0.2}px)` }}>
+          style={{ transform:`translateY(${scrollY*0.08}px)` }}>
           <img src="/assets/portrait.jpeg" alt="Pratham Bhilare" className="hero-img" />
           <div className="hero-fade" />
         </div>
 
         <div className="hero-body">
-          <p className="hero-label">MS Management of Technology · ASU Fulton · GPA 3.85</p>
+          <p className="hero-label">MS Management of Technology · ASU Fulton · GPA 3.83</p>
           <h1 className="hero-name">Pratham<br/>Bhilare.</h1>
           <p className="hero-titles">Project Manager&nbsp;·&nbsp;Product Manager&nbsp;·&nbsp;Operations Analyst</p>
           <p className="hero-bio">
