@@ -13,6 +13,10 @@ const PROJECTS = [
   { n:"06", category:"Disruptive Innovation", title:"BYD Global Strategy", org:"Team Strategy Project", kpi:"9.5/10", kpiLabel:"innovation score", summary:"Analysed BYD's rise to #1 global EV seller — 526,409 BEV sales vs Tesla's 484,507 in Q4 2023.", deliverables:["Evaluated 20,000+ patent portfolio and 138+ trademarks — mapped global filing strategy across US, EU, China, South Korea","Analysed $2.1B Chinese government subsidies (2022) as structural cost advantage","Innovation scores: Viability 10/10, Leadership 10/10, Feasibility 9/10, Financial Opportunity 9/10","Identified 880% UK sales growth as primary international expansion signal — recommended global urban market entry"], tools:["Disruptive Innovation Framework","IP Strategy","SWOT","BMC","Financial Benchmarking","USPTO Patent Mapping"] },
   { n:"07", category:"Analytics · Econometrics", title:"42-Year Immigration & Economy Study", org:"Data-Driven Decision Making · ASU", kpi:"R²=0.998", kpiLabel:"income prediction model accuracy", summary:"42-year longitudinal OLS regression study (1980–2021) analysing immigration's impact on U.S. GDP growth, unemployment, and personal income.", deliverables:["Merged 4 federal sources (DHS, BEA, FRED, Kaggle) — 42 annual observations, IQR outlier detection, derived variables","Income prediction model: R²=0.998 training, 16% MAPE on 2016–2021 test window — GDP Nominal dominant predictor (p=1.02E-47)","86%/14% train-test split with time-series validation to prevent COVID-era data leakage","Finding: 1M-person net immigration increase shifts GDP growth by only 0.0025 percentage points"], tools:["OLS Regression","Python","Pandas","Excel","Time-Series Analysis","Federal Databases"] },
   { n:"08", category:"UX Research", title:"VR Usability Testing", org:"Water Purification Simulation · ASU TWC 544", kpi:"100%", kpiLabel:"conceptual retention despite friction", summary:"Task-based think-aloud usability testing of educational VR simulation on Meta Quest 2 (6DoF) — 5 critical issues identified, 7 recommendations delivered.", deliverables:["6 structured task scenarios covering all purification stages: sedimentation, chlorination, ozonation, ultrafiltration, UV disinfection","5 critical issues: joystick sensitivity failure, menu navigation glitches, targeting ambiguity, range limitations, onboarding friction","100% conceptual retention across all participants despite significant interface friction","7 recommendations: haptic feedback, targeting assist, text-to-speech, remappable controls, simplified menus, progress indicators, tutorial redesign","Full APA usability report with hardware comparison: Meta Quest 2 vs HTC Vive Pro"], tools:["Think-Aloud Protocol","Meta Quest 2","Qualitative Coding","APA Documentation"] },
+  { n:"09", category:"AI-Assisted Development · Data Product", title:"Financial Intelligence Dashboard", org:"ASU Graduate Project · Built with Claude AI", kpi:"50+", kpiLabel:"public companies across 6 industries", summary:"Streamlit dashboard that aggregates real-time strategic data (market cap, revenue, P/E, executives, stock history) for 50+ public companies, built end to end through AI prompt engineering.", deliverables:["Directed Claude AI to design a modular 5-file architecture (data collector, database manager, visualizer, config, app) with rate limiting and exception handling","Implemented an SQLite database with 4 normalised tables and 20+ data points per company, with corruption detection and recovery","Built interactive Plotly views: market cap bars, industry mix, revenue vs. employees, P/E histograms, comparing up to 15 companies side by side","Combined Yahoo Finance API with BeautifulSoup scraping and fallback logic, collecting data for ~90% of queried tickers"], tools:["Claude AI","Prompt Engineering","Python","Streamlit","Plotly","SQLite","Pandas"] },
+  { n:"10", category:"Operations · Process Analysis", title:"Volunteer Operations Analysis", org:"Feed My Starving Children · ASU TMC 410", kpi:"17,712", kpiLabel:"meals packed by a 100-volunteer team", summary:"Analysed a 90-minute humanitarian meal-packing operation to find the bottleneck and recommend process improvements.", deliverables:["Measured throughput at 10 bags/min per team and 197 meals/min across the full group","Identified the sealing station as the critical bottleneck through process flow mapping and recommended a second sealer","Calculated a 29% safety stock level using Kanban analysis for a 10 bags/min demand rate with a 3-minute replenishment delay","Proposed colour-coded bins, standardised scoops, and local farm partnerships to cut waste"], tools:["Process Flow Mapping","Kanban","Bottleneck Analysis","Labor Productivity","Operations Management"] },
+  { n:"11", category:"Analytics · Forecasting", title:"US Electricity Demand Forecasting", org:"Enterprise Operations Analytics · ASU", kpi:"61%", kpiLabel:"lower MAD than ARIMA", summary:"Time-series forecasting of monthly US electricity consumption (2000-2020), comparing Exponential Smoothing against ARIMA.", deliverables:["Built the pipeline in Python with Pandas, Statsmodels, and Scikit-learn, using Claude AI for code generation","Exponential Smoothing (additive seasonality, period 12) reached MAD 8,057.83 versus ARIMA(3,1,2) at 20,484.32","Evaluated why ARIMA struggled with strong seasonality and selected the better model from the error metrics"], tools:["Python","Statsmodels","Exponential Smoothing","ARIMA","MAD / MSE","Claude AI"] },
+  { n:"12", category:"Operations · Work Design", title:"Standard Time Analysis Automation", org:"Enterprise Operations Analytics · ASU", kpi:"1.396 min", kpiLabel:"standard time per sandwich", summary:"Automated work-measurement calculations for a 7-element food assembly process using Python and pandas.", deliverables:["Applied Standard Time = Normal Time x (1 + PFD allowance) with per-task performance ratings","Cut manual calculation from about 3-4 hours to under 30 minutes","Used the result for capacity planning: sandwiches per hour and staffing for a 100-unit/hour target","Documented 4 limitations of LLM-generated code compared with spreadsheet logic"], tools:["Python","Pandas","Work Measurement","Excel","ChatGPT"] },
 ];
 
 const EXPERIENCE = [
@@ -31,22 +35,22 @@ const EDUCATION = [
 
 const SKILLS = [
   { area:"Delivery & Planning", tags:["Work Breakdown Structure","Critical Path Method","PERT Estimation","Gantt Charts","Milestone Tracking","Risk Matrix","Stakeholder Mapping","MS Project","JIRA"] },
-  { area:"Product & Strategy", tags:["Product Roadmapping","Business Model Canvas","TAM / SAM / SOM","Go-to-Market","User Stories","OKRs","Porter's Five Forces","VRIO Framework","Competitive Analysis"] },
+  { area:"Product & Strategy", tags:["Business Model Canvas","TAM / SAM / SOM","Go-to-Market","Porter's Five Forces","VRIO Framework","Competitive Analysis"] },
   { area:"Operations & Quality", tags:["Operations Management","Quality Management","Process Optimization","Lean Manufacturing","Six Sigma (Green Belt)","DMAIC","Bottleneck Analysis","Kanban","AnyLogic"] },
-  { area:"Data & Analytics", tags:["OLS Regression","Time-Series Forecasting","Python · Pandas · NumPy","Tableau","Excel Modeling","KPI Dashboards","Data Cleaning & EDA"] },
-  { area:"Tools & Platforms", tags:["MS Project","JIRA","Tableau","AnyLogic","SolidWorks","Python","Streamlit","Canvas LMS","Flutter","LabVIEW","VS Code","SQLite"] },
+  { area:"Data & Analytics", tags:["OLS Regression","Time-Series Forecasting","Python · Pandas · NumPy","Tableau","Excel Modeling","KPI Dashboards","Data Cleaning & EDA","Exponential Smoothing / ARIMA","Prompt Engineering"] },
+  { area:"Tools & Platforms", tags:["MS Project","JIRA","Tableau","AnyLogic","SolidWorks","Python","Streamlit","Plotly","Claude / ChatGPT","Canvas LMS","Flutter","LabVIEW","VS Code","SQLite"] },
 ];
 
 const CERTS = [
-  { name:"Six Sigma: Green Belt",                       issuer:"Professional Certification",       year:"2024" },
-  { name:"SOLIDWORKS Associate (CSWA)",                 issuer:"Dassault Systèmes",                year:"2023" },
-  { name:"Advanced Tableau Desktop",                    issuer:"Data Visualization Certification",  year:"2024" },
-  { name:"Project Management: International Projects",  issuer:"Professional Certification",       year:"2024" },
-  { name:"Siemens Mobility — Commercial PM Simulation", issuer:"Forage / Siemens",                 year:"2024" },
+  { name:"Six Sigma: Green Belt",                       issuer:"Professional Certification" },
+  { name:"SOLIDWORKS Associate (CSWA)",                 issuer:"Dassault Systèmes" },
+  { name:"Advanced Tableau Desktop",                    issuer:"Data Visualization Certification" },
+  { name:"Project Management: International Projects",  issuer:"Professional Certification" },
+  { name:"Siemens Mobility — Commercial PM Simulation", issuer:"Forage / Siemens" },
 ];
 
 const RESEARCH = [
-  { type:"Peer-Reviewed Publication", venue:"Undergraduate Engineering Research", title:"Heat Recovery from Solar Photovoltaic Panels", abstract:"Designed and fabricated a solar PV heat recovery system with forced-air convection dryer — improved panel efficiency from 18.22% to 20.34%, reducing operating temperature by 3.82°C. Dried 110g of fenugreek from 84% to 16.19% moisture in 6 hours. Instrumented with 6 K-type thermocouples, pyranometer, and NI DAQ hardware with LabVIEW. Full project executed including SolidWorks modelling within a ₹7,020 budget.", tags:["Solar Energy","Thermodynamics","SolidWorks","LabVIEW","NI DAQ","Forced Convection"] },
+  { type:"Publication", venue:"Mechanical Engineering · Undergraduate Project", title:"Heat Recovery from Solar Photovoltaic Panels", abstract:"Designed and fabricated a solar PV heat recovery system with forced-air convection dryer — improved panel efficiency from 18.22% to 20.34%, reducing operating temperature by 3.82°C. Dried 110g of fenugreek from 84% to 16.19% moisture in 6 hours. Instrumented with 6 K-type thermocouples, pyranometer, and NI DAQ hardware with LabVIEW. Full project executed including SolidWorks modelling within a ₹7,020 budget.", tags:["Solar Energy","Thermodynamics","SolidWorks","LabVIEW","NI DAQ","Forced Convection"] },
   { type:"Comparative Literature Review", venue:"Systems Engineering · ASU", title:"ASEM vs. INCOSE: Bridging the Competency Gap", abstract:"Comparative review of ASEM and INCOSE across 4 peer-reviewed sources analysing competency frameworks, certification pathways, and standardisation. Mapped 4 competency domains across EMBoK and SECF, benchmarked 5 certification levels (AEM, PEM vs. ASEP, CSEP, ESEP), and identified 3 strategic collaboration opportunities to address workforce gaps in socio-technical systems engineering.", tags:["Systems Engineering","INCOSE","ASEM","EMBoK","SECF","Competency Frameworks"] },
 ];
 
@@ -70,6 +74,7 @@ function WordReveal({ text, className = "" }: { text: string; className?: string
 
   useEffect(() => {
     const el = ref.current; if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { setRatio(1); return; }
     const onScroll = () => {
       const rect = el.getBoundingClientRect();
       const vh = window.innerHeight;
@@ -88,6 +93,8 @@ function WordReveal({ text, className = "" }: { text: string; className?: string
   const words = text.split(" ");
   return (
     <span ref={ref} className={className} style={{ display:"inline" }}>
+      <span className="sr-only">{text}</span>
+      <span aria-hidden="true">
       {words.map((w, i) => {
         const threshold = i / words.length;
         const lit = ratio > threshold;
@@ -95,11 +102,11 @@ function WordReveal({ text, className = "" }: { text: string; className?: string
           <span key={i} style={{
             color: lit ? "#f5f5f7" : "#3a3a3c",
             transition: "color 0.4s cubic-bezier(0.4,0,0.2,1)",
-            marginRight: "0.28em",
             display: "inline-block",
-          }}>{w}</span>
+          }}>{w}{i < words.length - 1 ? "\u00A0" : ""}</span>
         );
       })}
+      </span>
     </span>
   );
 }
@@ -155,6 +162,7 @@ export default function Home() {
 
   return (
     <div className="site">
+      <a href="#main" className="skip-link">Skip to content</a>
 
       {/* ── PROGRESS ── */}
       <div className="prog-bar"><div className="prog-fill" style={{ width:`${progress*100}%` }}/></div>
@@ -165,14 +173,14 @@ export default function Home() {
           <button className="nav-logo" onClick={() => go(secHero)}>Pratham Bhilare</button>
           <nav className={`nav-links ${menuOpen?"open":""}`}>
             {NAV.map((n,i) => (
-              <button key={i} className={`nav-link ${activeS===i?"active":""}`}
+              <button key={i} aria-current={activeS===i?"true":undefined} className={`nav-link ${activeS===i?"active":""}`}
                 onClick={() => go(allRefs[i])}>{n}</button>
             ))}
           </nav>
           <div className="nav-right">
             <a href="/assets/pratham_Bhilare_Resume.pdf" target="_blank" rel="noreferrer" className="nav-resume">Resume</a>
             <a href="mailto:pratham.bhilare1010@gmail.com" className="nav-hire">Hire me</a>
-            <button className="nav-burger" onClick={() => setMenuOpen(v=>!v)} aria-label="Menu">
+            <button className="nav-burger" onClick={() => setMenuOpen(v=>!v)} aria-label="Menu" aria-expanded={menuOpen}>
               <span className={menuOpen?"x":""}/><span className={menuOpen?"x":""}/>
             </button>
           </div>
@@ -182,6 +190,7 @@ export default function Home() {
       {/* ════════════════════════════════════════════════════
           HERO — sticky photo with text over it
       ════════════════════════════════════════════════════ */}
+      <main id="main">
       <section ref={secHero} className="hero">
         {/* Parallax photo */}
         <div className="hero-photo-layer" style={{ transform:`translateY(${scrollY*0.08}px)` }}>
@@ -204,7 +213,7 @@ export default function Home() {
             <a href="/assets/pratham_Bhilare_Resume.pdf" target="_blank" rel="noreferrer" className="btn-outline">Download Resume</a>
             <button className="btn-text" onClick={() => go(secContact)}>Get in touch ›</button>
           </div>
-          <p className="hero-avail"><span className="avail-dot"/>Open to Summer 2026 · Phoenix, AZ</p>
+          <p className="hero-avail"><span className="avail-dot"/>Open to full-time roles · Phoenix, AZ</p>
         </div>
 
         <div className="hero-scroll-cue">
@@ -236,13 +245,13 @@ export default function Home() {
           <div className="exp-list">
             {EXPERIENCE.map((e,i) => (
               <div key={i} className={`exp-card ${openExp===i?"exp-open":""}`} style={{ transitionDelay:`${i*0.07}s` }}>
-                <button className="exp-trigger" onClick={() => setOpenExp(openExp===i?null:i)}>
+                <button className="exp-trigger" aria-expanded={openExp===i} onClick={() => setOpenExp(openExp===i?null:i)}>
                   <div className="exp-tl">
                     <span className="exp-period">{e.period}</span>
                     <span className="exp-co">{e.company}</span>
                     <span className="exp-role">{e.role} · {e.location}</span>
                   </div>
-                  <span className={`exp-chev ${openExp===i?"open":""}`}>+</span>
+                  <span aria-hidden="true" className={`exp-chev ${openExp===i?"open":""}`}>+</span>
                 </button>
                 {openExp===i && (
                   <div className="exp-expand">
@@ -279,21 +288,21 @@ export default function Home() {
       <section ref={secProj} className="section proj-section">
         <div className={`s-wrap ${projOn?"in":""}`}>
           <div className="s-chip">Selected Work</div>
-          <h2 className="s-h2">8 projects.<br/><span className="h2-dim">Real outcomes.</span></h2>
+          <h2 className="s-h2">{PROJECTS.length} projects.<br/><span className="h2-dim">Real outcomes.</span></h2>
           <p className="s-sub">Tap any project to expand full scope, deliverables, and tools.</p>
 
           <div className="proj-list">
             {PROJECTS.map((p,i) => (
               <div key={i} className={`proj-row ${projOn?"prow-in":""} ${openProj===i?"prow-open":""}`}
                 style={{ transitionDelay:`${i*0.055}s` }}>
-                <button className="proj-trigger" onClick={() => setOpenProj(openProj===i?null:i)}>
+                <button className="proj-trigger" aria-expanded={openProj===i} onClick={() => setOpenProj(openProj===i?null:i)}>
                   <span className="pt-n">{p.n}</span>
                   <div className="pt-mid">
                     <span className="pt-title">{p.title}</span>
                     <span className="pt-cat">{p.category}</span>
                   </div>
                   <span className="pt-kpi">{p.kpi}</span>
-                  <span className={`pt-icon ${openProj===i?"open":""}`}>+</span>
+                  <span aria-hidden="true" className={`pt-icon ${openProj===i?"open":""}`}>+</span>
                 </button>
                 {openProj===i && (
                   <div className="proj-body">
@@ -341,10 +350,10 @@ export default function Home() {
           <div className="cert-table">
             {CERTS.map((c,i) => (
               <div key={i} className={`cert-row ${skillsOn?"cert-in":""}`} style={{ transitionDelay:`${0.4+i*0.07}s` }}>
-                <span className="cert-check">✓</span>
+                <span className="cert-check" aria-hidden="true">✓</span>
                 <div className="cert-body">
                   <span className="cert-name">{c.name}</span>
-                  <span className="cert-issuer">{c.issuer} · {c.year}</span>
+                  <span className="cert-issuer">{c.issuer}</span>
                 </div>
               </div>
             ))}
@@ -379,7 +388,7 @@ export default function Home() {
       <section ref={secContact} className="section contact-section">
         <div className={`s-wrap contact-wrap ${contactOn?"in":""}`}>
           <div className="s-chip">Let&apos;s Talk</div>
-          <h2 className="contact-h2">Open to<br/>Summer 2026.</h2>
+          <h2 className="contact-h2">Open to<br/>new roles.</h2>
           <p className="contact-note">
             Seeking Project Manager, Product Manager, Industrial Engineering, and Business Analysis roles.
             Ready to own a roadmap, drive delivery, and build something worth shipping.
@@ -407,9 +416,10 @@ export default function Home() {
         </div>
         <footer className="footer">
           <span>© Pratham Ankush Bhilare · Phoenix, AZ</span>
-          <span>MS Management of Technology · ASU · Open to Summer 2026</span>
+          <span>MS Management of Technology · ASU · Open to full-time roles</span>
         </footer>
       </section>
+      </main>
 
     </div>
   );
