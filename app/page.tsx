@@ -74,8 +74,9 @@ function WordReveal({ text, className = "" }: { text: string; className?: string
 
   useEffect(() => {
     const el = ref.current; if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { setRatio(1); return; }
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const onScroll = () => {
+      if (reduce) { setRatio(1); return; }
       const rect = el.getBoundingClientRect();
       const vh = window.innerHeight;
       // 0 when element top is at bottom of viewport, 1 when element bottom is at 30% from top
